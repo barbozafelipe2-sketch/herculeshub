@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><style>
+@font-face {
+  font-family: "Optimistic";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/OptimisticAI_VF_Optimized.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Optimistic Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/OptimisticMono_W_TextRegular.woff2") format("woff2");
+}
+:where(html) {
+  font-family: "Optimistic", system-ui, sans-serif;
+}
+:where(code, pre, kbd, samp) {
+  font-family: "Optimistic Mono", ui-monospace, monospace;
+}
+</style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hercules Hub - AUDITED Full Breakdown - Every Card Clickable</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#050507;color:#fff;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.5;padding:20px;overflow-x:hidden}
+.wrap{max-width:1280px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,#111 0%,#151515 100%);border:1px solid #222;border-radius:24px;padding:18px 22px;margin-bottom:18px}
+.logo{display:flex;align-items:center;gap:12px}
+.mark{width:44px;height:44px;background:#D9FF00;color:#000;display:grid;place-items:center;border-radius:12px;font-weight:900;font-size:20px;box-shadow:0 0 24px #D9FF0040}
+.badge{background:#0E0E0E;border:1px solid #222;color:#D9FF00;padding:6px 12px;border-radius:999px;font-size:11px;font-weight:700}
+.modes{display:flex;background:#0A0A0A;border:1px solid #222;border-radius:999px;padding:4px;gap:4px}
+.mode{padding:8px 16px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;color:#888;transition:.2s;border:1px solid transparent}
+.mode.active{background:#D9FF00;color:#000;box-shadow:0 0 18px #D9FF0040}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.kpi{background:linear-gradient(135deg,#111 0%,#0E0E0E 100%);border:1px solid #222;border-radius:20px;padding:18px;position:relative;overflow:hidden;cursor:pointer;transition:.25s}
+.kpi:hover{border-color:#D9FF00;transform:translateY(-2px);box-shadow:0 8px 32px #000,0 0 20px #D9FF0015}
+.kpi:after{content:'';position:absolute;top:-30px;right:-30px;width:100px;height:100px;background:radial-gradient(circle,#D9FF0025,transparent 70%);pointer-events:none}
+.kpi-label{color:#777;font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.kpi-value{font-size:24px;font-weight:900}
+.kpi-sub{color:#666;font-size:11px;margin-top:4px}
+.click-hint{position:absolute;bottom:10px;right:12px;color:#444;font-size:9px;letter-spacing:.08em}
+.audit{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:18px}
+.audit-card{background:#111;border:1px solid #222;border-radius:20px;padding:16px;text-align:center;cursor:pointer;transition:.25s}
+.audit-card:hover{border-color:#00FFD1;box-shadow:0 0 20px #00FFD115}
+.ring{width:72px;height:72px;border-radius:50%;margin:0 auto 10px;display:grid;place-items:center;font-weight:900;font-size:18px;position:relative}
+.ring-62{background:conic-gradient(#D9FF00 62%, #1A1A1A 0)}
+.ring-15{background:conic-gradient(#FF3B30 15%, #1A1A1A 0)}
+.ring-75{background:conic-gradient(#00FFD1 75%, #1A1A1A 0)}
+.ring-40{background:conic-gradient(#FF3B30 40%, #1A1A1A 0)}
+.ring-30{background:conic-gradient(#FF3B30 30%, #1A1A1A 0)}
+.ring-inner{width:58px;height:58px;background:#111;border-radius:50%;display:grid;place-items:center}
+.grid2{display:grid;grid-template-columns:1.35fr .65fr;gap:14px;margin-bottom:18px}
+.card{background:linear-gradient(135deg,#111 0%,#0F0F0F 100%);border:1px solid #222;border-radius:24px;padding:20px;position:relative}
+.card-title{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#888;margin-bottom:14px;display:flex;align-items:center;gap:8px;font-weight:700}
+.dot{width:8px;height:8px;border-radius:50%;background:#D9FF00;box-shadow:0 0 12px #D9FF00}
+.format{display:inline-flex;background:#D9FF00;color:#000;font-weight:900;font-size:10px;padding:5px 10px;border-radius:999px;letter-spacing:.06em;margin-bottom:10px}
+.hook{background:#181818;border-left:3px solid #D9FF00;padding:10px 12px;border-radius:0 12px 12px 0;color:#EAEAEA;font-weight:600;margin:10px 0;font-size:13px;cursor:pointer}
+.hook:hover{background:#1E1E1E}
+.caption{background:#0A0A0A;border:1px solid #222;border-radius:14px;padding:12px;font-size:12px;color:#CFCFCF;line-height:1.6;white-space:pre-wrap;max-height:220px;overflow:auto}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.tag{background:#1A1A1A;border:1px solid #2A2A2A;color:#999;padding:3px 8px;border-radius:999px;font-size:10px;cursor:pointer}
+.tag:hover{border-color:#D9FF00;color:#D9FF00}
+.btn{padding:8px 14px;border-radius:999px;font-size:11px;font-weight:800;cursor:pointer;border:1px solid #222;background:#1A1A1A;color:#fff;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.btn:hover{border-color:#D9FF00;transform:translateY(-1px)}
+.btn-primary{background:#D9FF00;color:#000;border-color:#D9FF00;box-shadow:0 0 18px #D9FF0030}
+.bar{height:8px;background:#1A1A1A;border-radius:999px;overflow:hidden;margin:6px 0 10px;cursor:pointer;position:relative}
+.bar-fill{height:100%;background:linear-gradient(90deg,#D9FF00,#00FFD1);transition:width .6s}
+.bar:hover{outline:1px solid #D9FF00}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.day{background:#0A0A0A;border:1px solid #222;border-radius:14px;padding:10px;text-align:center;cursor:pointer;transition:.2s}
+.day:hover{border-color:#D9FF00;transform:translateY(-2px)}
+.day.active{background:#D9FF00;color:#000;border-color:#D9FF00}
+.day b{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:3px}
+.day span{font-size:10px;line-height:1.3;display:block}
+.view{display:none;animation:fadeIn .35s}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.modal-backdrop{position:fixed;inset:0;background:#000A;backdrop-filter:blur(12px);display:none;place-items:center;z-index:999;padding:20px}
+.modal-backdrop.open{display:grid}
+.modal{background:linear-gradient(135deg,#151515 0%,#0F0F0F 100%);border:1px solid #2A2A2A;border-radius:24px;max-width:720px;width:100%;max-height:85vh;overflow:auto;box-shadow:0 24px 80px #000,0 0 40px #D9FF0010;animation:modalIn .35s}
+@keyframes modalIn{from{transform:translateY(16px) scale(.98);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}
+.modal-head{padding:20px 22px;border-bottom:1px solid #222;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#151515;z-index:2;border-radius:24px 24px 0 0}
+.modal-body{padding:20px 22px}
+.modal h3{font-size:16px;font-weight:900;margin-bottom:10px}
+.modal h4{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#D9FF00;margin:18px 0 8px;font-weight:800}
+.modal p{font-size:13px;color:#BBB;line-height:1.7;margin-bottom:10px}
+.modal ul{margin:8px 0 12px 18px}
+.modal li{font-size:13px;color:#BBB;margin-bottom:6px;line-height:1.6}
+.toast{position:fixed;bottom:20px;right:20px;background:#111;border:1px solid #2A2A2A;color:#fff;padding:12px 16px;border-radius:999px;font-size:12px;font-weight:700;transform:translateY(80px);opacity:0;transition:.35s;z-index:1000;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px #000}
+.toast.show{transform:translateY(0);opacity:1}
+.heat{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.time{padding:6px 10px;border-radius:999px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid #222;background:#0A0A0A;color:#888}
+.time.hot{background:#D9FF00;color:#000;border-color:#D9FF00;box-shadow:0 0 14px #D9FF0030}
+@media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.audit{grid-template-columns:repeat(2,1fr)}.cal{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div style="display:flex;align-items:center;gap:12px"><div class="mark">H</div><div><div style="font-weight:900;font-size:17px">HERCULES HUB • AUDITED CLICKABLE</div><div style="color:#777;font-size:11px">@hub.hercules • 1.4K • Every graphic opens full breakdown</div></div></div>
+    <div style="display:flex;gap:10px;align-items:center"><div class="badge">● FUTURISTIC • NO STATIC CARDS</div><div class="modes"><div class="mode active" data-view="daily">DAILY</div><div class="mode" data-view="weekly">WEEKLY</div><div class="mode" data-view="monthly">MONTHLY</div><div class="mode" data-view="yearly">YEARLY</div></div></div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi" data-modal="posts"><div class="kpi-label">Weekly Posts</div><div class="kpi-value">1 / 7</div><div class="kpi-sub">Tap for what 1/7 means for algo</div><div class="click-hint">CLICK → FULL BREAKDOWN</div></div>
+    <div class="kpi" data-modal="engagement"><div class="kpi-label">Engagement Rate</div><div class="kpi-value">4.2% ↗</div><div class="kpi-sub">Saves 9x > Likes • Tap to learn</div><div class="click-hint">CLICK → WHY SAVES WIN</div></div>
+    <div class="kpi" data-modal="forms"><div class="kpi-label">Netlify Forms Protected</div><div class="kpi-value">4</div><div class="kpi-sub">Last: fat_loss • Tap for audience DNA</div><div class="click-hint">CLICK → AUDIENCE DNA</div></div>
+    <div class="kpi" data-modal="streak"><div class="kpi-label">Posting Streak</div><div class="kpi-value">Day 1</div><div class="kpi-sub">First 21 days = critical • Tap</div><div class="click-hint">CLICK → STREAK SCIENCE</div></div>
+  </div>
+
+  <div class="audit">
+    <div class="audit-card" data-modal="audit-name"><div class="ring ring-62"><div class="ring-inner">62</div></div><div style="font-size:11px;font-weight:800">OVERALL</div><div style="font-size:10px;color:#777;margin-top:2px">Tap for full audit</div></div>
+    <div class="audit-card" data-modal="namefield"><div class="ring ring-15"><div class="ring-inner" style="color:#FF3B30">15%</div></div><div style="font-size:11px;font-weight:800">NAME SEO</div><div style="font-size:10px;color:#FF6B6B;margin-top:2px">FAIL • Tap to fix</div></div>
+    <div class="audit-card" data-modal="bio"><div class="ring ring-75"><div class="ring-inner">75%</div></div><div style="font-size:11px;font-weight:800">BIO</div><div style="font-size:10px;color:#777;margin-top:2px">Good but no link</div></div>
+    <div class="audit-card" data-modal="content"><div class="ring ring-40"><div class="ring-inner" style="color:#FF3B30">40%</div></div><div style="font-size:11px;font-weight:800">CONTENT</div><div style="font-size:10px;color:#777;margin-top:2px">Need carousels 9x saves</div></div>
+    <div class="audit-card" data-modal="funnel"><div class="ring ring-30"><div class="ring-inner" style="color:#FF3B30">30%</div></div><div style="font-size:11px;font-weight:800">FUNNEL</div><div style="font-size:10px;color:#777;margin-top:2px">No ManyChat</div></div>
+  </div>
+
+  <div class="view active" id="view-daily">
+    <div class="grid2">
+      <div class="card">
+        <div class="card-title"><span class="dot"></span> Today's Post — Sunday Recovery • Click hook for psychology</div>
+        <div class="format">REEL • 12 SEC • TOF/MOF</div>
+        <div class="hook" data-modal="hook-psych">HOOK: "If your back and arms hold fat, stretching your lats wrong makes you WIDER. Do this instead:" → Tap for hook psychology breakdown</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0">
+          <div style="background:#0A0A0A;border:1px solid #222;border-radius:12px;padding:10px;cursor:pointer" data-modal="visual"><b style="color:#D9FF00;font-size:10px">VISUAL • TAP FOR SHOT LIST</b><br><span style="font-size:11px;color:#999">1) Cat-cow thoracic<br>2) 90/90 hip switch<br>3) Deep squat breathe<br>Overlay: "Sore ≠ Progress"</span></div>
+          <div style="background:#0A0A0A;border:1px solid #222;border-radius:12px;padding:10px;cursor:pointer" data-modal="cta"><b style="color:#D9FF00;font-size:10px">CTA & FUNNEL • TAP</b><br><span style="font-size:11px;color:#999">DM JOURNEY → ManyChat keyword → Close<br>Story Poll: "WIDER after back day?"</span></div>
+        </div>
+        <div class="caption" id="caption-en">Sunday isn't off. It's reset.
+Most people stretch to feel better. We mobilize to LOOK better — smaller waist, defined back, arms that don't puff.
+
+Today's 6-min reset (no equipment):
+1) Thoracic opener x 8/side
+2) 90/90 hip switches x 10
+3) Deep squat breathing x 5 breaths
+
+Save this and do it tonight. Your Monday workout will feel 10x lighter.
+
+Want a system that defines without widening your back? DM JOURNEY — I'll map your 3x week 60-min evening plan.
+
+ES: El domingo no es descanso. Es reset. Si quieres definir abdomen, espalda y brazos sin ensanchar la espalda, deja de estirar mal. Moviliza. Guarda esta rutina de 6 min y hazla hoy. DM JOURNEY y te armo tu plan 60 min noche.
+
+PT: Domingo não é off. É reset. Quer definir abdômen, costas e braços sem alargar as costas? Mobilidade inteligente. Salva e faz hoje. DM JOURNEY e eu monto seu plano.</div>
+        <div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-primary" onclick="copyText('caption-en','Caption')">📋 Copy Caption</button><button class="btn" onclick="openModal('bio')">✨ Bio EN/ES/PT</button><button class="btn" onclick="openModal('dm-script')">💬 DM Script</button></div>
+        <div class="tags"><span class="tag" data-modal="hashtags">#mobilitytraining • Tap for hashtag strategy 2026</span><span class="tag">#fatlossjourney</span><span class="tag">#herculesHub</span><span class="tag">#miamifitness</span></div>
+        <div style="margin-top:12px;display:flex;gap:8px"><label style="display:flex;gap:8px;align-items:center;background:#0A0A0A;border:1px solid #222;border-radius:12px;padding:8px 12px;font-size:11px;cursor:pointer"><input type="checkbox" onchange="saveCheck(this,'posted')"> Mark as Posted ✓</label><label style="display:flex;gap:8px;align-items:center;background:#0A0A0A;border:1px solid #222;border-radius:12px;padding:8px 12px;font-size:11px;cursor:pointer"><input type="checkbox" onchange="saveCheck(this,'story')"> Story Done ✓</label></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="card" data-modal="analytics"><div class="card-title"><span class="dot" style="background:#00FFD1;box-shadow:0 0 12px #00FFD1"></span> Analytics Lab • Tap any bar for full reading</div>
+          <div style="font-size:10px;color:#666;margin-bottom:6px">CONTENT PILLARS PERFORMANCE</div>
+          <div style="font-size:11px">Training</div><div class="bar" data-modal="pillar-training"><div class="bar-fill" style="width:65%"></div></div>
+          <div style="font-size:11px">Nutrition</div><div class="bar" data-modal="pillar-nutrition"><div class="bar-fill" style="width:40%"></div></div>
+          <div style="font-size:11px">Mental Health / Discipline</div><div class="bar" data-modal="pillar-mindset"><div class="bar-fill" style="width:80%"></div></div>
+          <div style="font-size:10px;color:#666;margin:12px 0 6px">BEST TIME HEATMAP EST • TAP TIME FOR WHY</div>
+          <div class="heat"><span class="time hot" data-modal="time-7am">7-9am HOT</span><span class="time" data-modal="time-12pm">12-2pm</span><span class="time hot" data-modal="time-6pm">6-8pm HOT</span></div>
+          <div style="margin-top:10px;background:#0A0A0A;border:1px solid #222;border-radius:10px;padding:10px;font-size:11px;color:#888;cursor:pointer" data-modal="reach">📊 Metricool 2026: Views +27% YoY but engagement -6.6%. Single image -22%. Your opportunity = Carousels 2x reach 9x saves posted 37% less. Tap for full study breakdown →</div>
+        </div>
+        <div class="card" data-modal="client"><div class="card-title"><span class="dot"></span> Client Win • Tap for audience DNA + content angle</div><div style="font-size:12px;font-weight:700">Latest Form: 25yo Female, US, 150lb → 130lb goal</div><div style="font-size:11px;color:#999;margin-top:6px">Primary: fat_loss • Wants abdomen/back/arms definition WITHOUT widening back • Works 9-5 unpredictable, 60min evenings • Barrier: work/family/time • Sleep 6-7h quality 4/10 • Stress finances/family</div><div style="margin-top:8px;background:#0A0A0A;border:1px solid #222;border-radius:10px;padding:8px;font-size:11px;color:#D9FF00">💡 Content angle that converts her: Today's Reel directly answers her fear "no anchar espalda". Use this as proof for Thursday Copy-This-Result post. Tap for full funnel →</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view" id="view-weekly">
+    <div class="card"><div class="card-title"><span class="dot"></span> Weekly Calendar • Tap any day for full strategy breakdown</div><div class="cal">
+      <div class="day" data-modal="day-mon"><b>Mon</b><span>Discipline<br>Connection • TOF</span></div>
+      <div class="day" data-modal="day-tue"><b>Tue</b><span>Training Tip<br>Value • TOF</span></div>
+      <div class="day" data-modal="day-wed"><b>Wed</b><span>Nutrition<br>Value • MOF</span></div>
+      <div class="day active" data-modal="day-thu"><b>Thu</b><span>Client Win<br>Proof • BOF</span></div>
+      <div class="day" data-modal="day-fri"><b>Fri</b><span>Mindset<br>Middle</span></div>
+      <div class="day" data-modal="day-sat"><b>Sat</b><span>Power Demo<br>Top</span></div>
+      <div class="day active" data-modal="day-sun"><b>Sun</b><span>Recovery<br>Middle • TODAY</span></div>
+    </div></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
+      <div class="card" data-modal="weekly-insights"><div class="card-title"><span class="dot"></span> Weekly Insights • Tap for what worked / flopped</div><div style="font-size:12px;color:#BBB">✅ What works: Carousels 2x reach 9x saves (37% less posted), Reels shares +67% watch 4→8.5s, Stories replies +88%<br><br>❌ What flops: Single-image -22%, hashtags over 5 = -31% views, no save CTA<br><br>🎯 3 gaps vs top pages: No Clone Comparison, No Tier Lists, No Visual Breakdown</div></div>
+      <div class="card" data-modal="lead-machine"><div class="card-title"><span class="dot" style="background:#00FFD1;box-shadow:0 0 12px #00FFD1"></span> Lead Machine • Tap for DM funnel</div><div style="font-size:11px;color:#AAA">Know Like Trust: Connection stories, Value blueprint, Proof results + post 2x/day + ManyChat auto-DM<br><br>Top converter: Copy This Result = transformation + exact method + keyword comment triggers DM<br><br><button class="btn btn-primary" onclick="openModal('dm-script')">Open Full DM Script →</button></div></div>
+    </div>
+  </div>
+
+  <div class="view" id="view-monthly">
+    <div class="card"><div class="card-title"><span class="dot"></span> Monthly Roadmap — 4 Week Boom Plan • Tap each week</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div style="background:#0A0A0A;border:1px solid #222;border-radius:16px;padding:14px;cursor:pointer" data-modal="month-w1"><b style="color:#D9FF00">WEEK 1 — AUTHORITY</b><br><span style="font-size:11px;color:#999">Educational trends, Common Mistakes, Myth busting<br>3 Reels + 2 Carousels<br>Goal: 2x reach</span></div>
+        <div style="background:#0A0A0A;border:1px solid #222;border-radius:16px;padding:14px;cursor:pointer" data-modal="month-w2"><b style="color:#00FFD1">WEEK 2 — TRUST</b><br><span style="font-size:11px;color:#999">Day in life, About me, transformation, raw talking head<br>Goal: Replies +88%</span></div>
+        <div style="background:#0A0A0A;border:1px solid #222;border-radius:16px;padding:14px;cursor:pointer" data-modal="month-w3"><b style="color:#D9FF00">WEEK 3 — CONVERSION</b><br><span style="font-size:11px;color:#999">Case studies, Client interviews, Copy-This-Result weekly<br>Goal: DM JOURNEY x3</span></div>
+        <div style="background:#0A0A0A;border:1px solid #222;border-radius:16px;padding:14px;cursor:pointer" data-modal="month-w4"><b style="color:#00FFD1">WEEK 4 — COMMUNITY</b><br><span style="font-size:11px;color:#999">Collabs (2x reach), Mentions +108% for &lt;2K, Micro-influencers<br>Goal: +200 followers</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="view" id="view-yearly">
+    <div class="card"><div class="card-title"><span class="dot"></span> Yearly Boom — 12 Month Plan • Tap quarter</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div style="background:linear-gradient(135deg,#111,#1A1A00);border:1px solid #333;border-radius:16px;padding:14px;cursor:pointer" data-modal="year-q1"><b>Q1 FOUNDATION</b><br><span style="font-size:11px;color:#AAA">Fix Name SEO, fix ratio 2.6K following, 3x Reels/week, 2x carousels, link in bio 2-step, Highlights Results/System/Nutrition/Mindset/FAQ</span></div>
+        <div style="background:linear-gradient(135deg,#111,#001A1A);border:1px solid #333;border-radius:16px;padding:14px;cursor:pointer" data-modal="year-q2"><b>Q2 GROWTH</b><br><span style="font-size:11px;color:#AAA">Collabs weekly, mentions +108%, ManyChat "JOURNEY" keyword, auto-DM new followers, Trial Reels</span></div>
+        <div style="background:linear-gradient(135deg,#111,#1A1A00);border:1px solid #333;border-radius:16px;padding:14px;cursor:pointer" data-modal="year-q3"><b>Q3 MONETIZATION</b><br><span style="font-size:11px;color:#AAA">Weekly Copy-This-Result, client interviews, blueprint Value posts, direct CTAs, case studies</span></div>
+        <div style="background:linear-gradient(135deg,#111,#001A1A);border:1px solid #333;border-radius:16px;padding:14px;cursor:pointer" data-modal="year-q4"><b>Q4 SCALE</b><br><span style="font-size:11px;color:#AAA">Hire editor, launch 21-day challenge, UGC, brand deals, 2x/day, 10K push</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center;color:#444;font-size:10px;padding:18px;margin-top:10px">Every card clickable → full breakdown • Offline HTML • No CDN • No Netlify • Built from 2026 Metricool + top fitness pages • @hub.hercules Lead Machine</div>
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop" onclick="if(event.target===this)closeModal()"><div class="modal" id="modal"><div class="modal-head"><div style="font-weight:900" id="modal-title">Breakdown</div><button class="btn" onclick="closeModal()">✕ Close</button></div><div class="modal-body" id="modal-body"></div></div></div>
+<div class="toast" id="toast"><span id="toast-text">Copied!</span></div>
+
+<script>
+const MODALS={
+'posts':{title:'Weekly Posts 1/7 — What it means',body:'<h4>What this data means</h4><p>You posted 1 out of 7 days. Instagram 2026 rewards relationship: daily touchpoints make you higher in feed. Small accounts under 10K have 10% chance to move up tier vs 3% mid-size. Views +27% YoY platform-wide.</p><h4>Why it matters</h4><p>1/7 = 14% data. 7/7 = 100% data to learn what saves/shares. More visibility to earn if you post right formats.</p><h4>What top pages do</h4><p>Post 2x/day 7 days/week. Mix: 60% Reels (reach), 30% Carousels (saves 9x), 10% Stories (retention +88% replies)</p><h4>Your action</h4><p>Hit 7/7 this week using calendar. Today Reel = Day 1. Tomorrow Common Mistakes carousel.</p>'},
+'engagement':{title:'Engagement 4.2% — Saves > Likes in 2026',body:'<h4>What this means</h4><p>4.2% benchmark for fitness 1-2K. Likes carry least weight. Algorithm pays more for saves and shares because they signal resurfacing value. Carousels 9x more saves than single. Reels shares +67% YoY. Watch time 4→8.5s.</p><h4>Why it matters</h4><p>Post can rack likes and stall, while post with saves keeps finding viewers for days. Your audience saves mobility + nutrition.</p><h4>Action</h4><p>Design every post to be saved/shared: Save for tonight, Send to friend who feels wider after back day. Use today hook — specific pain.</p>'},
+'forms':{title:'4 Forms Protected — Audience DNA',body:'<h4>What this means</h4><p>4 submissions from intake form (es). Latest: 25yo female US 150→130lb fat_loss wants abdomen/back/arms definition without widening back. Works 9-5 unpredictable 60min evenings barriers work/family/time sleep 6-7h quality 4/10 stress finances/family.</p><h4>Why it matters</h4><p>Exact avatar: busy parent/worker 60min max evening fears anchar espalda. Typical day: cheese sandwich morning, chicken rice beans lunch, coffee/fruit snack, pasta meat night. Basic cooking portions rarely eat out low budget.</p><h4>Content angle that converts her</h4><p>Today mobility Reel answers fear directly. Thursday Copy-This-Result: How busy mom lost back fat without widening back — 3x60min + portions + mobility + exact method + comment JOURNEY.</p>'},
+'streak':{title:'Streak Day 1 — Science of first 21 days',body:'<p>Day 1 of once-a-day commitment. Relationship classifier learns from first 21 days: early active fans matter more than big quiet audience. Small test audience first — if they engage fast post pushed to lookalikes. ManyChat auto-DM new followers with casual greeting + bifurcated question. Post at 7-9am + 6-8pm EST evening preferred from forms.</p>'},
+'audit-name':{title:'Overall Audit 62/100 — Full Breakdown',body:'<p>62/100 = opportunity. Top fitness 1.4K score 75-80. Gap = Name SEO + Funnel + Format + Ratio. Name SEO 15% biggest leak fix today +30 points. Bio 75% good pillars missing link + social proof. Content 40% 0 posts via API need carousels 9x saves + Reels 67% share growth. Funnel 30% no ManyChat no keyword trigger no highlights. Ratio 2.6K following > 1.4K hurts authority.</p><h4>Path to 90/100</h4><p>Week 1 fix Name + Bio + Link + Highlights. Week 2 add ManyChat + 3 Reels + 2 Carousels. Week 3 first Copy-This-Result.</p>'},
+'namefield':{title:'Name Field SEO 15% FAIL — How to fix',body:'<p>Your Name field bold at top not handle is "Hercules Hub". Instagram search reads this directly. People search "fitness coach miami" "fat loss coach" not "Hercules Hub". Since July 2025 public posts also show in Google/Bing keywords in Name field = discoverability.</p><p>Top pages: "Fitness Coach | Helping busy moms lose weight with 20-min workouts" Format Role + Benefit + Location.</p><p>Fix EN: "Fitness Coach | Fat Loss & Definition | Miami + Online" ES: "Coach Fitness | Pérdida Grasa & Definición | Miami" PT: "Coach Fitness | Secar & Definir | Miami"</p><p>This alone can +108% reach for <2K when combined with mentions.</p>'},
+'bio':{title:'Bio 75% — Optimized versions',body:'<p>Current good: pillars + CTA DM JOURNEY. Missing: link in bio, location, social proof, keyword, line breaks.</p><p>EN: 🦾 Training | 🥗 Nutrition | 🧠 Discipline<br>Helping busy people lose fat & define without widening back<br>📍 Miami + Online Worldwide<br>👇 Free 6-min reset ↓<br>DM "JOURNEY" for 3x60min plan</p><p>Add Highlights: Results, System, Nutrition, Mindset, FAQ.</p>'},
+'content':{title:'Content Format 40% — What actually works 2026',body:'<p>Metricool 2026: Views +27% YoY engagement -6.6% single-image -22% reach carousels 2x reach 9x saves posted 37% less = blue ocean Reels strongest for non-followers engagement +25% shares +67% watch 4→8.5s Stories replies +88% exits down retention signal helps feed ranking.</p><p>Top 10 fitness formats: Common Mistakes, Educational Trend, Clone Comparison, Tier Lists, Talking Back & Forth, Transformation Edit, Raw Talking Head, Visual Breakdown, Step By Step, Reaction</p><p>Your mix 60% Reels hooks 30% Carousels saves 10% Stories retention. Today Reel + Story poll.</p>'},
+'funnel':{title:'Lead Funnel 30% — Build DM JOURNEY machine',body:'<p>Top: Educational trends Step by step Myth busting Common mistakes Clone comparison Tier lists<br>Middle: Day in life About me Your transformation Raw talking head Cinematic storytelling<br>Bottom: Case studies Client results How offer works Direct CTAs</p><p>Highest converter: Copy This Result = transformation + exact method + keyword comment triggers DM conversation e.g. Comment JOURNEY.</p><p>DM Script: 1. Hey [Name]! Saw you commented JOURNEY — thanks! 2. Quick Q — more stuck with abdomen or back/arms? 3. What’s hardest with 9-5 + family + time? 4. Testimonial 25yo 150→130 without widening back 3x60min evenings 5. Invite Want me to map 3-day plan on 15min call? Tue 7pm or Wed 6pm 6. Close Zoom show system offer. ManyChat trigger Comment JOURNEY → auto-DM step 1.</p>'},
+'hook-psych':{title:'Hook Psychology — Why this hook stops scroll',body:'<p>Hook: "If your back and arms hold fat stretching lats wrong makes you WIDER. Do this instead:" Psychology: Specific pain back/arms fat + fear WIDER + curiosity gap Do this instead. From research: Relatable names something felt Educational teaches Aspirational mobile = defined.</p><p>First 2 lines = SEO. Instagram reads caption to categorize. "back and arms hold fat" = keyword your audience searches. Watch time target 8.5s+ — this hook forces save to avoid mistake.</p><p>3 high-performing hook formats: Common Mistakes "3 stretches making back wider" Clone Comparison "What you do vs what defined girls do" Visual Breakdown split screen wrong vs right lat stretch.</p>'},
+'visual':{title:'Visual Shot List — 12 sec Reel',body:'<p>Shot 1 0-3s: You facing camera text overlay hook point to back/arms<br>Shot 2 3-7s: Wrong lat stretch wide grip vs Right thoracic opener side by side<br>Shot 3 7-11s: 90/90 hip switches + deep squat breathe overlay "Sore ≠ Progress. Mobile = Progress"<br>Shot 4 11-12s: Close "Save this for tonight"</p><p>Audio trending fitness low volume voiceover explains. Trial Reels test with non-followers first.</p>'},
+'cta':{title:'CTA & Funnel — DM JOURNEY machine',body:'<p>Primary CTA DM JOURNEY → ManyChat keyword trigger<br>Secondary Save + Share "Send to friend who feels wider after back day" — shares most valuable signal 2026<br>Story support Poll "Do you feel WIDER after back day? Yes/No" → DM those who vote Yes with mobility Reel</p><p>Why DM JOURNEY works: Keyword triggers auto-DM bifurcated question segments abdomen vs back/arms leads to Zoom close. Copy-This-Result posts use same trigger.</p>'},
+'hashtags':{title:'Hashtag Strategy 2026 — Why less is more',body:'<p>Metricool: Posts with hashtags get 31% fewer views 33% fewer interactions. Instagram capped at 5 hashtags late 2025 Mosseri said hashtags don’t help reach. Use 1-2 relevant + keywords in caption first 2 lines instead.</p><p>Your set today Use 3 only: #mobilitytraining #fatlossjourney #herculesHub + keywords in caption "fat loss" "definition" "back and arms"</p><p>Put energy into alt-text describe image for SEO + accessibility Advanced Settings.</p>'},
+'analytics':{title:'Analytics Lab — How to read charts',body:'<p>Bar width = relative performance. Training 65% = most content but need more carousels. Nutrition 40% = underposted vs demand your forms show nutrition as top goal. Mindset 80% = high engagement keep.</p><p>Best Time Heatmap Global peak 7-9pm but your audience forms show evening preferred 9-5 workers 60min windows. So 7-9am pre-work and 6-8pm post-work EST. Sunday 10am = 38% more saves for recovery content.</p>'},
+'pillar-training':{title:'Training Pillar 65% — Full breakdown',body:'<p>What 65% means: You talk training 65% of time but mostly single-format. Top pages: Common Mistakes Tier Lists Visual Breakdown carousels get 9x saves.</p><p>3 post ideas to boom: 1. "3 back exercises making you wider (do this instead)" carousel 2. Tier List: Lat exercises S to F tier for definition 3. Clone Comparison: What you do vs what defined girls do on back day</p>'},
+'pillar-nutrition':{title:'Nutrition Pillar 40% — Underposted',body:'<p>40% = underposted vs demand. Your intake forms: Typical day sandwich + chicken rice beans + coffee/fruit + pasta meat. Basic cooking portions rarely eat out low food budget.</p><p>Ideas: Portion guide carousel 9x saves, "What I eat to define without widening back" B-roll voiceover, 3 meals under $5.</p>'},
+'pillar-mindset':{title:'Mindset 80% — Keep',body:'<p>80% engagement = your edge. Stories replies +88% in 2026 = retention. Keep Discipline pillar raw talking head day in life.</p>'},
+'time-7am':{title:'7-9am HOT — Why',body:'<p>Pre-work scroll high saves for later. Your audience wake 7am. Post Reel at 7:30am Story at 8am with poll.</p>'},
+'time-12pm':{title:'12-2pm — Cold',body:'<p>Lunch scroll but low saves. Use only for Stories not feed. Feed at 7-9am/6-8pm per data.</p>'},
+'time-6pm':{title:'6-8pm HOT — Why',body:'<p>Post-work evening preferred time from your forms 60min evenings. Highest DM JOURNEY conversions. Post at 6:30pm ManyChat active.</p>'},
+'reach':{title:'Metricool 2026 Study — Full breakdown',body:'<p>Views +27% YoY engagement -6.6% single-image -22% reach carousels 2x reach 9x saves posted 37% less Reels shares +67% watch time 4→8.5s Stories replies +88% saves+shares > likes hashtags -31% views collab 2x reach mentions +108% for <2K.</p><p>Action: More carousels + Reels less single image 1-2 hashtags keywords in first 2 lines collabs weekly.</p>'},
+'client':{title:'Client Win — Audience DNA to Content',body:'<p>25yo female US 150→130lb fat_loss wants abdomen/back/arms without widening. Works 9-5 unpredictable 60min evenings barriers work/family/time/motivation/fatigue/gym_access training some but none recent prefers gym machines/free weights/dumbbells/bodyweight/walking/running/mobility has full gym + home meals 3/day basic cooking portions rarely eat out low food budget sleep 6-7h quality 4 energy 5 stress 3 finances/family/time recovery walking/music/meditation/breathing/reading/journaling/outdoors/family/friends.</p><p>Content that converts her: Today Reel + Thursday Copy-This-Result "How busy mom lost back fat without widening back — 3x60min evenings portions mobility" + exact method + comment JOURNEY.</p>'},
+'day-mon':{title:'Monday — Discipline / Connection',body:'<p>Strategy Monday motivation spike Connection pillar Know. Format raw talking head about discipline your story. Hook "I almost quit Monday 5am — here’s what kept me." Top relatable shareable CTA Save for Monday.</p>'},
+'day-tue':{title:'Tuesday — Training Tip / Value',body:'<p>Format Common Mistakes carousel top format Example "3 lat mistakes making back wider" 9x saves. Value pillar teaching blueprint.</p>'},
+'day-wed':{title:'Wednesday — Nutrition / Value',body:'<p>Format Visual Breakdown carousel "What I eat to define — portions" Voiceover B-roll.</p>'},
+'day-thu':{title:'Thursday — Client Win / Proof Bottom',body:'<p>Format Copy This Result highest converter Show transformation + exact method 3x60min portions mobility + keyword comment JOURNEY triggers ManyChat Shares +67%. Mid-week proof pushes DM.</p>'},
+'day-fri':{title:'Friday — Mindset / Middle',body:'<p>Format Raw talking head + Stories replies +88% Topic stress finances/family/time from forms Recovery walking/music/breathing.</p>'},
+'day-sat':{title:'Saturday — Power Demo / Top',body:'<p>Format Tier List Reel "Glute exercises S to F tier for definition without widening back" Educational aspirational.</p>'},
+'day-sun':{title:'Sunday — Recovery / Middle TODAY',body:'<p>Why Sunday recovery: Retention saves for Monday aligns with your workout schedule Mobility + Core Recovery Today Reel 6-min reset Best time 10am 38% more saves.</p>'},
+'weekly-insights':{title:'Weekly Insights — What worked / flopped',body:'<p>Worked 2026: Carousels 2x reach 9x saves but posted 37% less Reels shares +67% watch 4→8.5s Stories replies +88% collabs 2x reach mentions +108% for <2K.</p><p>Flopped: Single-image -22% reach hashtags >5 = -31% views no keyword in first 2 lines no save CTA.</p><p>3 gaps: No Clone Comparison No Tier Lists No Visual Breakdown carousels — add these.</p>'},
+'lead-machine':{title:'Lead Machine — Know Like Trust',body:'<p>Connection Personal stories Day in life About me<br>Value Teaching blueprint 0-100k blueprint step by step<br>Proof Client results case studies Copy This Result</p><p>Post 2x/day 7 days/week + ManyChat auto-DM new followers. Keyword JOURNEY → DM → Zoom close.</p>'},
+'dm-script':{title:'DM Script — Full funnel',body:'<p>1. Hey [Name]! Saw you commented JOURNEY — thanks! 🙏<br>2. Quick Q — are you more stuck with abdomen or back/arms?<br>3. What’s been hardest with 9-5 + family + time?<br>4. Testimonial: We had client like you 25yo 150→130 without widening back 3x60min evenings portions mobility<br>5. Invite: Want me to map your 3-day plan on 15min call? Tue 7pm or Wed 6pm<br>6. Close Zoom show system offer.<br>ManyChat trigger Comment JOURNEY → auto-DM step 1.</p>'},
+'month-w1':{title:'Week 1 Authority — Full plan',body:'<p>Educational trends Common Mistakes Myth busting Clone Comparison. 3 Reels + 2 Carousels Goal 2x reach Collab 1 micro-influencer.</p>'},
+'month-w2':{title:'Week 2 Trust — Full plan',body:'<p>Day in life About me Your transformation Raw talking head Cinematic storytelling. Stories daily replies +88% Goal trust.</p>'},
+'month-w3':{title:'Week 3 Conversion — Full plan',body:'<p>Case studies Client interviews Copy-This-Result weekly Direct CTAs ManyChat JOURNEY Goal 3x DM.</p>'},
+'month-w4':{title:'Week 4 Community — Full plan',body:'<p>Collabs 2x reach mentions +108% for <2K micro-influencers Trial Reels test bold ideas non-followers Goal +200 followers.</p>'},
+'year-q1':{title:'Q1 Foundation — Full breakdown',body:'<p>Fix Name SEO to "Fitness Coach | Fat Loss & Definition | Miami" fix ratio unfollow 50-100 3x Reels/week 2x carousels/week link in bio 2-step free reset → intake Highlights Results/System/Nutrition/Mindset/FAQ Forms Tracker sheet.</p>'},
+'year-q2':{title:'Q2 Growth',body:'<p>Collabs weekly double reach mentions +108% boost ManyChat JOURNEY keyword auto-DM new followers Trial Reels SEO captions first 2 lines keywords alt-text.</p>'},
+'year-q3':{title:'Q3 Monetization',body:'<p>Weekly Copy-This-Result client interviews blueprint Value posts direct CTAs case studies Zoom closes.</p>'},
+'year-q4':{title:'Q4 Scale',body:'<p>Hire editor launch 21-day challenge UGC brand deals 2x/day posting push to 10K small accounts 10% chance to tier up vs 3% mid-size.</p>'}
+};
+function openModal(key){const m=MODALS[key];if(!m){showToast('Full breakdown coming');return;}document.getElementById('modal-title').innerText=m.title;document.getElementById('modal-body').innerHTML=m.body+'<div style="margin-top:18px;display:flex;gap:8px"><button class="btn btn-primary" onclick="copyModal()">📋 Copy Breakdown</button><button class="btn" onclick="closeModal()">Close</button></div>';document.getElementById('modal-backdrop').classList.add('open');}
+function closeModal(){document.getElementById('modal-backdrop').classList.remove('open');}
+function copyText(id,label){const el=document.getElementById(id);const t=el.innerText; navigator.clipboard.writeText(t).then(()=>showToast(label+' Copied! ✓'))}
+function copyModal(){const body=document.getElementById('modal-body').innerText; navigator.clipboard.writeText(body).then(()=>showToast('Breakdown Copied! ✓'))}
+function showToast(txt){const toast=document.getElementById('toast');document.getElementById('toast-text').innerText=txt;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),2500)}
+function saveCheck(el,key){localStorage.setItem('herc_'+key,el.checked);showToast(el.checked?'Marked ✓':'Unmarked');}
+document.querySelectorAll('[data-modal]').forEach(el=>el.addEventListener('click',()=>openModal(el.dataset.modal)));
+document.querySelectorAll('.mode').forEach(btn=>{btn.addEventListener('click',()=>{document.querySelectorAll('.mode').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('view-'+btn.dataset.view).classList.add('active');showToast(btn.dataset.view.toUpperCase()+' view');})});
+window.addEventListener('load',()=>{document.querySelectorAll('input[type=checkbox]').forEach(cb=>{const k=cb.getAttribute('onchange')?.match(/'([^']+)'/)?.[1]; if(k){const v=localStorage.getItem('herc_'+k); if(v==='true')cb.checked=true;}});});
+</script>
+<script>(function(){var loc=location.href.replace(/#.*$/,"");var ATTR_NAMES=["data-product-id","data-productid","data-product_id","product-id","productid","product_id","data-source-entity-id","source-entity-id","source_entity_id","data-product","data-metadata","data-meta"];var DATASET_KEYS=["productId","productid","product_id","sourceEntityId","sourceentityid","source_entity_id","product","metadata","meta"];function readProductId(value){if(typeof value!=="string"||value.length===0)return null;if(/^[0-9]{6,}$/.test(value))return value;var match=value.match(/(?:product(?:_|-)?id|source(?:_|-)?entity(?:_|-)?id)["'=:\s]+([0-9]{6,})/i);return match?match[1]:null}function extractProductId(start){for(var node=start;node&&node!==document.body;node=node.parentElement){for(var i=0;i<ATTR_NAMES.length;i++){var attrValue=node.getAttribute&&node.getAttribute(ATTR_NAMES[i]);var attrProductId=readProductId(attrValue);if(attrProductId)return attrProductId}var dataset=node.dataset||null;if(dataset){for(var j=0;j<DATASET_KEYS.length;j++){var dataValue=dataset[DATASET_KEYS[j]];var dataProductId=readProductId(dataValue);if(dataProductId)return dataProductId}}}return null}function isInlineMediaSlotElement(node){return !!(node&&node.getAttribute&&node.getAttribute("data-clippy-inline-media-slot")!==null)}function findInlineMediaSlot(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(isInlineMediaSlotElement(node))return node}return null}function readInlineMediaUrl(node){if(!node)return null;return node.getAttribute&&((node.getAttribute("data-clippy-inline-media-url")||node.getAttribute("data-url")||node.getAttribute("data_url")))||node.href||null}function stripHash(url){return String(url).replace(/#.*$/,"")}function urlsMatch(a,b){if(!a||!b)return false;try{return stripHash(new URL(a,loc).href)===stripHash(new URL(b,loc).href)}catch(_){return stripHash(a)===stripHash(b)}}function isFirstPartyReelUrl(value){try{var url=new URL(value,loc);if(url.protocol!=="https:")return false;var host=url.hostname.toLowerCase();var supported=host==="instagram.com"||host.endsWith(".instagram.com")||host==="facebook.com"||host.endsWith(".facebook.com");return supported&&/\/reels?\//i.test(url.pathname)}catch(_){return false}}function isInlineMediaUrlClick(node,href){var slot=findInlineMediaSlot(node);if(!slot)return false;var slotUrl=readInlineMediaUrl(slot);if(slotUrl)return urlsMatch(href,slotUrl);return isFirstPartyReelUrl(href)}function findDataHref(start){for(var node=start;node&&node!==document.body;node=node.parentElement){if(node.getAttribute){var href=node.getAttribute("data-href")||node.getAttribute("data-url");if(href)return{href:href,node:node}}}return null}var nativeOpen=window.open;window.open=function(url){if(parent!==window&&typeof url==="string"&&/^https?:\/\//.test(url)){parent.postMessage({type:"ecto:usercontent-link-click",href:url},"*");return null}return nativeOpen?nativeOpen.apply(window,arguments):null};document.addEventListener("click",function(e){var target=e.target instanceof Element?e.target:null;if(!target)return;if(parent===window)return;var a=target.closest?target.closest("a[href]"):null;if(a&&a.href&&/^https?:\/\//.test(a.href)&&a.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(a,a.href))return;var productId=extractProductId(target)||extractProductId(a);if(productId){e.preventDefault();parent.postMessage({type:"ecto-artifact-link-click",productId:productId},"*");return}e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:a.href},"*");return}var dataHref=findDataHref(target);if(dataHref&&/^https?:\/\//.test(dataHref.href)&&dataHref.href.replace(/#.*$/,"")!==loc){if(isInlineMediaUrlClick(dataHref.node,dataHref.href))return;e.preventDefault();parent.postMessage({type:"ecto:usercontent-link-click",href:dataHref.href},"*")}},true)})();</script><script>(function(){var FOCUS_TYPE="ecto:artifact-focus-request";var CLOSE_TYPE="ecto:artifact-close-request";function focusArtifactDocument(){var body=document.body;if(!body)return;try{window.focus();}catch(e){}if(!body.hasAttribute("tabindex"))body.setAttribute("tabindex","-1");try{body.focus({preventScroll:true});}catch(e){try{body.focus();}catch(e2){}}}window.addEventListener("message",function(event){if(event.source!==window.parent)return;var data=event.data;if(!data||typeof data!=="object"||data.type!==FOCUS_TYPE)return;if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",focusArtifactDocument,{once:true});return;}focusArtifactDocument();});window.addEventListener("keydown",function(event){if(event.key!=="Escape")return;window.setTimeout(function(){if(event.defaultPrevented)return;window.parent.postMessage({type:CLOSE_TYPE},"*");},0);});})();</script></body>
+</html>
