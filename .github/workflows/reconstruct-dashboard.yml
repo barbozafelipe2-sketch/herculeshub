@@ -1,37 +1,35 @@
-name: Reconstruct Hercules Dashboard
+name: Validate Hercules Dashboard
 
 on:
   push:
     paths:
-      - '.source_parts/**'
+      - 'index.html'
+      - 'data/**'
       - '.github/workflows/reconstruct-dashboard.yml'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  reconstruct:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Reconstruct exact index.html
+      - name: Validate dashboard wiring
         shell: bash
         run: |
-          cat .source_parts/part*.b64 | tr -d '\n\r' | base64 --decode > index.html
-          echo "584e9abf764029bbe93da4a75d04e17e5af8f72133f7b90aea20dd4993ddff2f  index.html" | sha256sum --check --strict
-
-      - name: Commit exact dashboard
-        shell: bash
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          if git diff --cached --quiet; then
-            echo "index.html already exact; nothing to commit."
-          else
-            git commit -m "Publish exact Hercules dashboard"
-            git push
-          fi
+          set -euo pipefail
+          test -f index.html
+          test -f data/state.js
+          test -f data/history/index.json
+          grep -q 'data/state.js' index.html
+          grep -q 'Today.s Tasks\|Today’s Tasks' index.html
+          grep -q 'Late / Carry-forward' index.html
+          grep -q 'dayNav' index.html
+          node --check data/state.js
+          python -m json.tool data/history/index.json >/dev/null
+          for f in data/history/20*.json; do python -m json.tool "$f" >/dev/null; done
+          echo "Hercules dashboard validation passed."
