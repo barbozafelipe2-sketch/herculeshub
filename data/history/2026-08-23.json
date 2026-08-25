@@ -1,0 +1,25 @@
+{
+  "date": "2026-08-23",
+  "source": "Previous GitHub dashboard state",
+  "post_suggestion": {
+    "id": "post-2026-08-23-sunday-recovery",
+    "title": "Sunday Recovery",
+    "format": "Reel",
+    "duration": "12 sec",
+    "hook": "If your back and arms hold fat, stretching your lats wrong makes you WIDER. Do this instead:",
+    "lifecycle": "legacy-open-or-completed-from-browser-state"
+  },
+  "legacy_task_migration": [
+    {
+      "id": "task-2026-08-23-posted",
+      "legacy_local_storage_key": "herc_posted",
+      "rule": "If true, migrate to completed. If not true, close as superseded because the time-sensitive Sunday post has passed."
+    },
+    {
+      "id": "task-2026-08-23-story",
+      "legacy_local_storage_key": "herc_story",
+      "rule": "If true, migrate to completed. If not true, close as superseded because the time-sensitive Sunday story has passed."
+    }
+  ],
+  "note": "This snapshot preserves the prior daily suggestion and legacy checkbox identity without carrying stale client-sensitive details into the public repository."
+}
