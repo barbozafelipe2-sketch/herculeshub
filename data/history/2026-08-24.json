@@ -1,0 +1,43 @@
+{
+  "date": "2026-08-24",
+  "time": "09:26",
+  "timezone": "America/New_York",
+  "source": "Felipe-provided IG Manager report",
+  "verification": "User-provided Hercules data; not independently verified",
+  "feedback": {
+    "worked": {
+      "format": "30s WIDER back? mistake vs fix",
+      "saves_multiplier": "2.3x",
+      "avg_watch_time": "8.9s",
+      "reported_target": "8.5s+",
+      "dm_journey": 5
+    },
+    "flopped": [
+      "60s+ tutorials — 5.2s average watch time",
+      "Generic motivation quotes — 0.4% engagement",
+      "Wide lat stretch alone — qualitative feedback: feels wider"
+    ],
+    "best_time": ["07:30-08:30 EDT", "18:30-19:30 EDT"],
+    "today_post_time": "18:30 EDT",
+    "content_gaps": [
+      "No What makes you WIDER series",
+      "No bilingual EN/ES 6-minute evening carousel",
+      "No anonymous 9-5 + family barrier case"
+    ],
+    "quick_win": {
+      "pinned_comment": "Which area to define WITHOUT widening? 1=Abdomen 2=Back 3=Arms — reply number",
+      "story_poll": "Do you feel WIDER after back day? Yes/No",
+      "follow_up": "DM Yes voters"
+    }
+  },
+  "weekly_calendar": [
+    "Mon 24 — Reel 30s 6:30PM — WIDER back? 6-min reset",
+    "Tue 25 — Carousel EN/ES — 3 errors that make you look WIDER",
+    "Wed 26 — Reel — Thoracic opener define without widening",
+    "Thu 27 — Story + Carousel — 9-5 + family → 3x60min system, anonymous",
+    "Fri 28 — Reel — Deep squat breathing decompress",
+    "Sat 29 — Carousel — 6-min evening routine busy moms",
+    "Sun 30 — Reset Reel — Sunday mindset + weekly wins"
+  ],
+  "privacy_note": "The public repository intentionally omits client names and individual health/intake details."
+}
