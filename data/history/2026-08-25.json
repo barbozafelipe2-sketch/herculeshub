@@ -1,0 +1,28 @@
+{
+  "date": "2026-08-25",
+  "source_document_id": "1NEOi5xcFi10asZpvpvuAznrbV6edNsPH6VAB8cj-KoQ",
+  "source_revision": "AIroW364kb8FPl3zddCHWe0W316X1wUu5euiP8QRtlJVT4a362ujvuomNv9FJl4GKIBrR_Yt7tmnOftOznivKEHCdnc90WsRFVw36_P6yxo",
+  "source_update": "Tue, Aug 25, 2026 - 9:01 AM EDT - IG Manager Run",
+  "classification": "project-provided observations; not independently verified",
+  "privacy": "Client-identifying and sensitive intake details removed; anonymous case concepts retained only at a high level.",
+  "changes": [
+    "Marked the Aug 24 WIDER-back Reel task/post completed/published because the feeder explicitly says DONE.",
+    "Carried forward Aug 24 pin-comment, story-poll and Yes-voter follow-up tasks because no completion was reported.",
+    "Created new dated Aug 25 carousel, pinned-comment, story-poll and Yes-voter follow-up tasks.",
+    "Promoted the Aug 25 ‘3 errors that make you look WIDER’ carousel from suggested to scheduled for 18:30 EDT.",
+    "Added project-provided observations about Blueprint-style creative, a 1,264-view basketball crossover post, avatar consistency and weak long/generic content.",
+    "Preserved prior Aug 24 hypotheses and observations instead of replacing them.",
+    "Kept the feeder's white Blueprint direction as a post-specific creative observation/test; did not let it silently override the locked Hercules visual canon."
+  ],
+  "today_tasks": [
+    "Publish 6-slide ‘3 errors that make you look WIDER’ carousel at 18:30 EDT",
+    "Pin today’s 1/2/3 WIDER-error comment",
+    "Post today’s WIDER-after-back-day story poll",
+    "DM today’s Yes voters after responses arrive"
+  ],
+  "carry_forward_tasks": [
+    "Aug 24 pin-comment task",
+    "Aug 24 story-poll task",
+    "Aug 24 Yes-voter follow-up task"
+  ]
+}
