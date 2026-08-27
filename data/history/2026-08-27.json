@@ -1,0 +1,33 @@
+{
+  "date": "2026-08-27",
+  "source_document_id": "1NEOi5xcFi10asZpvpvuAznrbV6edNsPH6VAB8cj-KoQ",
+  "source_revision": "AIroW36pg4QMmpMFGJYTjoVvM75Ycq6t48YYp1HPm3reIWMDKhybdpiXX7QFovyU8Etg_3bEY6uD6AAPaI6Pk2lp3cOd1Xne5-OUfO6dLnM",
+  "source_update": "Aug 27, 2026 - 9:40 AM EDT - IG Manager feeder entry",
+  "classification": "project-provided observations; no fresh Instagram performance metrics in this feeder run",
+  "privacy": "Client names and sensitive intake details removed; anonymous content concepts retained only at a high level.",
+  "changes": [
+    "Advanced the dashboard operating date to Aug 27 and preserved all prior task/post/insight state.",
+    "Carried forward unresolved Aug 24 and Aug 25 tasks because no completion evidence was provided.",
+    "Converted the prior Aug 26 planned Reel into an open carry-forward item because no Aug 26 completion evidence or dated feeder report exists.",
+    "Created new dated Aug 27 task instances for today’s anonymous 9-5 + family content, pinned comment, story poll and Yes-voter follow-up.",
+    "Kept the prior 2.3x saves, 1,264-view basketball and other performance numbers as carry-forward context rather than fresh Aug 27 measurements.",
+    "Added an explicit metrics-coverage observation because the feeder reports the linked Instagram account/profile ID path unavailable and no new performance metrics pulled.",
+    "Preserved the operational index.html shell without redesign or refactor."
+  ],
+  "today_tasks": [
+    "Prepare/publish anonymous 9-5 + family → 3x60min Story + Carousel",
+    "Pin today’s WIDER-error comment",
+    "Post today’s WIDER-after-back-day story poll",
+    "DM today’s Yes voters after responses arrive"
+  ],
+  "carry_forward_tasks": [
+    "Aug 24 pin-comment task",
+    "Aug 24 story-poll task",
+    "Aug 24 Yes-voter follow-up task",
+    "Aug 25 carousel task",
+    "Aug 25 pin-comment task",
+    "Aug 25 story-poll task",
+    "Aug 25 Yes-voter follow-up task",
+    "Aug 26 thoracic-opener Reel — status unconfirmed"
+  ]
+}
