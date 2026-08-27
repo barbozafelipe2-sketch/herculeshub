@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { HerculesReferenceService } from '../src/service.js';
 import { decide } from '../src/decision.js';
 import { ReferenceStateStore, ConcurrencyError, IntegrityError, NamespaceError } from '../src/state.js';
+import { runFrozenFixture } from '../src/frozen-corpus-adapter.js';
 const base=(events=[])=>({clientNamespace:'client:test-001',intakeSnapshotId:'intake:v2:001',activePlanVersionId:'plan:v1',sourceSchemaVersion:'intake-v2',activeGates:[],trackEvents:events});
 const evt=(id,type,extra={})=>({eventId:id,namespace:'client:test-001',type,timestamp:'2026-08-27T12:00:00Z',...extra});
 test('normal case maintains plan',()=>assert.equal(decide(base()).authorityClass,'MAINTAIN'));
@@ -17,3 +18,4 @@ test('restart preserves trusted state',()=>{const svc=new HerculesReferenceServi
 test('tampered snapshot fails closed',()=>{const store=new ReferenceStateStore('client:test-001');const snap=store.snapshot();snap.revision=999;assert.throws(()=>new ReferenceStateStore('client:test-001',snap),IntegrityError)});
 test('stale writer is rejected by CAS',()=>{const store=new ReferenceStateStore('client:test-001');const old=store.read().commitId;store.apply({expectedBaseCommitId:old,namespace:'client:test-001'});assert.throws(()=>store.apply({expectedBaseCommitId:old,namespace:'client:test-001'}),ConcurrencyError)});
 test('foreign namespace state mutation is rejected',()=>{const store=new ReferenceStateStore('client:test-001');assert.throws(()=>store.apply({namespace:'client:other'}),NamespaceError)});
+test('frozen-corpus adapter keeps expected evaluation outside prediction input',()=>{const r=runFrozenFixture({fixtureId:'fx-001',predictionInput:base([evt('e8','NEW_PAIN',{affectedScope:'TRAIN'})]),expectedEvaluation:{authorityClass:'HOLD_AFFECTED_SCOPE',affectedScope:'TRAIN',ruleIds:['TE2-05']}});assert.equal(r.pass,true)});
