@@ -1,0 +1,17 @@
+{
+  "name": "@hercules-hub/decision-reference",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Experimental PR-13 server-side reference implementation for Hercules Decision Trace semantics. Not autonomous production authority.",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "smoke": "node --test test/smoke.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "zod": "^4.1.5"
+  }
+}
