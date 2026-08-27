@@ -72,7 +72,7 @@ test("wrong resolution cannot clear an open episode and cannot become valid on r
     type: "resolution",
     resolution_type: "USER_SAYS_BETTER",
     target_episode_id: "gate-s1",
-    source_authority: "client"
+    source_authority: "CLIENT"
   };
   const first = applyEvent(opened, wrong);
   assert.equal(first.accepted, false);
@@ -84,7 +84,24 @@ test("wrong resolution cannot clear an open episode and cannot become valid on r
   assert.equal(replay.state.open_gates.length, 1);
 });
 
-test("matching resolution closes only its exact gate episode", () => {
+test("matching safety resolution from unauthorized source cannot release the gate", () => {
+  const base = createState({ clientNamespace: "client-test-001", activePlanVersionId: "plan-v1" });
+  const opened = applyEvent(base, safetyEvent()).state;
+  const attempted = applyEvent(opened, {
+    event_id: "evt-resolution-client",
+    namespace: "client-test-001",
+    timestamp: "2026-08-27T12:02:00Z",
+    type: "resolution",
+    resolution_type: "QUALIFIED_REASSESSMENT",
+    target_episode_id: "gate-s1",
+    source_authority: "CLIENT"
+  });
+  assert.equal(attempted.accepted, false);
+  assert.equal(attempted.reason, "SAFETY_RELEASE_AUTHORITY_REQUIRED");
+  assert.equal(attempted.state.open_gates.length, 1);
+});
+
+test("matching authorized resolution closes only its exact gate episode", () => {
   const base = createState({ clientNamespace: "client-test-001", activePlanVersionId: "plan-v1" });
   const first = applyEvent(base, safetyEvent({ event_id: "evt-safety-1", gate_episode_id: "gate-s1" })).state;
   const second = applyEvent(first, safetyEvent({ event_id: "evt-safety-2", gate_episode_id: "gate-s2", description: "New knee pain" })).state;
@@ -95,7 +112,7 @@ test("matching resolution closes only its exact gate episode", () => {
     type: "resolution",
     resolution_type: "QUALIFIED_REASSESSMENT",
     target_episode_id: "gate-s1",
-    source_authority: "qualified_reviewer"
+    source_authority: "QUALIFIED_PROFESSIONAL"
   });
   assert.equal(resolved.accepted, true);
   assert.deepEqual(resolved.state.open_gates.map((g) => g.gate_episode_id), ["gate-s2"]);
