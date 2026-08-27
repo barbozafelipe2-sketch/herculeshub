@@ -1,0 +1,20 @@
+{
+  "date": "2026-08-26",
+  "source_document_id": "1NEOi5xcFi10asZpvpvuAznrbV6edNsPH6VAB8cj-KoQ",
+  "source_revision": null,
+  "source_update": "No dated Aug 26 LIVE feeder update found",
+  "classification": "rollover snapshot derived from prior approved plan; no new performance data",
+  "privacy": "No client-identifying or sensitive intake details included.",
+  "changes": [
+    "Preserved the prior weekly plan for the Aug 26 thoracic-opener Reel.",
+    "No dated Aug 26 feeder report or completion evidence was available, so the planned post remained unconfirmed rather than being marked done.",
+    "Created this minimal archival snapshot so Aug 26 day navigation does not point to a missing history file."
+  ],
+  "today_tasks": [
+    "Planned thoracic-opener Reel — execution status unconfirmed"
+  ],
+  "carry_forward_tasks": [
+    "Open Aug 24 engagement/story/follow-up tasks",
+    "Open Aug 25 carousel, engagement, story and follow-up tasks"
+  ]
+}
