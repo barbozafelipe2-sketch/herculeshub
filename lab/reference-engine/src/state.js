@@ -1,6 +1,11 @@
 import crypto from "node:crypto";
 import { EngineStateSchema } from "./schema.js";
 
+const AUTHORIZED_SAFETY_RELEASE_AUTHORITIES = new Set([
+  "HUMAN_REVIEWER",
+  "QUALIFIED_PROFESSIONAL"
+]);
+
 export class IntegrityError extends Error {
   constructor(code, message) {
     super(message);
@@ -139,6 +144,10 @@ export function applyEvent(stateInput, event) {
     if (event.resolution_type !== gate.resolution_requirement) {
       next.rejected_events.push({ event_id: event.event_id, reason: "RESOLUTION_TYPE_MISMATCH" });
       return { state: EngineStateSchema.parse(withFingerprint(next)), accepted: false, reason: "RESOLUTION_TYPE_MISMATCH" };
+    }
+    if (gate.gate_type.startsWith("SAFETY_") && !AUTHORIZED_SAFETY_RELEASE_AUTHORITIES.has(event.source_authority)) {
+      next.rejected_events.push({ event_id: event.event_id, reason: "SAFETY_RELEASE_AUTHORITY_REQUIRED" });
+      return { state: EngineStateSchema.parse(withFingerprint(next)), accepted: false, reason: "SAFETY_RELEASE_AUTHORITY_REQUIRED" };
     }
 
     next.open_gates.splice(gateIndex, 1);
