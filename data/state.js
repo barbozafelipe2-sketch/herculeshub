@@ -1,41 +1,41 @@
 window.HERCULES_STATE = {
   "meta": {
     "schema_version": "1.1",
-    "report_date": "2026-08-25",
-    "report_time": "09:01",
+    "report_date": "2026-08-27",
+    "report_time": "09:40",
     "timezone": "America/New_York",
     "source": "Hercules LIVE feeder Google Doc",
     "source_document_id": "1NEOi5xcFi10asZpvpvuAznrbV6edNsPH6VAB8cj-KoQ",
-    "source_revision": "AIroW364kb8FPl3zddCHWe0W316X1wUu5euiP8QRtlJVT4a362ujvuomNv9FJl4GKIBrR_Yt7tmnOftOznivKEHCdnc90WsRFVw36_P6yxo",
-    "verification": "Project-provided IG Manager observations; not independently verified by the dashboard",
+    "source_revision": "AIroW36pg4QMmpMFGJYTjoVvM75Ycq6t48YYp1HPm3reIWMDKhybdpiXX7QFovyU8Etg_3bEY6uD6AAPaI6Pk2lp3cOd1Xne5-OUfO6dLnM",
+    "verification": "Project-provided IG Manager observations; Aug 27 entry reports no fresh Instagram performance metrics and carries forward prior known signals",
     "privacy": "Public dashboard data is minimized and anonymized; client names, health/intake details, body data, schedule and stress/recovery details are excluded."
   },
   "feedback": {
     "worked": [
-      "Clean white Blueprint-style creative was reported to outperform recent dark cinematic remixes",
-      "Basketball sports-crossover post was reported at 1,264 views",
-      "30s ‘WIDER back?’ mistake-vs-fix format continues to be reported at 2.3x saves"
+      "Carry-forward signal: clean white Blueprint-style creative with the locked avatar was previously reported to outperform recent dark cinematic remixes",
+      "Carry-forward signal: basketball sports-crossover post was previously reported at 1,264 views",
+      "Carry-forward signal: 30s ‘WIDER back?’ mistake-vs-fix format was previously reported at 2.3x saves"
     ],
     "flopped": [
-      "Dark gym remixes that changed the avatar face were reported as weak",
-      "60s+ tutorials: 5.2s average watch time",
-      "Generic motivation without the avatar: 0.4% engagement",
-      "A sitting-for-8-hours hook was reported at 30 views and described as visually too soft"
+      "Carry-forward signal: dark gym remixes with face drift were previously reported as weak",
+      "Carry-forward signal: 60s+ tutorials were previously reported at 5.2s average watch time",
+      "Carry-forward signal: generic motivation without the avatar was previously reported at 0.4% engagement",
+      "No fresh performance metrics were available in the Aug 27 feeder entry because the linked Instagram account/profile ID path was reported unavailable"
     ],
     "best_times": [
-      "07:30-08:30 EDT",
-      "18:30-19:30 EDT"
+      "07:30-08:30 EDT (carried forward from Aug 24-25 feeder data)",
+      "18:30-19:30 EDT (carried forward from Aug 24-25 feeder data)"
     ],
-    "today_post_time": "18:30 EDT",
+    "today_post_time": null,
     "gaps": [
-      "No white Blueprint carousel for the ‘What makes you WIDER?’ concept yet",
-      "No bilingual EN/ES 90/90 sequence in the Blueprint style yet",
-      "No anonymous 9-5 + family barrier case yet"
+      "White Blueprint carousel for the ‘What makes you WIDER?’ concept still reported open",
+      "Bilingual EN/ES 90/90 sequence in the Blueprint style still reported open",
+      "Anonymous 9-5 + family barrier case still reported open"
     ],
     "quick_win": {
       "pinned_comment": "Which makes you look WIDER? 1=Wide lat pulldown 2=Shrugs rounded 3=Only stretching lats — reply number",
       "story_poll": "Do you feel WIDER after back day? Yes / No",
-      "follow_up": "DM Yes voters with the carousel link and FREE starter PDF CTA"
+      "follow_up": "DM Yes voters with the relevant post link and FREE starter PDF CTA"
     }
   },
   "tasks": [
@@ -85,17 +85,68 @@ window.HERCULES_STATE = {
       "id": "task-2026-08-25-publish-carousel-1830",
       "origin_date": "2026-08-25",
       "title": "Publish 6-slide ‘3 errors that make you look WIDER’ carousel",
-      "detail": "Planned for 6:30 PM EDT. Use the approved post-specific white/gold/black Blueprint direction from the feeder without changing dashboard visual architecture.",
+      "detail": "Originally planned for Aug 25 at 6:30 PM EDT. No completion evidence appears in the Aug 27 feeder, so it remains open.",
       "due_at": "2026-08-25T18:30:00-04:00",
+      "status": "open",
+      "kind": "post",
+      "carry_forward": true,
+      "display_group": "carry_forward"
+    },
+    {
+      "id": "task-2026-08-25-pin-comment",
+      "origin_date": "2026-08-25",
+      "title": "Pin Aug 25’s 1/2/3 WIDER-error comment",
+      "detail": "No completion evidence appears in the Aug 27 feeder; retained as carry-forward.",
+      "status": "open",
+      "kind": "engagement",
+      "carry_forward": true,
+      "display_group": "carry_forward"
+    },
+    {
+      "id": "task-2026-08-25-story-poll",
+      "origin_date": "2026-08-25",
+      "title": "Post Aug 25’s WIDER-after-back-day story poll",
+      "detail": "No completion evidence appears in the Aug 27 feeder; retained as carry-forward.",
+      "status": "open",
+      "kind": "story",
+      "carry_forward": true,
+      "display_group": "carry_forward"
+    },
+    {
+      "id": "task-2026-08-25-dm-yes-voters",
+      "origin_date": "2026-08-25",
+      "title": "DM Aug 25 Yes voters",
+      "detail": "Send the carousel link and FREE starter PDF CTA after responses arrive. No completion evidence was reported.",
+      "status": "open",
+      "kind": "lead-follow-up",
+      "carry_forward": true,
+      "depends_on": "task-2026-08-25-story-poll",
+      "display_group": "carry_forward"
+    },
+    {
+      "id": "task-2026-08-26-publish-thoracic-opener",
+      "origin_date": "2026-08-26",
+      "title": "Publish planned thoracic-opener Reel",
+      "detail": "The prior weekly plan scheduled a thoracic-opener Reel for Aug 26. No dated Aug 26 feeder update or completion evidence is available, so status remains open/unconfirmed.",
+      "status": "open",
+      "kind": "post",
+      "carry_forward": true,
+      "display_group": "carry_forward"
+    },
+    {
+      "id": "task-2026-08-27-publish-anonymous-system",
+      "origin_date": "2026-08-27",
+      "title": "Prepare/publish today’s anonymous 9-5 + family system content",
+      "detail": "Current weekly plan: Story + Carousel — 9-5 + family → 3x60min system. Keep the case anonymous and exclude sensitive intake details.",
       "status": "open",
       "kind": "post",
       "carry_forward": true,
       "display_group": "new_today"
     },
     {
-      "id": "task-2026-08-25-pin-comment",
-      "origin_date": "2026-08-25",
-      "title": "Pin today’s 1/2/3 WIDER-error comment",
+      "id": "task-2026-08-27-pin-comment",
+      "origin_date": "2026-08-27",
+      "title": "Pin today’s WIDER-error comment",
       "detail": "Which makes you look WIDER? 1=Wide lat pulldown 2=Shrugs rounded 3=Only stretching lats — reply number",
       "status": "open",
       "kind": "engagement",
@@ -103,8 +154,8 @@ window.HERCULES_STATE = {
       "display_group": "new_today"
     },
     {
-      "id": "task-2026-08-25-story-poll",
-      "origin_date": "2026-08-25",
+      "id": "task-2026-08-27-story-poll",
+      "origin_date": "2026-08-27",
       "title": "Post today’s WIDER-after-back-day story poll",
       "detail": "Poll: Do you feel WIDER after back day? Yes / No",
       "status": "open",
@@ -113,14 +164,14 @@ window.HERCULES_STATE = {
       "display_group": "new_today"
     },
     {
-      "id": "task-2026-08-25-dm-yes-voters",
-      "origin_date": "2026-08-25",
+      "id": "task-2026-08-27-dm-yes-voters",
+      "origin_date": "2026-08-27",
       "title": "DM today’s Yes voters",
-      "detail": "Send the carousel link and FREE starter PDF CTA after responses arrive.",
+      "detail": "Send the relevant post link and FREE starter PDF CTA after responses arrive.",
       "status": "open",
       "kind": "lead-follow-up",
       "carry_forward": true,
-      "depends_on": "task-2026-08-25-story-poll",
+      "depends_on": "task-2026-08-27-story-poll",
       "display_group": "new_today"
     }
   ],
@@ -147,12 +198,8 @@ window.HERCULES_STATE = {
       "title": "WIDER back? — mistake vs fix",
       "source_date": "2026-08-24",
       "published_date": null,
-      "metrics": {
-        "saves_multiplier": "2.3x",
-        "avg_watch_time": "8.9s",
-        "dm_journey": 5
-      },
-      "note": "Reported as a prior-performing format; publication date was not supplied."
+      "metrics": {"saves_multiplier":"2.3x","avg_watch_time":"8.9s","dm_journey":5},
+      "note": "Reported as a prior-performing format; Aug 27 feeder repeats this as carry-forward, not a fresh measurement."
     },
     {
       "id": "post-2026-08-24-wider-back-reset",
@@ -177,6 +224,7 @@ window.HERCULES_STATE = {
       "hook": "If you want a DEFINED back, stop doing this — you look WIDER",
       "cta": "Save + DM JOURNEY",
       "creative_direction": "Post-specific clean white/gold/black Blueprint style; exact approved Hercules identity reference",
+      "note": "No completion evidence appears in the Aug 27 feeder; scheduled status is historical, execution remains unconfirmed.",
       "privacy": "No client-identifying case details"
     },
     {
@@ -185,15 +233,17 @@ window.HERCULES_STATE = {
       "date": "2026-08-26",
       "title": "Thoracic opener — define without widening + anonymous barrier case",
       "format": "Reel",
+      "note": "Prior plan; no Aug 26 completion evidence available.",
       "privacy": "Anonymous case only; no client name or sensitive intake details"
     },
     {
       "id": "post-2026-08-27-anonymous-system",
-      "lifecycle": "suggested",
+      "lifecycle": "planned",
       "date": "2026-08-27",
       "title": "9-5 + family → 3x60min system",
       "format": "Story + Carousel",
-      "privacy": "Anonymous case only"
+      "cta": "Use anonymous framing only",
+      "privacy": "Anonymous case only; no client-identifying or sensitive intake details"
     },
     {
       "id": "post-2026-08-28-deep-squat",
@@ -274,61 +324,23 @@ window.HERCULES_STATE = {
       "interpretation": "Identity inconsistency may weaken recognition and perceived quality, though creative/topic differences may also explain performance.",
       "next_test": "Keep the locked avatar identity constant across the next comparable posts and evaluate performance plus qualitative consistency.",
       "source": "Aug 25 LIVE feeder report"
+    },
+    {
+      "id": "insight-2026-08-27-metrics-coverage",
+      "stage": "observation",
+      "observation": "The Aug 27 feeder reports that the linked Instagram account/profile ID path is unavailable and no new performance metrics were pulled in that run.",
+      "interpretation": "Aug 27 performance statements should be treated as carry-forward context from prior feeder entries, not fresh measurements.",
+      "next_test": "Restore or verify the approved Instagram data connection before using future ‘last 24h’ labels as measured performance.",
+      "source": "Aug 27 LIVE feeder report"
     }
   ],
   "weekly_calendar": [
-    {
-      "date": "2026-08-24",
-      "day": "Mon",
-      "title": "WIDER back? 6-min reset",
-      "format": "Reel 30s",
-      "time": "18:30 EDT",
-      "status": "done"
-    },
-    {
-      "date": "2026-08-25",
-      "day": "Tue",
-      "title": "3 errors that make you look WIDER",
-      "format": "Carousel EN/ES",
-      "time": "18:30 EDT",
-      "status": "today"
-    },
-    {
-      "date": "2026-08-26",
-      "day": "Wed",
-      "title": "Thoracic opener — define without widening + anonymous barrier case",
-      "format": "Reel",
-      "status": "planned",
-      "privacy": "anonymous"
-    },
-    {
-      "date": "2026-08-27",
-      "day": "Thu",
-      "title": "9-5 + family → 3x60min system",
-      "format": "Story + Carousel",
-      "status": "planned",
-      "privacy": "anonymous"
-    },
-    {
-      "date": "2026-08-28",
-      "day": "Fri",
-      "title": "Deep squat breathing — decompress",
-      "format": "Reel",
-      "status": "planned"
-    },
-    {
-      "date": "2026-08-29",
-      "day": "Sat",
-      "title": "6-minute evening routine for busy moms",
-      "format": "Carousel",
-      "status": "planned"
-    },
-    {
-      "date": "2026-08-30",
-      "day": "Sun",
-      "title": "Sunday mindset + weekly wins",
-      "format": "Reset Reel",
-      "status": "planned"
-    }
+    {"date":"2026-08-24","day":"Mon","title":"WIDER back? 6-min reset","format":"Reel 30s","time":"18:30 EDT","status":"done"},
+    {"date":"2026-08-25","day":"Tue","title":"3 errors that make you look WIDER","format":"Carousel EN/ES","time":"18:30 EDT","status":"unconfirmed"},
+    {"date":"2026-08-26","day":"Wed","title":"Thoracic opener — define without widening + anonymous barrier case","format":"Reel","status":"unconfirmed","privacy":"anonymous"},
+    {"date":"2026-08-27","day":"Thu","title":"9-5 + family → 3x60min system","format":"Story + Carousel","status":"today","privacy":"anonymous"},
+    {"date":"2026-08-28","day":"Fri","title":"Deep squat breathing — decompress","format":"Reel","status":"planned"},
+    {"date":"2026-08-29","day":"Sat","title":"6-minute evening routine for busy moms","format":"Carousel","status":"planned"},
+    {"date":"2026-08-30","day":"Sun","title":"Sunday mindset + weekly wins","format":"Reset Reel","status":"planned"}
   ]
 };
