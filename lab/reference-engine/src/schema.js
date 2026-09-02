@@ -63,6 +63,7 @@ const NutritionActualEventSchema = z.object({
 
 export const TrackEventSchema = z.union([
   CompletionEventSchema,
+  NutritionActualEventSchema,
   z.object({
     ...BaseEvent,
     type: z.literal("feedback"),
