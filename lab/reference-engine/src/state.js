@@ -63,6 +63,7 @@ export function createState({ clientNamespace, activePlanVersionId }) {
     rejected_events: [],
     live_adds: [],
     live_removes: [],
+    learning_observations: [],
     fingerprint: "pending"
   };
   return EngineStateSchema.parse(withFingerprint(seed));
@@ -101,6 +102,28 @@ export function acceptSnapshot(currentState, candidateSnapshot) {
   return candidate;
 }
 
+function openGate(next, {
+  episodeId,
+  gateType,
+  affectedScope,
+  sourceEventId,
+  openedAt,
+  resolutionRequirement
+}) {
+  next.open_gates.push({
+    gate_episode_id: episodeId,
+    gate_type: gateType,
+    status: "OPEN",
+    affected_scope: affectedScope ?? [],
+    source_event_id: sourceEventId,
+    opened_at: openedAt,
+    resolution_requirement: resolutionRequirement,
+    closed_at: null,
+    resolution_event_id: null
+  });
+  next.live_adds.push(episodeId);
+}
+
 export function applyEvent(stateInput, event) {
   const state = validateState(stateInput);
 
@@ -119,19 +142,39 @@ export function applyEvent(stateInput, event) {
 
   if (event.type === "safety") {
     const episodeId = event.gate_episode_id ?? `gate-${event.event_id}`;
-    next.open_gates.push({
-      gate_episode_id: episodeId,
-      gate_type: `SAFETY_${event.safety_kind}`,
-      status: "OPEN",
-      affected_scope: event.affected_scope ?? [],
-      source_event_id: event.event_id,
-      opened_at: event.timestamp,
-      resolution_requirement: event.resolution_requirement,
-      closed_at: null,
-      resolution_event_id: null
+    openGate(next, {
+      episodeId,
+      gateType: `SAFETY_${event.safety_kind}`,
+      affectedScope: event.affected_scope ?? [],
+      sourceEventId: event.event_id,
+      openedAt: event.timestamp,
+      resolutionRequirement: event.resolution_requirement
     });
-    next.live_adds.push(episodeId);
     return { state: EngineStateSchema.parse(withFingerprint(next)), accepted: true, reason: "SAFETY_GATE_OPENED" };
+  }
+
+  if (event.type === "nutrition_actual" && event.allergy_conflict) {
+    const episodeId = `gate-allergy-${event.event_id}`;
+    openGate(next, {
+      episodeId,
+      gateType: "SAFETY_NUTRITION_ALLERGY",
+      affectedScope: ["NOURISH"],
+      sourceEventId: event.event_id,
+      openedAt: event.timestamp,
+      resolutionRequirement: "REVIEWED_SAFE_NUTRITION_RESOLUTION"
+    });
+    return { state: EngineStateSchema.parse(withFingerprint(next)), accepted: true, reason: "NUTRITION_ALLERGY_GATE_OPENED" };
+  }
+
+  if (event.type === "learning_observation") {
+    next.learning_observations.push({
+      event_id: event.event_id,
+      learning_key: event.learning_key,
+      value: event.value,
+      confirmed: event.confirmed,
+      timestamp: event.timestamp
+    });
+    return { state: EngineStateSchema.parse(withFingerprint(next)), accepted: true, reason: "LEARNING_OBSERVATION_RECORDED" };
   }
 
   if (event.type === "resolution") {
