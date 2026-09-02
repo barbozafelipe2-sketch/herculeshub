@@ -1,12 +1,14 @@
 {
   "name": "@hercules-hub/decision-reference",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Experimental PR-13 server-side reference implementation for Hercules Decision Trace semantics. Not autonomous production authority.",
+  "description": "Experimental PR-13 server-side reference implementation for Hercules Decision Trace and War II contract semantics. Not autonomous production authority.",
   "scripts": {
     "test": "node --test test/*.test.js",
-    "smoke": "node --test test/smoke.test.js"
+    "smoke": "node --test test/smoke.test.js",
+    "war2": "node --test test/war2-contracts.test.js",
+    "case-harness": "node --test test/corpus-2329.test.js"
   },
   "engines": {
     "node": ">=20"
