@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { decide } from "../src/engine.js";
+import { DecisionInputSchema } from "../src/schema.js";
 
 function baseInput(overrides = {}) { return { client_namespace:"client-war2-001", intake_snapshot_id:"intake-war2-001", active_plan_version_id:"plan-v1", source_schema_version:"intake-v2", event_timestamp:"2026-09-02T19:00:00Z", ...overrides }; }
 function evt(id,type,extra={}) { return { event_id:id, namespace:"client-war2-001", timestamp:"2026-09-02T19:01:00Z", type, ...extra }; }
@@ -9,6 +10,8 @@ test("RC-34 consent revocation stops personalization before safety/event process
 test("RC-34 unknown consent prompts rather than inferring permission",()=>{ const result=decide(baseInput({personalization_consent:"UNKNOWN"})); assert.equal(result.authority_class,"AUTO_PROMPT"); assert.deepEqual(result.requested_feedback,["personalization consent"]); });
 test("RC-41 partial workout logs without becoming full completion",()=>{ const result=decide(baseInput({track_events:[evt("c1","completion",{action_id:"workout-1",outcome:"PARTIAL",completed_portion:"3 of 5 exercises"})]})); assert.equal(result.authority_class,"AUTO_LOG"); assert.ok(result.rule_ids.includes("RC-41")); });
 test("RC-41 moved workout requires original linkage",()=>{ assert.throws(()=>decide(baseInput({track_events:[evt("c2","completion",{action_id:"workout-new",outcome:"MOVED"})]}))); const linked=decide(baseInput({track_events:[evt("c3","completion",{action_id:"workout-new",outcome:"MOVED",original_action_id:"workout-original"})]})); assert.equal(linked.authority_class,"AUTO_LOG"); });
+
+test("RC-42 valid substitution parses before decision execution",()=>{ const input=baseInput({track_events:[evt("n-debug","nutrition_actual",{planned_meal_id:"meal-1",outcome:"SUBSTITUTED",actual_food:"chicken bowl",context:"work"})]}); const parsed=DecisionInputSchema.safeParse(input); assert.equal(parsed.success,true,parsed.success?"":JSON.stringify(parsed.error.issues)); });
 test("RC-42 substituted meal requires confirmed actual food",()=>{ assert.throws(()=>decide(baseInput({track_events:[evt("n1","nutrition_actual",{planned_meal_id:"meal-1",outcome:"SUBSTITUTED"})]}))); const result=decide(baseInput({track_events:[evt("n2","nutrition_actual",{planned_meal_id:"meal-1",outcome:"SUBSTITUTED",actual_food:"chicken bowl",context:"work"})]})); assert.equal(result.authority_class,"AUTO_LOG"); assert.ok(result.rule_ids.includes("RC-42")); });
 test("RC-42 allergy conflict opens NOURISH safety hold",()=>{ const result=decide(baseInput({track_events:[evt("n3","nutrition_actual",{planned_meal_id:"meal-1",outcome:"SUBSTITUTED",actual_food:"restaurant dish",allergy_conflict:true})]})); assert.equal(result.authority_class,"HOLD_AFFECTED_SCOPE"); assert.deepEqual(result.affected_scope,["NOURISH"]); assert.equal(result.active_gates[0].gate_type,"SAFETY_NUTRITION_ALLERGY"); });
 test("RC-36 confirmed goal change creates versioned proposal",()=>{ const result=decide(baseInput({track_events:[evt("g1","goal_change",{new_primary_goal:"strength",confirmed:true,reason:"priority changed"})]})); assert.equal(result.authority_class,"PROPOSE_FOR_REVIEW"); assert.equal(result.proposed_plan_diff.primary_goal.to,"strength"); assert.ok(result.rule_ids.includes("RC-36")); });
