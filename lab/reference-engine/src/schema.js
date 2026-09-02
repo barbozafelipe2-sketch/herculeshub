@@ -33,13 +33,36 @@ const BaseEvent = {
   timestamp: z.string().min(1)
 };
 
-export const TrackEventSchema = z.discriminatedUnion("type", [
-  z.object({
-    ...BaseEvent,
-    type: z.literal("completion"),
-    action_id: z.string().min(1),
-    outcome: z.enum(["COMPLETED", "SKIPPED", "RESCHEDULED"])
-  }).strict(),
+const CompletionEventSchema = z.object({
+  ...BaseEvent,
+  type: z.literal("completion"),
+  action_id: z.string().min(1),
+  outcome: z.enum(["COMPLETED", "PARTIAL", "SKIPPED", "MOVED", "UNCONFIRMED", "RESCHEDULED"]),
+  original_action_id: z.string().min(1).optional(),
+  completed_portion: z.string().min(1).optional()
+}).strict().superRefine((event, ctx) => {
+  if (event.outcome === "MOVED" && !event.original_action_id) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, message: "MOVED_REQUIRES_ORIGINAL_ACTION_ID", path: ["original_action_id"] });
+  }
+});
+
+const NutritionActualEventSchema = z.object({
+  ...BaseEvent,
+  type: z.literal("nutrition_actual"),
+  planned_meal_id: z.string().min(1),
+  outcome: z.enum(["AS_PLANNED", "SUBSTITUTED", "SKIPPED", "UNCONFIRMED"]),
+  actual_food: z.string().min(1).optional(),
+  context: z.string().min(1).optional(),
+  reason: z.string().min(1).optional(),
+  allergy_conflict: z.boolean().default(false)
+}).strict().superRefine((event, ctx) => {
+  if (event.outcome === "SUBSTITUTED" && !event.actual_food) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, message: "SUBSTITUTION_REQUIRES_CONFIRMED_ACTUAL_FOOD", path: ["actual_food"] });
+  }
+});
+
+export const TrackEventSchema = z.union([
+  CompletionEventSchema,
   z.object({
     ...BaseEvent,
     type: z.literal("feedback"),
@@ -47,6 +70,20 @@ export const TrackEventSchema = z.discriminatedUnion("type", [
     signal: z.string().min(1),
     value: z.union([z.string(), z.number(), z.boolean()]),
     scale_version: z.string().nullable().optional()
+  }).strict(),
+  z.object({
+    ...BaseEvent,
+    type: z.literal("learning_observation"),
+    learning_key: z.string().min(1),
+    value: z.string().min(1),
+    confirmed: z.boolean()
+  }).strict(),
+  z.object({
+    ...BaseEvent,
+    type: z.literal("goal_change"),
+    new_primary_goal: z.string().min(1),
+    confirmed: z.boolean(),
+    reason: z.string().min(1)
   }).strict(),
   z.object({
     ...BaseEvent,
@@ -72,6 +109,14 @@ export const TrackEventSchema = z.discriminatedUnion("type", [
   }).strict()
 ]);
 
+export const LearningObservationStateSchema = z.object({
+  event_id: z.string().min(1),
+  learning_key: z.string().min(1),
+  value: z.string().min(1),
+  confirmed: z.boolean(),
+  timestamp: z.string().min(1)
+}).strict();
+
 export const EngineStateSchema = z.object({
   client_namespace: z.string().min(1),
   active_plan_version_id: z.string().min(1),
@@ -87,6 +132,7 @@ export const EngineStateSchema = z.object({
   }).strict()),
   live_adds: z.array(z.string()),
   live_removes: z.array(z.string()),
+  learning_observations: z.array(LearningObservationStateSchema).default([]),
   fingerprint: z.string().min(1)
 }).strict();
 
@@ -96,8 +142,14 @@ export const DecisionInputSchema = z.object({
   active_plan_version_id: z.string().min(1),
   source_schema_version: z.string().min(1),
   contract_version: z.string().min(1).default("TRACK-EVOLVE-v0.2-candidate"),
-  implementation_version: z.string().min(1).default("PR13-reference-v0.1"),
+  implementation_version: z.string().min(1).default("PR13-reference-v0.2"),
   event_timestamp: z.string().min(1),
+  personalization_consent: z.enum(["YES", "NO", "REVOKED", "UNKNOWN"]).default("YES"),
+  client_context: z.object({
+    age: z.number().int().nonnegative().optional(),
+    request_type: z.enum(["COACHING", "BODY_COMPOSITION", "DIAGNOSIS", "TREATMENT", "AGGRESSIVE_TIMELINE"]).default("COACHING"),
+    minor_policy_status: z.enum(["APPROVED", "NOT_APPROVED", "UNKNOWN"]).default("UNKNOWN")
+  }).strict().default({ request_type: "COACHING", minor_policy_status: "UNKNOWN" }),
   state: EngineStateSchema.optional(),
   track_events: z.array(TrackEventSchema).default([]),
   plan_state: z.object({
