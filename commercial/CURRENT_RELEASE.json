@@ -1,0 +1,35 @@
+{
+  "product": "Hercules Hub",
+  "channel": "commercial",
+  "baseline_version": "0.10.4",
+  "status": "commercial-baseline-not-final-store-release",
+  "artifact": "HERCULES_HUB_GENERALIST_APPLE_PROTOTYPE_v0.10.4_ACCOUNT_FLOW_AUDITED_20260916.zip",
+  "sha256": "66772230e385ae4486bd29764665371261baf5c7e274a2539e8d7f8a52790640",
+  "drive_file_id": "1LsGEQ3p9rNpgDwq1ULiksEpHSjyX4QC2",
+  "canonical_source_of_truth": "Hercules Hub — Source of Truth & Canonical Plan v2.20",
+  "entry_flow": [
+    "Log In / Create Account",
+    "Stripe Checkout",
+    "verified paid entitlement",
+    "language",
+    "credentials",
+    "onboarding",
+    "generation",
+    "three audit gates",
+    "system"
+  ],
+  "qa": {
+    "rerun_date": "2026-10-01",
+    "core": "143/143",
+    "cycle_hardening": "46/46",
+    "security_state": "35/35",
+    "account_flow": "27/27",
+    "total": "251/251",
+    "evidence_scope": "local/static/pure-logic"
+  },
+  "notes": [
+    "Existing operational dashboard is intentionally untouched.",
+    "Binary release remains canonical in Google Drive because the connected GitHub binary transfer failed for the 32.3 MB ZIP.",
+    "Future commercial changes should branch/version from this baseline and preserve locked product/safety logic unless explicitly changed."
+  ]
+}
