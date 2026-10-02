@@ -1,0 +1,505 @@
+{
+  "version": "0.11.0-fix5",
+  "phase": "Fix 4/4 regression: Fix 2/3 and Fix 3/3 behavior",
+  "generatedAt": "2026-10-02T03:14:15.568Z",
+  "passed": 99,
+  "total": 99,
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "fix3_version_package",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "fix3_version_frontend",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "new_server_endpoints_exist",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "safety_migration_exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "no_public_fixed_session_fallback",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "session_fail_closed",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "session_ttl_bounded",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "session_has_iat_exp",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "session_revalidates_supabase_user",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "session_rejects_banned_deleted_user",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "session_authority_failure_is_503",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "session_checks_entitlement",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "login_does_not_mask_billing_outage_as_missing",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "logout_clears_sensitive_local_data",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "subscription_status_refresh_exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "active_subscription_states_are_narrow",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "subscription_webhooks_supported",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "invoice_failure_supported",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "refund_revokes_entitlement",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "dispute_revokes_entitlement",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "refund_dispute_revocations_are_terminal",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "webhook_not_marked_complete_before_processing",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "webhook_failure_releases_claim",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "webhook_processing_stale_recovery",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "signup_entitlement_reservation_is_present",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "claim_requires_existing_reservation",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "login_claim_reservation_is_owner_bound",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "billing_portal_backend_exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "account_delete_cancels_subscription_before_deletion",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "account_delete_clears_state_safety_auth",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "browser_state_contract_excludes_profile_plan",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "frontend_sync_does_not_send_profile_plan",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "server_generation_builds_plan",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "server_generation_ignores_client_plan",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "block_prevents_activation_and_save",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "safety_ledger_inherited_on_regeneration",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "state_save_preserves_server_owned_next_cycle",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "state_save_preserves_server_owned_audit",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "client_cycle_increment_rejected",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "cycle_activation_is_server_endpoint",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "frontend_does_not_increment_cycle_locally",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "activation_rechecks_day28_week4_final",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "activation_rechecks_safety_hold",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "authenticated_direct_state_write_revoked",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "state_revision_column_added",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "state_write_rpc_security_definer",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "state_write_rpc_not_executable_by_authenticated",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "state_load_includes_revision",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "state_save_uses_rpc_cas",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "browser_state_save_uses_expected_revision",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "generate_uses_absent_row_revision_sentinel",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "next_cycle_pending_save_is_not_silent",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "next_cycle_pending_save_uses_revision",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "activation_save_uses_revision",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "state_load_failure_is_503",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "reset_preserves_safety_ledger",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "track_symptom_raises_server_hold",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "safety_ledger_has_no_auto_clear",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "coach_loads_authoritative_state",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "coach_applies_server_safety_hold",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "frontend_coach_sends_question_history_only",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "generic_http_timeout_uses_abort_controller",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "provider_fetches_are_timeout_bound",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "fallback_has_total_budget",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "generation_audits_run_parallel",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "generation_audits_have_bounded_budget",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "evolve_review_has_request_budget",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "coach_has_bounded_budget",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "gemini_uses_dedicated_system_instruction",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "gemini_not_prompt_pasting_system_instruction",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "distributed_rate_limit_exists",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "persistent_limiter_does_not_double_count_local",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "auth_uses_local_and_distributed_limit",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "canonical_plan_generated_server_side",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "forced_safety_hold_cannot_be_cleared_by_profile",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "apply_safety_hold_is_idempotently_conservative",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "ai_delta_cannot_override_hold",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "hold_validation_rejects_progress",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "unknown_is_not_no",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "explicit_no_is_required_to_clear_safety_review",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "goal_time_level_drive_training_parameters",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "equipment_inventory_is_carried_to_plan",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "body_measurements_respect_units_and_ranges",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "waist_validation_respects_units",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "authoritative_milestones_are_validated_after_state_load",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "dietary_exclusions_are_explicit",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "progression_requires_minimum_window",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "RIR_is_required_for_progression",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "frontend_has_strict_diet_filter_and_vegan_recipes",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "frontend_reports_actionable_portion_guide",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "front_end_requires_real_equipment_and_limits_short_sessions",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "home_mode_does_not_assume_full_gym_equipment",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "browser_js_syntax",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "all_typescript_modules_parse_after_type_strip",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "csp_hash_matches_inline_script",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "service_worker_cache_is_fix3_versioned",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "exercise_session_limits_and_conditional_library",
+      "status": "PASS",
+      "detail": "20min=3; 60min hypertrophy=7; advanced full-gym strength uses barbell reference"
+    },
+    {
+      "name": "commercial_env_deadlines_documented",
+      "status": "PASS",
+      "detail": ""
+    },
+    {
+      "name": "official_logo_hash_preserved",
+      "status": "PASS",
+      "detail": "09ef176b1152b77fd65420707b0408ea69091231d01dc4960f120a3131781b78"
+    }
+  ]
+}

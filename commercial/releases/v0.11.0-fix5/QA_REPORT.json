@@ -1,0 +1,789 @@
+{
+  "version": "0.11.0-fix5",
+  "generatedAt": "2026-10-02T03:14:13.892Z",
+  "passed": 156,
+  "total": 156,
+  "status": "PASS",
+  "checks": [
+    {
+      "name": "version_package",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "version_frontend",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "doctype",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "light_default",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "dark_optional",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "official_logo_used",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "premium_black_gold_tokens",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "bottom_nav_6",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "recover_removed_from_bottom_nav",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "recover_view_preserved",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "recover_full_width_rectangles",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "recover_to_track_action",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "home_routes_train",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "home_routes_nourish",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "home_routes_recover",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "home_routes_track",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "preworkout_warmup",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "postworkout_cooldown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "postworkout_flow",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "mind_to_track",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "track_explicit_signals",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "symptom_creates_hold",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "evolve_baseline",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "evolve_checkpoint_day15",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "evolve_final_day28",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "next_month_28_day_gate",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "next_cycle_api",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "next_cycle_uses_cycle_data",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "evolve_reviewable",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "onboarding_proteinPreferences",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "onboarding_grainPreferences",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "onboarding_veggiePreferences",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "onboarding_foodStyles",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "onboarding_mealPrepPreference",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "onboarding_eatOutFrequency",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "onboarding_openToOtherVeggies",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "protein_includes_pork",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "vegetable_nonmandatory_copy",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "nutrition_allergy_review_gate",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "meal_role_stable",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "month_rotation_phase",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "cycle_rotation_seed",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_20_split_assets",
+      "pass": true,
+      "detail": "count=20"
+    },
+    {
+      "name": "food_asset_FOOD-001",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-002",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-003",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-004",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-005",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-006",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-007",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-008",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-009",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-010",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-011",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-012",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-013",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-014",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-015",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-016",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-017",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-018",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-019",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_asset_FOOD-020",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_metadata_preference_scoring",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food_all_role_entries_metadata",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food003_asparagus_metadata",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food009_no_false_oats",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "food018_not_soup",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "daily_checkin_upsert",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "cycle_completion_100_math",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "milestone_semantic_completion",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "zod_profile_preferences",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "zod_state_sync",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "zod_next_cycle",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "openai_server_provider",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "gemini_server_provider",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "openrouter_server_provider",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "provider_fallback",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "generation_three_provider_passes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "generation_deterministic_fallback",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "coach_provider_fallback",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_next_cycle_28_gate",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_next_cycle_safety_hold",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_next_cycle_review_chain",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_next_cycle_openai_final",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_next_cycle_authoritative_state",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_next_cycle_structured_delta",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_next_cycle_final_timing",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "supabase_cycle_start_server_owned",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "supabase_publishable_key",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "supabase_secret_key",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "supabase_legacy_compat",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "supabase_new_secret_not_bearer",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "supabase_auth_password",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "supabase_state_rest",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "supabase_migration",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "supabase_rls",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "supabase_anon_revoked",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no_cleartext_admin_password",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "session_httponly",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "session_samesite",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "session_secret_env",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "supabase_derived_session_secret",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "admin_login_before_supabase",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "auth_secret_failclosed_with_blob_generation",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no_frontend_OPENAI_API_KEY",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no_frontend_GEMINI_API_KEY",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no_frontend_OPENROUTER_API_KEY",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no_frontend_SUPABASE_SECRET_KEY",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "no_frontend_SUPABASE_SERVICE_ROLE_KEY",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "csp_same_origin",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "csp_scripts_no_unsafe_inline",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "demo_admin_default_off",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "state_payload_no_z_any",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "cycle_summary_no_z_any",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "env_example_names_only",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "pwa_manifest",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "service_worker",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "service_worker_version",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "manifest_json",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "all_html_asset_refs_exist",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "official_logo_hash_preserved",
+      "pass": true,
+      "detail": "09ef176b1152b77fd65420707b0408ea69091231d01dc4960f120a3131781b78"
+    },
+    {
+      "name": "seated_calf_visual_reviewed",
+      "pass": true,
+      "detail": "e988a8a646b7aa2374dbc18facb71dd7724f0fe965e8f34bd46eeb7627f6f986"
+    },
+    {
+      "name": "exercise_visual_crucifixo-cabo.webp",
+      "pass": true,
+      "detail": "a5503990b26cb1ecbcdfe19973411d953b32a00a0cffc90275558d80dda21e46"
+    },
+    {
+      "name": "exercise_visual_puxada-neutra.webp",
+      "pass": true,
+      "detail": "038276aac610777c63aa2e24bd82dfd1d5f6bbd15d43fd9bdaddf36d103b0ca7"
+    },
+    {
+      "name": "exercise_visual_flexora-sentada.webp",
+      "pass": true,
+      "detail": "2208bf1a94c85359de8856cb2e4df388dae138a4a68b469c9a0a8fdabfbee414"
+    },
+    {
+      "name": "browser_js_syntax",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_account.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_activate-next-cycle.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_ai-lib.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_auth-lib.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_auth.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_billing-lib.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_billing.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_coach.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_cycle-lib.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_generate.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_http-lib.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_next-cycle.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_personalization-lib.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_plan-lib.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_request-lib.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_safety-lib.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_schemas.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_state.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_status.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_stripe-signature.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_stripe-webhook.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "server_syntax_supabase-lib.mts",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "architecture_doc",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "deploy_doc",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "readme_version",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "changelog_version",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "fix1_migration",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "fix1_account_endpoint",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "fix1_activation_endpoint",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

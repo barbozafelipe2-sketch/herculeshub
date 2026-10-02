@@ -1,0 +1,193 @@
+{
+  "version": "0.11.0-fix5",
+  "generatedAt": "2026-10-02T03:14:13.999Z",
+  "passed": 46,
+  "total": 46,
+  "status": "PASS",
+  "tests": [
+    {
+      "name": "day_key_utc",
+      "status": "PASS"
+    },
+    {
+      "name": "daily_checkin_latest_wins",
+      "status": "PASS"
+    },
+    {
+      "name": "explicit_local_day_key_wins_on_server",
+      "status": "PASS"
+    },
+    {
+      "name": "invalid_checkin_dropped",
+      "status": "PASS"
+    },
+    {
+      "name": "blank_baseline_not_complete",
+      "status": "PASS"
+    },
+    {
+      "name": "baseline_requires_target",
+      "status": "PASS"
+    },
+    {
+      "name": "valid_baseline_complete",
+      "status": "PASS"
+    },
+    {
+      "name": "blank_final_not_complete",
+      "status": "PASS"
+    },
+    {
+      "name": "future_final_mark_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "early_final_mark_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "day28_final_mark_timing_valid",
+      "status": "PASS"
+    },
+    {
+      "name": "valid_final_complete",
+      "status": "PASS"
+    },
+    {
+      "name": "day_27_is_not_28",
+      "status": "PASS"
+    },
+    {
+      "name": "day_28_gate_exact",
+      "status": "PASS"
+    },
+    {
+      "name": "week4_complete_true",
+      "status": "PASS"
+    },
+    {
+      "name": "week4_missing_session_false",
+      "status": "PASS"
+    },
+    {
+      "name": "high_evidence_progresses_bounded",
+      "status": "PASS"
+    },
+    {
+      "name": "active_symptom_forces_hold",
+      "status": "PASS"
+    },
+    {
+      "name": "low_recovery_consolidates",
+      "status": "PASS"
+    },
+    {
+      "name": "ai_cannot_escalate_beyond_deterministic_baseline",
+      "status": "PASS"
+    },
+    {
+      "name": "unsupported_progress_rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "active_hold_cannot_be_released",
+      "status": "PASS"
+    },
+    {
+      "name": "next_cycle_preserves_training_anchors",
+      "status": "PASS"
+    },
+    {
+      "name": "next_cycle_rotates_seed",
+      "status": "PASS"
+    },
+    {
+      "name": "frontend_completion_can_reach_100",
+      "status": "PASS"
+    },
+    {
+      "name": "frontend_same_day_updates_not_appends",
+      "status": "PASS"
+    },
+    {
+      "name": "frontend_milestone_gate_is_semantic",
+      "status": "PASS"
+    },
+    {
+      "name": "frontend_initial_baseline_not_auto_complete",
+      "status": "PASS"
+    },
+    {
+      "name": "server_uses_authoritative_supabase_state_when_available",
+      "status": "PASS"
+    },
+    {
+      "name": "supabase_cycle_start_is_server_owned",
+      "status": "PASS"
+    },
+    {
+      "name": "frontend_syncs_before_authoritative_generation",
+      "status": "PASS"
+    },
+    {
+      "name": "supabase_user_does_not_fall_back_to_client_on_missing_authority",
+      "status": "PASS"
+    },
+    {
+      "name": "next_cycle_requires_28_days",
+      "status": "PASS"
+    },
+    {
+      "name": "next_cycle_requires_week4",
+      "status": "PASS"
+    },
+    {
+      "name": "next_cycle_requires_complete_final",
+      "status": "PASS"
+    },
+    {
+      "name": "candidate_retry_is_capped_at_3",
+      "status": "PASS"
+    },
+    {
+      "name": "openrouter_adversarial_layer_present",
+      "status": "PASS"
+    },
+    {
+      "name": "openai_is_explicit_final_layer",
+      "status": "PASS"
+    },
+    {
+      "name": "final_rejection_blocks_auto_activation",
+      "status": "PASS"
+    },
+    {
+      "name": "deterministic_validation_runs_after_ai",
+      "status": "PASS"
+    },
+    {
+      "name": "schemas_validate_checkins_and_milestones",
+      "status": "PASS"
+    },
+    {
+      "name": "all_50_role_entries_have_structured_metadata",
+      "status": "PASS"
+    },
+    {
+      "name": "food003_asparagus_fixed",
+      "status": "PASS"
+    },
+    {
+      "name": "food009_oats_error_removed",
+      "status": "PASS"
+    },
+    {
+      "name": "food018_not_soup",
+      "status": "PASS"
+    },
+    {
+      "name": "new_metadata_vocab_available_in_onboarding",
+      "status": "PASS"
+    }
+  ]
+}

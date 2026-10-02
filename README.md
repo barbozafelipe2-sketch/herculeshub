@@ -1,20 +1,22 @@
 # Hercules Hub
 
-Operational dashboard for Hercules Hub.
+This repository keeps the Hercules Hub operational dashboard and the commercial product release record together.
 
-## Live architecture
+## What lives here
 
-- `index.html` — interactive GitHub Pages dashboard shell.
-- `data/state.js` — current synced Hercules state from the approved LIVE feeder.
-- `data/history/index.json` — list of archived dashboard dates used by day navigation.
-- `data/history/YYYY-MM-DD.json` — immutable daily snapshots.
-- `.github/workflows/reconstruct-dashboard.yml` — validation workflow. It no longer reconstructs the old static dashboard.
-- `.source_parts/` — legacy reconstruction source retained only for historical reference; it is not the live dashboard source.
+- `index.html` and `data/`: operations dashboard and versioned daily state/history.
+- `commercial/CURRENT_RELEASE.json`: authoritative pointer to the latest commercial candidate and its verification limits.
+- `commercial/releases/`: immutable, versioned release notes and QA evidence.
+- `.source_parts/`: legacy dashboard reconstruction material; retained for history and is not the live dashboard source.
 
-## Daily sync
+## Current commercial status
 
-The scheduled Hercules workflow reads the approved LIVE Google Doc at 10:00 AM America/New_York, updates current state/history only when new information exists, preserves task/post/insight continuity, and keeps sensitive client data minimized on the public surface.
+The current candidate is **v0.11.0-fix5**. The release record and audit evidence are in `commercial/releases/v0.11.0-fix5/`. The full source and visual assets still need to be mirrored into this repository; the archive identity and checksum are recorded in `commercial/CURRENT_RELEASE.json`.
 
-## Task completion behavior
+This is a web/PWA source candidate, not an Apple App Store submission package. Local checks do not verify live Netlify, Supabase, Stripe, real-device, clinical, or App Store behavior.
 
-The live page lets Felipe check tasks as done. Checkbox state is stored in browser `localStorage`, keyed by the stable task ID, so refreshes on the same browser/device preserve completion. This is not cross-device synchronization and the scheduled server-side sync cannot read browser-local state.
+## Dashboard behavior
+
+The operational dashboard reads `data/state.js`, dated snapshots under `data/history/`, and the history index. Task completion is stored in browser localStorage for that device and does not sync across devices.
+
+See [commercial README](commercial/README.md) for release details.

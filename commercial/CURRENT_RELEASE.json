@@ -1,12 +1,19 @@
 {
   "product": "Hercules Hub",
   "channel": "commercial",
-  "baseline_version": "0.10.4",
-  "status": "commercial-baseline-not-final-store-release",
-  "artifact": "HERCULES_HUB_GENERALIST_APPLE_PROTOTYPE_v0.10.4_ACCOUNT_FLOW_AUDITED_20260916.zip",
-  "sha256": "66772230e385ae4486bd29764665371261baf5c7e274a2539e8d7f8a52790640",
-  "drive_file_id": "1LsGEQ3p9rNpgDwq1ULiksEpHSjyX4QC2",
+  "baseline_version": "0.11.0-fix5",
+  "status": "final-audit-candidate-not-store-release",
+  "artifact": "HERCULES_HUB_COMMERCIAL_v0.11.0_FIX5_20261002.zip",
+  "artifact_sha256": "6b977bca8b5d15d6b777005dccb529983bbf98504aa39b363bee17babfa39b01",
+  "artifact_size_bytes": 32611804,
+  "source_mirror_status": "release metadata and audit reports committed; complete source and image assets pending upload to repository",
+  "rollback_baseline": {
+    "version": "0.10.4",
+    "sha256": "66772230e385ae4486bd29764665371261baf5c7e274a2539e8d7f8a52790640",
+    "drive_url": "https://drive.google.com/file/d/1LsGEQ3p9rNpgDwq1ULiksEpHSjyX4QC2/view"
+  },
   "canonical_source_of_truth": "Hercules Hub — Source of Truth & Canonical Plan v2.20",
+  "canonical_behavior": "Hercules Hub — AI Agent Behavior & Operating Instructions v2.15",
   "entry_flow": [
     "Log In / Create Account",
     "Stripe Checkout",
@@ -19,17 +26,17 @@
     "system"
   ],
   "qa": {
-    "rerun_date": "2026-10-01",
-    "core": "143/143",
-    "cycle_hardening": "46/46",
-    "security_state": "35/35",
-    "account_flow": "27/27",
-    "total": "251/251",
+    "rerun_date": "2026-10-02",
+    "static": "156/156",
+    "security_state": "46/46",
+    "personalization_regression": "99/99",
+    "ui_accessibility": "19/19",
+    "total": "320/320",
     "evidence_scope": "local/static/pure-logic"
   },
-  "notes": [
-    "Existing operational dashboard is intentionally untouched.",
-    "Binary release remains canonical in Google Drive because the connected GitHub binary transfer failed for the 32.3 MB ZIP.",
-    "Future commercial changes should branch/version from this baseline and preserve locked product/safety logic unless explicitly changed."
+  "limits": [
+    "Not an Apple App Store submission: this is a web/PWA and contains no iOS/Xcode target.",
+    "Live Netlify, Supabase and Stripe flows have not been verified by the local checks.",
+    "Catalog is not comprehensive: strict plant-based meal variety remains limited and bodyweight-only Home lacks a loaded pulling movement."
   ]
 }
