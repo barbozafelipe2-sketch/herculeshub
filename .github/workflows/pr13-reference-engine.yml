@@ -1,0 +1,29 @@
+name: PR-13 Reference Engine QA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'lab/reference-engine/**'
+      - '.github/workflows/pr13-reference-engine.yml'
+  pull_request:
+    paths:
+      - 'lab/reference-engine/**'
+      - '.github/workflows/pr13-reference-engine.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: lab/reference-engine
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - run: npm test
