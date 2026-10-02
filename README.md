@@ -1,13 +1,15 @@
 # Hercules Hub
 
-This repository keeps the Hercules Hub operational dashboard and the commercial product release record together.
+This repository keeps the Hercules Hub operational dashboard, experimental QA reference code, and commercial product release record together.
 
 ## What lives here
 
 - `index.html` and `data/`: operations dashboard and versioned daily state/history.
 - `commercial/CURRENT_RELEASE.json`: authoritative pointer to the latest commercial candidate and its verification limits.
 - `commercial/releases/`: immutable, versioned release notes and QA evidence.
+- `lab/`: experimental Decision Trace / PR-13 reference implementations. These are **QA only**, not autonomous production authority, and do not change the live client-production workflow.
 - `.source_parts/`: legacy dashboard reconstruction material; retained for history and is not the live dashboard source.
+- [`BRANCH_POLICY.md`](BRANCH_POLICY.md): this repository uses `main` as its only development branch.
 
 ## Current commercial status
 
