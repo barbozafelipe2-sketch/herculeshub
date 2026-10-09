@@ -4,36 +4,30 @@ Source of product behavior: `barbozafelipe2-sketch/hercules-hub` v0.14.1, commit
 
 This repository is the commercial line. The Netlify beta stays device-first and free for family testing. Do not port its device-id session into this app.
 
-## Trial
+## Payment
 
-Seven days of the real product, then the account locks until payment.
+StoreKit only. No Stripe. No web subscription. No external checkout.
 
-Included during the trial:
+Apple's commission applies to the in-app purchase. An outside link is not part of this product.
 
-- account creation
-- onboarding
-- month-1 plan generation
-- training check-ins
-- meal check, replacement text, and photo confirmation
-- daily workout reminder, if the person allows notifications
-- post-workout menu
+## Access
 
-Not included:
+The month is generated up front. Week 1 is usable. Weeks 2, 3, and 4 stay on screen, readable enough to look at and print, and impossible to open.
 
-- a paywall on week 2, 3, or 4 inside an already generated month
-- charging before the person has seen a plan
+Before payment:
 
-After day 7 without an active entitlement:
+- week 1 training, meal check, replacement text, photo confirmation, reminder, and post-workout menu work
+- later weeks render locked: visible, not tappable, not editable
+- print and screenshot of the locked month are allowed
+- check-ins and meal writes do not open on a locked week
 
-- history, the current plan, and the monthly report stay readable
-- new plan generation, next-cycle adaptation, and new meal or training writes stop
-- restore of a paid export still requires the same account
+After payment:
 
-Week-by-week unlock is rejected. The product promise is a monthly adaptive plan. Hiding later weeks makes the plan look like a drip, and it fights the report, which needs the whole month.
+- the whole current month opens
+- later months follow the same rule: current week usable, rest visible and locked, until the entitlement covers them
+- history and the monthly report stay readable
 
-Payment is StoreKit on the iOS app. A web Stripe checkout may exist for subscribers who pay outside the app. Both must set the same server entitlement. A Stripe screen inside the app is not the commercial path.
-
-The United States external-link fee is unsettled. Do not design the price around a permanent zero Apple commission.
+There is no free-floating seven-day account trial and no outside renewal.
 
 ## Engine mirror
 
@@ -51,11 +45,11 @@ Do not copy:
 - supabase-lib.mts device owner key
 - public/app.js as the store shell
 
-Commercial identity is an account. Entitlement is verified paid or active trial. Safety holds still outrank adaptation.
+Commercial identity is an account. Entitlement is a verified StoreKit purchase. Safety holds still outrank adaptation.
 
 ## After the engine
 
-1. Account, entitlement, export, and deletion.
+1. Account, StoreKit entitlement, export, and deletion.
 2. Meal check, replacement, and confirmed photo trace.
 3. Monthly report for the person, not only for the next training cycle.
 4. Next plan only after the person approves the proposed diet and calendar changes.
