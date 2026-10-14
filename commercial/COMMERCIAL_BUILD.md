@@ -1,61 +1,32 @@
 # Hercules Hub commercial build
 
-Source of product behavior: `barbozafelipe2-sketch/hercules-hub` v0.14.1, commit `1735abb89a44795b024559a6e720431077be3b98`.
+**Commercial: native iOS / App Store. Test: Netlify web/PWA.**
 
-This repository is the commercial line. The Netlify beta stays device-first and free for family testing. Do not port its device-id session into this app.
+Behavior baseline: test v0.14.1, commit `e4dc79b99796ffe47a0fcbb3bd8f08b2ad49c6eb`. [engine/UPSTREAM.json](engine/UPSTREAM.json) pins source and catalog. Archived v0.11.0-fix5 web/Stripe evidence is not the active specification.
 
-## Payment
+## Identity and payment
 
-StoreKit only. No Stripe. No web subscription. No external checkout.
+Sign in with Apple maps to a commercial account UUID. StoreKit 2 monthly auto-renewable subscription only. No Stripe, external checkout or seven-day account trial. Set StoreKit `appAccountToken` to the account UUID.
 
-Apple's commission applies to the in-app purchase. An outside link is not part of this product.
+Device identity from the beta must never authenticate the commercial app. Only Apple-verified transactions also validated by the account service grant entitlement. Expiration, refunds/revocation and account binding must be checked server-side. Backups never grant entitlement.
 
 ## Access
 
-The month is generated up front. Week 1 is usable. Weeks 2, 3, and 4 stay on screen, readable enough to look at and print, and impossible to open.
+Generate the full month up front. Month 1 week 1 is usable. All four weeks remain readable, printable/exportable and screenshot-friendly. Other weeks are not openable/editable until active paid entitlement. Later cycles expose their authoritative current/free week and gate the remaining weeks.
 
-Before payment:
+Gate every actionable entry and server write: training, check-in, meal, replacement, photo, reminder and post-workout. Payment never removes safety holds. History/reports remain readable after expiration.
 
-- week 1 training, meal check, replacement text, photo confirmation, reminder, and post-workout menu work
-- later weeks render locked: visible, not tappable, not editable
-- print and screenshot of the locked month are allowed
-- check-ins and meal writes do not open on a locked week
+## Implementation boundary
 
-After payment:
+`ios/` is a SwiftUI target, not a wrapper around the beta web shell. `engine/upstream/` is immutable reference source, **not commercial endpoints or executable iOS code**. Its catalog is checksum-verified and bundled as native resources.
 
-- the whole current month opens
-- later months follow the same rule: current week usable, rest visible and locked, until the entitlement covers them
-- history and the monthly report stay readable
+Device auth, beta request limiter, device-owner storage adapter and beta feedback are excluded. The remaining Netlify-specific handlers require commercial account, distributed quota, AI and storage adapters before use. Do not deploy them unchanged.
 
-There is no free-floating seven-day account trial and no outside renewal.
+`engine/src/next-month.mts` preserves deterministic eligibility, evidence and safety, and requires explicit user consent. Proposals are account-bound, reject stale/altered evidence and expire. Backend consent consumption and cycle activation must be atomic/revision-checked.
 
-## Engine mirror
+## Completion
 
-Copy into `commercial/engine` from the beta, without rewriting behavior:
+Implement the [backend contract](BACKEND_CONTRACT.md), native onboarding, meal check/replacement/photo confirmation, explicit next-month approval UI, cycling/swimming load, permitted daily notifications and illustrated post-workout water/alignment/breathing. Configure signing, products, app icon, privacy, StoreKit sandbox and TestFlight.
 
-- generate, next-cycle, cycle-lib, catalog-lib
-- safety-lib, review-lib, coach, schemas
-- trace-lib, restore, ai-lib, usage-lib, state, status
-- the versioned catalog and asset prepare step
+No clinical diagnosis; missing meal data is not a nutrient deficiency. Synthetic QA is not clinical validation.
 
-Do not copy:
-
-- auth.mts, auth-lib.mts
-- request-lib.mts in-memory rate limit as the commercial limiter
-- supabase-lib.mts device owner key
-- public/app.js as the store shell
-
-Commercial identity is an account. Entitlement is a verified StoreKit purchase. Safety holds still outrank adaptation.
-
-## After the engine
-
-1. Account, StoreKit entitlement, export, and deletion.
-2. Meal check, replacement, and confirmed photo trace.
-3. Monthly report for the person, not only for the next training cycle.
-4. Next plan only after the person approves the proposed diet and calendar changes.
-5. Cycling and swimming load in onboarding and check-in.
-6. Daily notification for that day's session.
-7. Post-workout menu with images: water, alignment, short guided breathing.
-8. Native iOS shell, privacy manifest, account deletion, TestFlight.
-
-No clinical diagnosis. Missing meal data is missing data, not a nutrient deficiency.

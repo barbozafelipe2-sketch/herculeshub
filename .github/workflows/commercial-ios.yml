@@ -1,0 +1,34 @@
+name: Commercial iOS
+on:
+  push:
+    branches: [main]
+    paths: ['commercial/**', '.github/workflows/commercial-ios.yml']
+  pull_request:
+    paths: ['commercial/**', '.github/workflows/commercial-ios.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  engine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node commercial/engine/scripts/verify-upstream.mjs
+      - run: node commercial/engine/upstream/scripts/prepare-assets.mjs
+      - run: npm --prefix commercial/engine run check
+  ios:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - run: swift test --package-path commercial/ios/HerculesCore
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node commercial/engine/scripts/prepare-native-assets.mjs
+      - run: brew install xcodegen
+      - run: xcodegen generate --spec commercial/ios/project.yml
+      - run: xcodebuild -project commercial/ios/HerculesHub.xcodeproj -scheme HerculesHub -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+

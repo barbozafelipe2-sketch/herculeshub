@@ -1,42 +1,55 @@
 {
   "product": "Hercules Hub",
   "channel": "commercial",
-  "baseline_version": "0.11.0-fix5",
-  "status": "final-audit-candidate-not-store-release",
-  "artifact": "HERCULES_HUB_COMMERCIAL_v0.11.0_FIX5_20261002.zip",
-  "artifact_sha256": "6b977bca8b5d15d6b777005dccb529983bbf98504aa39b363bee17babfa39b01",
-  "artifact_size_bytes": 32611804,
-  "source_mirror_status": "release metadata and audit reports committed; complete source and image assets pending upload to repository",
-  "rollback_baseline": {
-    "version": "0.10.4",
-    "sha256": "66772230e385ae4486bd29764665371261baf5c7e274a2539e8d7f8a52790640",
-    "drive_url": "https://drive.google.com/file/d/1LsGEQ3p9rNpgDwq1ULiksEpHSjyX4QC2/view"
+  "distribution": "apple-app-store",
+  "runtime": "native-ios-swiftui",
+  "version": "0.1.0",
+  "status": "native-foundation-not-store-release",
+  "source_directory": "commercial/ios",
+  "billing": {
+    "provider": "StoreKit 2",
+    "product_type": "auto-renewable-monthly-subscription",
+    "external_checkout": false,
+    "verification": "Apple device verification plus account-bound server validation"
   },
-  "canonical_source_of_truth": "Hercules Hub — Source of Truth & Canonical Plan v2.20",
-  "canonical_behavior": "Hercules Hub — AI Agent Behavior & Operating Instructions v2.15",
-  "entry_flow": [
-    "Log In / Create Account",
-    "Stripe Checkout",
-    "verified paid entitlement",
-    "language",
-    "credentials",
-    "onboarding",
-    "generation",
-    "three audit gates",
-    "system"
-  ],
-  "qa": {
-    "rerun_date": "2026-10-02",
-    "static": "156/156",
-    "security_state": "46/46",
-    "personalization_regression": "99/99",
-    "ui_accessibility": "19/19",
-    "total": "320/320",
-    "evidence_scope": "local/static/pure-logic"
+  "identity": {
+    "provider": "Sign in with Apple",
+    "device_id_auth": false,
+    "backend_status": "contract-defined-not-implemented"
   },
-  "limits": [
-    "Not an Apple App Store submission: this is a web/PWA and contains no iOS/Xcode target.",
-    "Live Netlify, Supabase and Stripe flows have not been verified by the local checks.",
-    "Catalog is not comprehensive: strict plant-based meal variety remains limited and bodyweight-only Home lacks a loaded pulling movement."
+  "access": {
+    "month_visible": true,
+    "free_week": "authoritative current/free week; week 1 in month 1",
+    "other_weeks": "locked until active account-bound entitlement",
+    "exports_readable": true,
+    "training_holds_override_payment": true
+  },
+  "engine": {
+    "repository": "barbozafelipe2-sketch/hercules-hub",
+    "commit": "e4dc79b99796ffe47a0fcbb3bd8f08b2ad49c6eb",
+    "version": "0.14.1",
+    "mirror": "commercial/engine/upstream",
+    "runtime": "reference snapshot plus tested commercial consent adapter; backend integration pending",
+    "asset_bundle_version": "0.14.0",
+    "asset_bundle_sha256": "25fecf17e97c4dd1a62044094eae0aaee684cd6a221bcc9bcacdf3986bbfd247"
+  },
+  "historical_web_candidate": {
+    "version": "0.11.0-fix5",
+    "record": "commercial/releases/v0.11.0-fix5/RELEASE_RECORD.json",
+    "status": "superseded-platform; archived local QA only"
+  },
+  "verification": {
+    "local_engine": "6 scenario tests passed",
+    "asset_bundle": "SHA-256 verified and reconstructed",
+    "native": "macOS CI configured; not verified locally (Xcode unavailable)",
+    "historical_reports_apply_to_native": false
+  },
+  "release_blockers": [
+    "Commercial account/plan/persistence/StoreKit verification backend and Apple server notifications.",
+    "Native onboarding, meal/photo/replacement, notifications, post-workout and approval workflows.",
+    "App Store Connect products, signing/provisioning, app icon and legal URLs.",
+    "Privacy disclosures reconciled with final backend and SDK inventory.",
+    "Xcode build, StoreKit sandbox/TestFlight and physical-device verification."
   ]
 }
+

@@ -1,0 +1,168 @@
+{
+  "schema": "hercules-engine-upstream-v1",
+  "repository": "barbozafelipe2-sketch/hercules-hub",
+  "commit": "e4dc79b99796ffe47a0fcbb3bd8f08b2ad49c6eb",
+  "runtimeVersion": "0.14.1",
+  "assetBundleVersion": "0.14.0",
+  "assetBundleSHA256": "25fecf17e97c4dd1a62044094eae0aaee684cd6a221bcc9bcacdf3986bbfd247",
+  "role": "immutable upstream reference; not deployed commercial endpoints",
+  "excluded": [
+    "netlify/functions/auth.mts",
+    "netlify/functions/auth-lib.mts",
+    "netlify/functions/request-lib.mts",
+    "netlify/functions/supabase-lib.mts",
+    "netlify/functions/beta-feedback.mts"
+  ],
+  "files": [
+    {
+      "path": "asset-bundle-v0.14.0/part07.b64",
+      "gitBlobSHA": "a67528d70fb276c0e5505cb7c75b23788224c30a",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part02.b64",
+      "gitBlobSHA": "1c5f33f2d46f5b25d8cb9ddb4335b27982bad990",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part08.b64",
+      "gitBlobSHA": "2ae100575a5636f621d96ee500ef1a484cac8b95",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part06.b64",
+      "gitBlobSHA": "70059cf087bf1e9df364f486cd026f514969723b",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part05.b64",
+      "gitBlobSHA": "809fa11e66e9e39f093bba78b625c656ff00c3a6",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part03.b64",
+      "gitBlobSHA": "0242d8701996a5542e389dcbe87a45af3c7ff020",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part01.b64",
+      "gitBlobSHA": "5dcb147c0378437e32b3ef61149510af175cec02",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part04.b64",
+      "gitBlobSHA": "a6bdd68e2cf48cc974df7f931eca873e084331f0",
+      "bytes": 180000
+    },
+    {
+      "path": "netlify/functions/ai-lib.mts",
+      "gitBlobSHA": "c2f4ffc5bf4a630a27ba4336072aba40fcd62cc2",
+      "bytes": 6866
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part10.b64",
+      "gitBlobSHA": "99357bfa6e74cd6c19c34fee0e00a1c7c919d0af",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part13.b64",
+      "gitBlobSHA": "9513a461c1888e692347f32c0d2605b6fbc6e1eb",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part14.b64",
+      "gitBlobSHA": "9fe6bc055bd95b72c8c7633310fd4b654a05ad94",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part09.b64",
+      "gitBlobSHA": "51817695afb8a0d493207ae6235797961c792b62",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part11.b64",
+      "gitBlobSHA": "b022f71b2560f8981160a35f5c4b23c950b8037d",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part12.b64",
+      "gitBlobSHA": "a8fc31afcabd4a06a069c5b6c1d022064b63987e",
+      "bytes": 180000
+    },
+    {
+      "path": "asset-bundle-v0.14.0/part15.b64",
+      "gitBlobSHA": "b25b24633b55a31bf2d59d26d8d1e66dfa935a3c",
+      "bytes": 110364
+    },
+    {
+      "path": "netlify/functions/catalog-lib.mts",
+      "gitBlobSHA": "6b99339a6bd82ba9533db1084b4fd2b7f9c573f6",
+      "bytes": 12267
+    },
+    {
+      "path": "netlify/functions/cycle-lib.mts",
+      "gitBlobSHA": "b863b7937bbe191fa2ad8a8f339bfcdfceddac70",
+      "bytes": 15040
+    },
+    {
+      "path": "netlify/functions/generate.mts",
+      "gitBlobSHA": "e91719a40a8b8cb197a6d8c618959a90f5135c18",
+      "bytes": 12343
+    },
+    {
+      "path": "netlify/functions/next-cycle.mts",
+      "gitBlobSHA": "684d0b0fef4100f57af77a67d210d71d01a6f160",
+      "bytes": 17208
+    },
+    {
+      "path": "netlify/functions/coach.mts",
+      "gitBlobSHA": "defa7bd695084f6743a8e805d68fc34bdfe78f28",
+      "bytes": 4414
+    },
+    {
+      "path": "netlify/functions/safety-lib.mts",
+      "gitBlobSHA": "689bf134a04543d464a105d15adb1ca15f8d4250",
+      "bytes": 1310
+    },
+    {
+      "path": "netlify/functions/review-lib.mts",
+      "gitBlobSHA": "b853657c9a0aa46531ca8350f3ac966f72e0e719",
+      "bytes": 2205
+    },
+    {
+      "path": "netlify/functions/schemas.mts",
+      "gitBlobSHA": "7ac3284d16f97f4714da1a626add9e511f9e6269",
+      "bytes": 12404
+    },
+    {
+      "path": "netlify/functions/restore.mts",
+      "gitBlobSHA": "50c0b7d47004320a28f7c4b3100b76eff153d34a",
+      "bytes": 3030
+    },
+    {
+      "path": "netlify/functions/status.mts",
+      "gitBlobSHA": "6e67201441fb4508bb664154714f3923d7d521ea",
+      "bytes": 913
+    },
+    {
+      "path": "netlify/functions/state.mts",
+      "gitBlobSHA": "29bb23c7ce36051c3547651c1d818dc56b180f14",
+      "bytes": 9680
+    },
+    {
+      "path": "netlify/functions/trace-lib.mts",
+      "gitBlobSHA": "e617ec3a3a7064fbe5c891cd90c8b1154a01385f",
+      "bytes": 1477
+    },
+    {
+      "path": "scripts/prepare-assets.mjs",
+      "gitBlobSHA": "4161985ae8186b582d7147adbd4309266f6f3983",
+      "bytes": 1843
+    },
+    {
+      "path": "netlify/functions/usage-lib.mts",
+      "gitBlobSHA": "1f4f1705656357d5972202bb24322020976c5f13",
+      "bytes": 1177
+    }
+  ]
+}

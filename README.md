@@ -1,24 +1,17 @@
 # Hercules Hub
 
-This repository keeps the Hercules Hub operational dashboard, experimental QA reference code, and commercial product release record together.
+| Channel | Repository | Runtime | Identity | Payment |
+| --- | --- | --- | --- | --- |
+| Commercial | this repository, `commercial/ios` | native iOS / App Store | commercial account / Sign in with Apple | StoreKit 2 |
+| Family/friends test | [hercules-hub](https://github.com/barbozafelipe2-sketch/hercules-hub) | Netlify web/PWA | beta device session | free |
 
-## What lives here
+The operational dashboard (`index.html`, `data/`) remains independent of the commercial app.
 
-- `index.html` and `data/`: operations dashboard and versioned daily state/history.
-- `commercial/CURRENT_RELEASE.json`: authoritative pointer to the latest commercial candidate and its verification limits.
-- `commercial/releases/`: immutable, versioned release notes and QA evidence.
-- `lab/`: experimental Decision Trace / PR-13 reference implementations. These are **QA only**, not autonomous production authority, and do not change the live client-production workflow.
-- `.source_parts/`: legacy dashboard reconstruction material; retained for history and is not the live dashboard source.
-- [`BRANCH_POLICY.md`](BRANCH_POLICY.md): this repository uses `main` as its only development branch.
+The commercial directory now contains a SwiftUI target, StoreKit client, account API client, week access policy, explicit-consent cycle adapter and versioned upstream engine/assets. This is a native implementation foundation, **not an App Store release**. The commercial backend and end-to-end native workflows are outstanding.
 
-## Current commercial status
+See [commercial status](commercial/README.md), [iOS build](commercial/ios/README.md), [backend contract](commercial/BACKEND_CONTRACT.md) and [engine mirror](commercial/engine/README.md).
 
-The current candidate is **v0.11.0-fix5**. The release record and audit evidence are in `commercial/releases/v0.11.0-fix5/`. The full source and visual assets still need to be mirrored into this repository; the archive identity and checksum are recorded in `commercial/CURRENT_RELEASE.json`.
+The archived `commercial/releases/v0.11.0-fix5/` web/Stripe documents are historical evidence, not the active native specification. Their QA results do not validate the native app.
 
-This is a web/PWA source candidate, not an Apple App Store submission package. Local checks do not verify live Netlify, Supabase, Stripe, real-device, clinical, or App Store behavior.
+`lab/` remains experimental QA; `.source_parts/` contains legacy dashboard reconstruction material. [BRANCH_POLICY.md](BRANCH_POLICY.md) keeps approved work on `main`.
 
-## Dashboard behavior
-
-The operational dashboard reads `data/state.js`, dated snapshots under `data/history/`, and the history index. Task completion is stored in browser localStorage for that device and does not sync across devices.
-
-See [commercial README](commercial/README.md) for release details.

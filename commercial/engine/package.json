@@ -1,0 +1,13 @@
+{
+  "name": "hercules-commercial-engine",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "check": "node --test test/*.test.mjs",
+    "prepare:assets": "node upstream/scripts/prepare-assets.mjs"
+  }
+}
+

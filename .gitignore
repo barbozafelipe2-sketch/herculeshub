@@ -1,0 +1,10 @@
+commercial/ios/*.xcodeproj/
+commercial/ios/*.xcworkspace/
+commercial/ios/HerculesHub.entitlements
+commercial/ios/HerculesCore/.build/
+commercial/ios/HerculesCore/.swiftpm/
+commercial/engine/upstream/public/
+commercial/engine/upstream/hercules-assets-v0.14.0.tar.gz
+.DS_Store
+commercial/ios/App/Resources/Catalog/
+
