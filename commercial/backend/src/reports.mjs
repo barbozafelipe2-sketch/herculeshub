@@ -1,5 +1,6 @@
 import {createHmac,timingSafeEqual} from 'node:crypto';
 import {requireValue} from './errors.mjs';
+import {materialize} from '../../engine/src/materialize.mjs';
 const ascii=value=>String(value??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^\x20-\x7e]/g,'-');
 const escape=value=>ascii(value).replace(/\\/g,'\\\\').replace(/\(/g,'\\(').replace(/\)/g,'\\)');
 export function archiveFor(account,key){
@@ -33,7 +34,20 @@ export function buildReport(account,archive){
     'This is a private progress report. Missing data remains UNKNOWN.',
     'Recovery payload is account-bound. It contains no credentials or subscription entitlement.'
   ];
-  const pages=[];for(let i=0;i<rows.length;i+=40)pages.push(rows.slice(i,i+40));
+  const complete=materialize(account.profile,account.plan,account.state.cycleNumber);
+  for(const week of complete.weeks){
+    rows.push('WEEK '+week.number+' - complete month preview',account.plan.training.progression[week.number-1]);
+    if(account.plan.trainingHold)rows.push('TRAIN: restricted by the controlling safety hold.');
+    for(const session of week.training){rows.push('Session '+session.id);for(const exercise of session.rows)rows.push(exercise.title+' - '+exercise.rx);}
+    if(account.plan.nutrition.reviewRequired)rows.push('NOURISH: specific meals await allergy/safety review.');
+    for(const day of week.meals){rows.push('Day '+(day.day+1));for(const meal of day.rows)rows.push(meal.role+': '+meal.title);}
+  }
+  const wrapped=rows.flatMap(value=>{
+    const words=ascii(value).split(/\s+/),result=[];let line='';
+    for(const word of words){if(line.length+word.length>85){result.push(line);line='';}line+=(line?' ':'')+word;}
+    if(line)result.push(line);return result;
+  });
+  const pages=[];for(let i=0;i<wrapped.length;i+=40)pages.push(wrapped.slice(i,i+40));
   const objects=[];const add=s=>{objects.push(s);return objects.length;};
   add('<< /Type /Catalog /Pages 2 0 R >>');add('');add('<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>');
   const kids=[];

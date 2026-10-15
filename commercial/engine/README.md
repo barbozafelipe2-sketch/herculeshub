@@ -16,3 +16,6 @@ Node 22.18+ provides TypeScript stripping. The executable adapter needs no exter
 
 The archive is reconstructed and every manifest asset individually verified before copying into native resources. AI/server code stays off device. Checksums provide integrity/provenance, not authorization.
 
+
+
+The commercial backend now executes `src/materialize.mjs`, containing pure unchanged training/menu declarations extracted from the frozen beta `public/app.js`. This is server logic, not a web shell; no DOM/device/network declarations were included. `MATERIALIZER_SOURCE.json` records provenance. The independent account/Apple/persistence adapters are in `../backend`; the upstream cloud handlers remain reference-only.

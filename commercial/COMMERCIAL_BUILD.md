@@ -24,9 +24,10 @@ Device auth, beta request limiter, device-owner storage adapter and beta feedbac
 
 `engine/src/next-month.mts` preserves deterministic eligibility, evidence and safety, and requires explicit user consent. Proposals are account-bound, reject stale/altered evidence and expire. Backend consent consumption and cycle activation must be atomic/revision-checked.
 
-## Completion
+## Current implementation and release work
 
-Implement the [backend contract](BACKEND_CONTRACT.md), native onboarding, meal check/replacement/photo confirmation, explicit next-month approval UI, cycling/swimming load, permitted daily notifications and illustrated post-workout water/alignment/breathing. Configure signing, products, app icon, privacy, StoreKit sandbox and TestFlight.
+The independent commercial backend, native onboarding, illustrated session/meal flows, replacement/photo confirmation, tracking, reminders, post-workout, account recovery and explicit next-month approval are implemented. See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md).
+
+Release still requires commercial hosting/HTTPS/persistent volume, Apple Developer and App Store Connect credentials/products/signing, approved icon/legal URLs and real-device/StoreKit sandbox validation. The source uses the deterministic motor; provider AI calls are not configured. Clinical/no-exercise/allergy restrictions cannot be cleared by payment, ordinary acknowledgement or automation.
 
 No clinical diagnosis; missing meal data is not a nutrient deficiency. Synthetic QA is not clinical validation.
-

@@ -89,6 +89,7 @@ test('onboarding, locked weeks, account-bound purchase, check-in, refund and PDF
  assert.equal((await c.request('/account/checkins',{token:a.accessToken,method:'POST',body:{week:1,energy:4,sleep:4,training:4,nutrition:4,redFlagSymptom:true}})).status,200);
  assert.equal((await c.request('/account/sessions',{token:a.accessToken,method:'POST',body:{week:1,session:'fullA'}})).status,409);
  const report=await c.request('/account/report',{token:a.accessToken});assert.equal(report.status,200);assert.ok(report.data.toString().startsWith('%PDF-'));
+ assert.ok(report.data.toString().includes('WEEK 4 - complete month preview'));
  const archive=report.data.toString().match(/%%HERCULES_BACKUP ([A-Za-z0-9_-]+)/)[1];
  assert.equal((await c.request('/account/restore',{token:b.accessToken,method:'POST',body:{archive}})).status,403);
  assert.equal((await c.request('/account/restore',{token:a.accessToken,method:'POST',body:{archive}})).status,200);

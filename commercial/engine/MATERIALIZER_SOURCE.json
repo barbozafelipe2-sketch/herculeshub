@@ -1,0 +1,10 @@
+{
+  "schema": "hercules-materializer-source-v1",
+  "repository": "barbozafelipe2-sketch/hercules-hub",
+  "commit": "e4dc79b99796ffe47a0fcbb3bd8f08b2ad49c6eb",
+  "path": "public/app.js",
+  "git_blob_sha": "0e7e1c1b1e4c50ed3999429a513da33e5424b1e9",
+  "extraction": "Pure catalog, safety, training and menu declarations copied unchanged into an isolated function context. No DOM/device auth/storage/network declarations. Commercial response projection wraps those declarations.",
+  "output": "src/materialize.mjs",
+  "output_sha256": "2273d48e9801b1ee18be80b6fba5b5161d45f3c6f3066ffdf666e3fc4bd9944c"
+}
