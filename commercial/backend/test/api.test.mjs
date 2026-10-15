@@ -1,4 +1,16 @@
 import test from 'node:test';
+test('a refunded latest subscription period cannot fall back to an older overlapping receipt',async()=>{
+ const c=await setup();try{
+ const a=await c.login(),token=a.accessToken;
+ await c.request('/account/onboarding',{token,method:'POST',body:{profile}});
+ const now=Date.now();
+ const older={...c.tx(a.accountID,'old'),originalTransactionId:'chain',purchaseDate:now-100000,expiresDate:now+3600000};
+ const newer={...c.tx(a.accountID,'new'),originalTransactionId:'chain',purchaseDate:now-1000,expiresDate:now+7200000,revocationDate:now};
+ c.store.purchase(older);c.store.purchase(newer);
+ assert.equal((await c.request('/account/weeks/2',{token})).status,403);
+ assert.equal((await c.request('/account/weeks/1',{token})).status,200);
+ }finally{await c.cleanup();}
+});
 test('next-month approval is explicit, account-scoped, atomic and cannot be replayed',async()=>{
  const c=await setup();try{
  const a=await c.login(),token=a.accessToken;

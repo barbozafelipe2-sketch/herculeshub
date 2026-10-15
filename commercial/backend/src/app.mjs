@@ -14,7 +14,13 @@ function freeWeek(data,now=Date.now()){
   return data.state.cycleNumber===1?1:Math.max(1,Math.min(4,Math.floor((now-Date.parse(data.state.startedAt))/604800000)+1));
 }
 function grant(store,config,id,now=Date.now()){
-  const active=store.purchases(id).filter(t=>config.productIDs.includes(t.productId)&&!t.revocationDate&&t.expiresDate>now)
+  // Select the latest period in each subscription before filtering entitlement. An old
+  // overlapping period must not become a fallback after the latest period is refunded.
+  const latest=new Map();
+  for(const tx of store.purchases(id).sort((a,b)=>(b.purchaseDate||0)-(a.purchaseDate||0)||b.signedDate-a.signedDate)){
+    if(!latest.has(tx.originalTransactionId))latest.set(tx.originalTransactionId,tx);
+  }
+  const active=[...latest.values()].filter(t=>config.productIDs.includes(t.productId)&&!t.revocationDate&&!t.isUpgraded&&t.expiresDate>now)
     .sort((a,b)=>b.expiresDate-a.expiresDate)[0];
   return active?{accountID:id,productID:active.productId,expiresAt:iso(active.expiresDate),revoked:false}:null;
 }

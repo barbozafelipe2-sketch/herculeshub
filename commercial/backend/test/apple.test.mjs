@@ -18,7 +18,7 @@ test('StoreKit adapter calls official verifier and current Apple API; enforces p
  const config={bundleID:'com.test',environment:'Sandbox',productIDs:['monthly']};
  const account='01234567-89ab-4cde-8fab-0123456789ab';
  const tx={bundleId:'com.test',environment:'Sandbox',productId:'monthly',type:'Auto-Renewable Subscription',
-  transactionId:'tx',originalTransactionId:'original',appAccountToken:account,expiresDate:Date.now()+10000,signedDate:Date.now()};
+  transactionId:'tx',originalTransactionId:'original',appAccountToken:account,purchaseDate:Date.now()-1000,expiresDate:Date.now()+10000,signedDate:Date.now()};
  let current={...tx,revocationDate:Date.now()},calls=0;
  const verifier={verifyAndDecodeTransaction:async value=>{calls++;return value==='old'?{...tx}:{...current};}};
  const client={getTransactionInfo:async()=>({signedTransactionInfo:'current'})};

@@ -68,7 +68,8 @@ export class ApplePurchases {
       this.config.productIDs.includes(tx.productId)&&tx.type==='Auto-Renewable Subscription'&&
       typeof tx.transactionId==='string'&&typeof tx.originalTransactionId==='string'&&
       typeof tx.appAccountToken==='string'&&/^[a-f0-9-]{36}$/i.test(tx.appAccountToken)&&
-      Number.isFinite(tx.expiresDate)&&Number.isFinite(tx.signedDate)&&tx.signedDate<=Date.now()+300000,
+      Number.isFinite(tx.expiresDate)&&Number.isFinite(tx.purchaseDate)&&tx.purchaseDate<=Date.now()+60000&&
+      Number.isFinite(tx.signedDate)&&tx.signedDate<=Date.now()+300000,
       403,'purchase_invalid');
     tx.appAccountToken=tx.appAccountToken.toLowerCase();
     requireValue(!accountID||tx.appAccountToken===accountID,403,'purchase_account_mismatch');return tx;

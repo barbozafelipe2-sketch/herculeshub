@@ -27,6 +27,8 @@ struct ActiveWeekView: View {
                 if let content {
                     Section("Treino") {
                         if account.allows(.training, week: week) {
+                            DatePicker("Horário diário dos lembretes", selection: $reminderDate, displayedComponents: .hourAndMinute)
+                            Button("Ativar lembretes dos treinos desta semana") { Task { await remindWeek() } }
                             ForEach(content.sessions) { session in
                                 DisclosureGroup(session.id) {
                                     ForEach(session.rows) { exercise in
@@ -131,6 +133,16 @@ struct ActiveWeekView: View {
                   verified.sessions.contains(where: { $0.id == session }), account.allows(.training, week: week) else { return }
             try await ReminderService.schedule(week: week, session: session, at: reminderDate)
             account.error = "Lembrete agendado."
+        } catch { account.error = error.localizedDescription }
+    }
+    private func remindWeek() async {
+        guard let identity = account.account, account.allows(.reminder, week: week), account.allows(.training, week: week) else { return }
+        do {
+            let verified: WeekContent = try await account.api.request("account/weeks/\(week)", token: identity.accessToken)
+            guard account.account?.accessToken == identity.accessToken, !verified.sessions.isEmpty else { return }
+            let count = try await ReminderService.scheduleWeek(week: week, startedAt: verified.startedAt,
+                sessions: verified.sessions.map(\.id), days: verified.sessionDays, time: reminderDate)
+            account.error = "\(count) lembrete(s) agendado(s) para os dias do seu treino."
         } catch { account.error = error.localizedDescription }
     }
     private func saveCheckin() async {
