@@ -1,6 +1,6 @@
 # Commercial HTTPS account API
 
-**Status: contract only; backend implementation/deployment outstanding.** Use a separate commercial account/data namespace. Never point the native client at the Netlify beta.
+**Status: implemented in `backend/`; live deployment/Apple provisioning outstanding.** Use a separate commercial account/data namespace. Never point the native client at the Netlify beta.
 
 All endpoints use HTTPS, no cross-origin redirects, bounded requests and no-store responses. Protected endpoints require a verified, revocable `Authorization: Bearer <commercial-access-token>`. Resolve identity from the session, never a device ID/client-supplied account. Use distributed atomic quotas; storage failure cannot bypass cost caps. Dates are ISO-8601 UTC without fractional seconds; account IDs are UUIDs.
 
@@ -34,5 +34,8 @@ Next-month proposals use validated server evidence and the commercial consent ad
 
 Restores are account-authorized schema-validated migrations and cannot restore entitlements, credentials, safety clearance or consumed consent. Reports are private/readable regardless of payment. Deletion removes account-owned state/reports/reviews subject to disclosed retention, revokes sessions/Apple tokens and confirms only after completion. Deletion does not cancel the Apple subscription.
 
-Implement endpoint adapters, database schema/RLS matching actual account UUIDs, distributed quotas, AI integrations, recovery and Apple notification routing before setting the app API URL. Upstream Netlify handlers must not be deployed unchanged.
+The implemented Node service uses encrypted SQLite and persistent transactional quotas on a durable private volume; it does not expose a database Data API. Configure its Apple credentials, HTTPS origin and notification route before setting the native API URL. Upstream Netlify handlers must not be deployed unchanged.
 
+
+
+Additional implemented routes: POST account/onboarding; POST account/sessions; POST account/milestones; POST account/meals (check/replace/photo); POST account/post-workout; POST account/logout; POST account/restore; POST account/next-month/propose; POST account/next-month/approve. GET account/weeks/:week also returns structured sessions/days and server completion state. POST apple/notifications handles verified V2 events. GET/POST admin/reviews routes require an allowlisted reviewer account and cannot clear clinical/allergy holds.

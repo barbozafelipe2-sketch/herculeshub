@@ -53,6 +53,11 @@ struct EntitlementResponse: Decodable { let entitlement: Entitlement? }
 struct WeekContent: Decodable {
     let training: [String]
     let meals: [String]
+    let sessions: [SessionContent]
+    let sessionDays: [String]
+    let days: [MealDay]
+    let completedSessions: [String: Bool]
+    let startedAt: String
 }
 struct CheckinBody: Encodable { let week: Int; let energy: Int; let sleep: Int }
 struct Acknowledgement: Decodable { let ok: Bool }

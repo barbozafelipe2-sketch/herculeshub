@@ -14,13 +14,12 @@ Commercial is native iOS with StoreKit 2. The separate test repository remains a
 - Versioned beta engine/assets and a tested commercial cycle adapter requiring explicit consent.
 - Linux engine verification and macOS Swift tests/simulator build workflow.
 
-## Outstanding
+## Integrated continuation (0.2.0)
 
-The HTTPS commercial backend is a documented contract, not implemented/deployed here. Configure account/plan/persistence, Apple server verification/notifications, deletion/report endpoints and App Store Connect/signing. Full native onboarding, meal replacement/photo flows, notifications, post-workout content and next-month approval UI need implementation and end-to-end tests.
+The [commercial backend](backend/README.md) and native onboarding, illustrated meals/training, replacement/photo confirmation, milestone/check-in tracking, reminders, post-workout, report recovery and next-cycle consent are implemented and connected. See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for precise scope and verification limits.
 
-Missing backend disables sign-in; incomplete purchase configuration prevents purchases. There is no fake account, paid bypass or fallback to beta endpoints.
+Deployment, Apple credentials/products/signing, an approved app icon, legal URLs and real-device/StoreKit validation remain required. No live commercial service has been provisioned; the Netlify test is unchanged.
 
-Start with [ios/README.md](ios/README.md), [COMMERCIAL_BUILD.md](COMMERCIAL_BUILD.md) and [BACKEND_CONTRACT.md](BACKEND_CONTRACT.md).
 
 The former web candidate is preserved in [releases/v0.11.0-fix5/RELEASE_RECORD.json](releases/v0.11.0-fix5/RELEASE_RECORD.json). Its source archive has not been imported and its 320 checks do not validate native iOS. [CURRENT_RELEASE.json](CURRENT_RELEASE.json) now describes the native foundation.
 

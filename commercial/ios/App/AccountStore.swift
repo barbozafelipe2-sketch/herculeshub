@@ -9,6 +9,7 @@ final class AccountStore: ObservableObject {
     @Published private(set) var month: MonthPlan?
     @Published private(set) var entitlement: Entitlement?
     @Published private(set) var busy = false
+    @Published private(set) var needsOnboarding = false
     @Published var error: String?
     let api: APIClient
     private var challenge: AppleChallenge?
@@ -57,13 +58,20 @@ final class AccountStore: ObservableObject {
         guard let account else { return }
         do {
             let response: EntitlementResponse = try await api.request("account/entitlement", token: account.accessToken)
-            guard self.account?.accountID == account.accountID else { return }
+            guard self.account?.accessToken == account.accessToken else { return }
             entitlement = response.entitlement
-            let month: MonthPlan = try await api.request("account/month", token: account.accessToken)
-            guard self.account?.accountID == account.accountID else { return }
-            self.month = month
+            do {
+                let month: MonthPlan = try await api.request("account/month", token: account.accessToken)
+                guard self.account?.accessToken == account.accessToken else { return }
+                self.month = month
+                needsOnboarding = false
+            } catch APIError.rejected(409) {
+                guard self.account?.accessToken == account.accessToken else { return }
+                month = nil
+                needsOnboarding = true
+            }
         } catch {
-            guard self.account?.accountID == account.accountID else { return }
+            guard self.account?.accessToken == account.accessToken else { return }
             // Failed verification cannot preserve a stale paid unlock.
             entitlement = nil
             self.error = error.localizedDescription
@@ -75,7 +83,7 @@ final class AccountStore: ObservableObject {
         entitlement = nil
         let response: EntitlementResponse = try await api.request("account/storekit", method: "POST",
             token: account.accessToken, body: JSONEncoder().encode(PurchaseBody(signedTransaction: signedTransaction)))
-        guard self.account?.accountID == account.accountID else { throw APIError.signInRequired }
+        guard self.account?.accessToken == account.accessToken else { throw APIError.signInRequired }
         if let grant = response.entitlement {
             guard grant.accountID == account.accountID, grant.productID == api.configuration.productID,
                   !grant.revoked, grant.expiresAt > Date() else { throw APIError.invalidResponse }
@@ -97,6 +105,21 @@ final class AccountStore: ObservableObject {
         signOut()
     }
 
-    func signOut() { account = nil; month = nil; entitlement = nil; challenge = nil }
+    func completeOnboarding(_ profile: ProfileDraft) async throws {
+        guard let account else { throw APIError.signInRequired }
+        let response: OnboardingResponse = try await api.request("account/onboarding", method: "POST", token: account.accessToken,
+            body: JSONEncoder().encode(OnboardingBody(profile: profile)))
+        guard response.ok, self.account?.accessToken == account.accessToken else { throw APIError.invalidResponse }
+        month = response.month
+        needsOnboarding = false
+    }
+
+    func signOut() {
+        if let identity = account {
+            Task { let _: Acknowledgement? = try? await api.request("account/logout", method: "POST", token: identity.accessToken) }
+        }
+        account = nil; month = nil; entitlement = nil; challenge = nil; needsOnboarding = false
+        ReminderService.clear()
+    }
 }
 

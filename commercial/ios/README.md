@@ -25,7 +25,7 @@ Default identifiers are placeholders, not provisioned Apple products. Missing ba
 
 Tokens remain in memory. Paid unlock requires an Apple-verified transaction and server validation. Deletion requires server confirmation and Apple credential revocation; subscription cancellation is separate and available through Apple's management UI.
 
-The backend is outstanding, as are full onboarding, meal/photo/reminder/post-workout and approval screens. Add an approved 1024px App Store icon. Reconcile the initial privacy manifest with actual backend retention/collection and SDKs before submission.
+The backend and onboarding, meal/photo/reminder/post-workout and approval screens are implemented; configure and deploy the commercial API described in ../backend/README.md. Add an approved 1024px App Store icon. Reconcile the initial privacy manifest with actual backend retention/collection and SDKs before submission.
 
 CI runs Swift access-policy tests and an unsigned simulator build. Physical-device/TestFlight QA must cover purchase cancellation/pending/unverified results, renewal/expiry/refund, restore across devices/accounts, locked-week deep links/writes, deletion, exports and safety holds.
 

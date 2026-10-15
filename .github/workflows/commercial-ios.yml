@@ -9,6 +9,16 @@ on:
 permissions:
   contents: read
 jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm install --prefix commercial/backend --ignore-scripts --package-lock=false
+      - run: node --test commercial/backend/test/*.test.mjs
+      - run: node -e "import('./commercial/backend/node_modules/@apple/app-store-server-library/dist/index.js').then(m => { if (!m.SignedDataVerifier || !m.AppStoreServerAPIClient) process.exit(1) })"
   engine:
     runs-on: ubuntu-latest
     steps:

@@ -6,5 +6,13 @@ commercial/ios/HerculesCore/.swiftpm/
 commercial/engine/upstream/public/
 commercial/engine/upstream/hercules-assets-v0.14.0.tar.gz
 .DS_Store
+**/node_modules/
+**/.env
+**/.env.local
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.p8
+*.p12
 commercial/ios/App/Resources/Catalog/
 

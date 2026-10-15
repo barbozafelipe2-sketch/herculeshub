@@ -3,6 +3,7 @@ import HerculesCore
 import StoreKit
 import SwiftUI
 import UIKit
+import UniformTypeIdentifiers
 
 struct RootView: View {
     @EnvironmentObject private var account: AccountStore
@@ -10,11 +11,13 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var deleteConfirmation = false
     @State private var reportURL: URL?
+    @State private var importingReport = false
 
     var body: some View {
         NavigationStack {
             Group {
                 if account.account == nil { signIn }
+                else if account.needsOnboarding { OnboardingView() }
                 else { month }
             }
             .navigationTitle("Hércules Hub")
@@ -23,6 +26,7 @@ struct RootView: View {
                     Menu("Conta", systemImage: "person.crop.circle") {
                         Button("Restaurar compras") { Task { await commerce.restore() } }
                         Button("Gerenciar assinatura") { Task { await manageSubscription() } }
+                        Button("Restaurar progresso do PDF") { importingReport = true }
                         Button("Exportar relatório") { Task { await exportReport() } }
                         Button("Sair") { account.signOut() }
                         Button("Excluir conta", role: .destructive) { deleteConfirmation = true }
@@ -43,6 +47,9 @@ struct RootView: View {
                                                       set: { if !$0 { account.error = nil; commerce.message = nil } })) {
                 Button("OK") { account.error = nil; commerce.message = nil }
             } message: { Text(account.error ?? commerce.message ?? "") }
+            .fileImporter(isPresented: $importingReport, allowedContentTypes: [.pdf]) { result in
+                Task { await restoreReport(result) }
+            }
             .task { await commerce.load() }
             .task(id: account.account?.accountID) {
                 removeReport()
@@ -54,6 +61,7 @@ struct RootView: View {
                 if phase == .active { Task { await account.refresh() } }
             }
         }
+        .id(account.account?.accountID)
     }
 
     private var signIn: some View {
@@ -109,6 +117,9 @@ struct RootView: View {
                     Button("Atualizar plano") { Task { await account.refresh() } }
                 }
             }
+            Section("Evolução") {
+                NavigationLink("Revisar próximo mês") { NextMonthView() }
+            }
             Section("Assinatura") {
                 if let product = commerce.product {
                     Text(product.displayName)
@@ -143,6 +154,7 @@ struct RootView: View {
         guard let identity = account.account else { return }
         do {
             let data = try await account.api.report(token: identity.accessToken)
+            guard account.account?.accessToken == identity.accessToken else { return }
             removeReport()
             let directory = FileManager.default.temporaryDirectory.appendingPathComponent("hercules-\(UUID())")
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true,
@@ -152,58 +164,24 @@ struct RootView: View {
             reportURL = url
         } catch { account.error = error.localizedDescription }
     }
-}
-
-struct ActiveWeekView: View {
-    @EnvironmentObject private var account: AccountStore
-    let week: Int
-    @State private var content: WeekContent?
-    @State private var energy = 3
-    @State private var sleep = 3
-    @State private var saving = false
-    @State private var saved = false
-
-    var body: some View {
-        List {
-            if account.allows(.checkin, week: week) {
-                if let content {
-                    Section("Treino") {
-                        if account.allows(.training, week: week) {
-                            ForEach(Array(content.training.enumerated()), id: \.offset) { _, item in Text(item) }
-                        } else { Text("Treino restrito por segurança.") }
-                    }
-                    Section("Alimentação") {
-                        ForEach(Array(content.meals.enumerated()), id: \.offset) { _, item in Text(item) }
-                    }
-                    Section("Check-in") {
-                        Stepper("Energia: \(energy)", value: $energy, in: 1...5)
-                        Stepper("Sono: \(sleep)", value: $sleep, in: 1...5)
-                        Button(saved ? "Check-in salvo" : "Salvar check-in") { Task { await save() } }
-                            .disabled(saving)
-                    }
-                } else { ProgressView() }
-            } else { Label("Esta semana está bloqueada.", systemImage: "lock.fill") }
-        }
-        .navigationTitle("Semana \(week)")
-        .task { await load() }
-    }
-
-    private func load() async {
-        guard account.allows(.checkin, week: week), let identity = account.account else { return }
-        do { content = try await account.api.request("account/weeks/\(week)", token: identity.accessToken) }
-        catch { account.error = error.localizedDescription }
-    }
-
-    private func save() async {
-        guard !saving, account.allows(.checkin, week: week), let identity = account.account else { return }
-        saving = true
-        defer { saving = false }
+    private func restoreReport(_ result: Result<URL, Error>) async {
+        guard let identity = account.account else { return }
         do {
-            let result: Acknowledgement = try await account.api.request("account/checkins", method: "POST",
-                token: identity.accessToken, body: JSONEncoder().encode(CheckinBody(week: week, energy: energy, sleep: sleep)))
-            guard result.ok else { throw APIError.invalidResponse }
-            saved = true
+            let url = try result.get()
+            let permitted = url.startAccessingSecurityScopedResource()
+            defer { if permitted { url.stopAccessingSecurityScopedResource() } }
+            let data = try Data(contentsOf: url)
+            guard data.count <= 2_000_000,
+                  let text = String(data: data, encoding: .isoLatin1),
+                  let marker = text.range(of: "%%HERCULES_BACKUP ") else { throw APIError.invalidResponse }
+            let tail = text[marker.upperBound...]
+            let archive = String(tail.prefix { $0.isLetter || $0.isNumber || $0 == "-" || $0 == "_" })
+            let response: Acknowledgement = try await account.api.request("account/restore", method: "POST", token: identity.accessToken,
+                body: JSONEncoder().encode(RestoreBody(archive: archive)))
+            guard response.ok, account.account?.accessToken == identity.accessToken else { throw APIError.invalidResponse }
+            await account.refresh()
+            account.error = "Progresso verificado. Dados já existentes no servidor foram preservados."
         } catch { account.error = error.localizedDescription }
     }
-}
 
+}

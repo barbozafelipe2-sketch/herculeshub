@@ -1,0 +1,17 @@
+{
+  "name": "hercules-commercial-api",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "start": "node src/server.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@apple/app-store-server-library": "3.1.0"
+  }
+}
+

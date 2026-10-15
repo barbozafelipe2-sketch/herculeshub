@@ -3,8 +3,8 @@
   "channel": "commercial",
   "distribution": "apple-app-store",
   "runtime": "native-ios-swiftui",
-  "version": "0.1.0",
-  "status": "native-foundation-not-store-release",
+  "version": "0.2.0",
+  "status": "integrated-source-awaiting-apple-provisioning-and-deployment",
   "source_directory": "commercial/ios",
   "billing": {
     "provider": "StoreKit 2",
@@ -15,7 +15,7 @@
   "identity": {
     "provider": "Sign in with Apple",
     "device_id_auth": false,
-    "backend_status": "contract-defined-not-implemented"
+    "backend_status": "implemented-commercial-node-api-not-deployed"
   },
   "access": {
     "month_visible": true,
@@ -29,7 +29,7 @@
     "commit": "e4dc79b99796ffe47a0fcbb3bd8f08b2ad49c6eb",
     "version": "0.14.1",
     "mirror": "commercial/engine/upstream",
-    "runtime": "reference snapshot plus tested commercial consent adapter; backend integration pending",
+    "runtime": "commercial deterministic materializer and explicit-consent adapter",
     "asset_bundle_version": "0.14.0",
     "asset_bundle_sha256": "25fecf17e97c4dd1a62044094eae0aaee684cd6a221bcc9bcacdf3986bbfd247"
   },
@@ -41,15 +41,21 @@
   "verification": {
     "local_engine": "6 scenario tests passed",
     "asset_bundle": "SHA-256 verified and reconstructed",
-    "native": "macOS CI configured; not verified locally (Xcode unavailable)",
-    "historical_reports_apply_to_native": false
+    "native": "CI validates Swift tests and simulator build; latest continuation CI must be checked",
+    "historical_reports_apply_to_native": false,
+    "backend": "8 scenario tests including real SQLite and cryptographic identity verification; Apple network responses simulated"
   },
   "release_blockers": [
-    "Commercial account/plan/persistence/StoreKit verification backend and Apple server notifications.",
-    "Native onboarding, meal/photo/replacement, notifications, post-workout and approval workflows.",
-    "App Store Connect products, signing/provisioning, app icon and legal URLs.",
-    "Privacy disclosures reconciled with final backend and SDK inventory.",
-    "Xcode build, StoreKit sandbox/TestFlight and physical-device verification."
-  ]
+    "Apple Developer/App Store Connect credentials, registered products, signing and real Apple sandbox validation.",
+    "Durable commercial hosting, HTTPS origin and persistent encryption key/database volume.",
+    "Approved App Store icon and published legal URLs; privacy/retention disclosures.",
+    "Physical-device/TestFlight checks and full UI localization if shipping all three plan languages."
+  ],
+  "backend": {
+    "source": "commercial/backend",
+    "runtime": "Node 24",
+    "database": "encrypted SQLite on a durable private volume",
+    "apple_library": "@apple/app-store-server-library 3.1.0",
+    "deployment": "not configured"
+  }
 }
-

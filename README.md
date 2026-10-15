@@ -7,7 +7,7 @@
 
 The operational dashboard (`index.html`, `data/`) remains independent of the commercial app.
 
-The commercial directory now contains a SwiftUI target, StoreKit client, account API client, week access policy, explicit-consent cycle adapter and versioned upstream engine/assets. This is a native implementation foundation, **not an App Store release**. The commercial backend and end-to-end native workflows are outstanding.
+The commercial directory now contains a SwiftUI target, StoreKit client, account API client, week access policy, explicit-consent cycle adapter and versioned upstream engine/assets. This is a native implementation foundation, **not an App Store release**. The commercial backend and principal native workflows are now implemented; Apple provisioning, hosting and real-device verification remain required. See [implementation status](commercial/IMPLEMENTATION_STATUS.md).
 
 See [commercial status](commercial/README.md), [iOS build](commercial/ios/README.md), [backend contract](commercial/BACKEND_CONTRACT.md) and [engine mirror](commercial/engine/README.md).
 
