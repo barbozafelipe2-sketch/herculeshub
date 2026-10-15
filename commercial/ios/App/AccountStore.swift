@@ -143,9 +143,7 @@ final class AccountStore: ObservableObject {
             let content: WeekContent = try await api.request("account/weeks/\(week.number)", token: identity.accessToken)
             guard revision == reminderRevision, account?.accessToken == identity.accessToken,
                   self.month?.id == month.id else { return }
-            let formatter = ISO8601DateFormatter()
-            formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-            guard let date = formatter.date(from: content.startedAt) ?? ISO8601DateFormatter().date(from: content.startedAt),
+            guard let date = ServerDate.parse(content.startedAt),
                   start == nil || start == date else { throw APIError.invalidResponse }
             start = date
             let until: Date

@@ -78,7 +78,7 @@ final class APIClient {
                                      token: String? = nil, body: Data? = nil) async throws -> Response {
         let (data, _) = try await send(path, method: method, token: token, body: body)
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
+        decoder.dateDecodingStrategy = .custom(ServerDate.decode)
         return try decoder.decode(Response.self, from: data)
     }
 
