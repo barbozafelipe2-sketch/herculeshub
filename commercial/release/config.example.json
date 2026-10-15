@@ -1,0 +1,22 @@
+{
+  "teamID": "",
+  "bundleID": "",
+  "monthlyProductID": "",
+  "version": "0.2.0",
+  "buildNumber": "1",
+  "privacyURL": "",
+  "termsURL": "",
+  "supportURL": "",
+  "iconFile": "",
+  "environments": {
+    "Sandbox": {
+      "apiBaseURL": "",
+      "appleEnvironment": "Sandbox"
+    },
+    "Production": {
+      "apiBaseURL": "",
+      "appleEnvironment": "Production"
+    }
+  }
+}
+

@@ -1,0 +1,9 @@
+// Valores para compilar sem conta Apple. Nenhum serviço pago é ativado.
+HERCULES_BUNDLE_ID = com.herculeshub.app
+HERCULES_MARKETING_VERSION = 0.2.0
+HERCULES_BUILD_NUMBER = 1
+HERCULES_MONTHLY_PRODUCT_ID = com.herculeshub.monthly
+HERCULES_API_BASE_URL =
+HERCULES_PRIVACY_URL =
+HERCULES_TERMS_URL =
+

@@ -3,18 +3,22 @@ options:
   bundleIdPrefix: com.herculeshub
   deploymentTarget:
     iOS: "17.0"
+configs:
+  Debug: debug
+  Sandbox: release
+  Release: release
+configFiles:
+  Debug: Config/Debug.xcconfig
+  Sandbox: Config/Sandbox.xcconfig
+  Release: Config/Release.xcconfig
 packages:
   HerculesCore:
     path: HerculesCore
 settings:
   base:
     SWIFT_VERSION: "5.9"
-    MARKETING_VERSION: "0.2.0"
-    CURRENT_PROJECT_VERSION: "1"
-    HERCULES_API_BASE_URL: ""
-    HERCULES_MONTHLY_PRODUCT_ID: com.herculeshub.monthly
-    HERCULES_PRIVACY_URL: ""
-    HERCULES_TERMS_URL: ""
+    MARKETING_VERSION: "$(HERCULES_MARKETING_VERSION)"
+    CURRENT_PROJECT_VERSION: "$(HERCULES_BUILD_NUMBER)"
 targets:
   HerculesHub:
     type: application
@@ -30,7 +34,7 @@ targets:
       - package: HerculesCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.herculeshub.app
+        PRODUCT_BUNDLE_IDENTIFIER: "$(HERCULES_BUNDLE_ID)"
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_HerculesAPIBaseURL: "$(HERCULES_API_BASE_URL)"
         INFOPLIST_KEY_HerculesMonthlyProductID: "$(HERCULES_MONTHLY_PRODUCT_ID)"
@@ -50,3 +54,20 @@ schemes:
       targets:
         HerculesHub: all
 
+
+  HerculesHub-Sandbox:
+    build:
+      targets:
+        HerculesHub: all
+    run:
+      config: Sandbox
+    archive:
+      config: Sandbox
+  HerculesHub-Production:
+    build:
+      targets:
+        HerculesHub: all
+    run:
+      config: Release
+    archive:
+      config: Release

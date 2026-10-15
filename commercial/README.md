@@ -23,3 +23,7 @@ Deployment, Apple credentials/products/signing, an approved app icon, legal URLs
 
 The former web candidate is preserved in [releases/v0.11.0-fix5/RELEASE_RECORD.json](releases/v0.11.0-fix5/RELEASE_RECORD.json). Its source archive has not been imported and its 320 checks do not validate native iOS. [CURRENT_RELEASE.json](CURRENT_RELEASE.json) now describes the native foundation.
 
+
+## Quando tiver a conta Apple
+
+O preparo de configuração/assinatura está em [release/README.pt-BR.md](release/README.pt-BR.md). Nenhuma conta paga é necessária para os testes e o build sem assinatura. O archive e o envio ficam para depois da configuração da conta, hospedagem, produtos e materiais da loja.

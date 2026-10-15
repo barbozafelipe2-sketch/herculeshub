@@ -16,3 +16,8 @@ commercial/engine/upstream/hercules-assets-v0.14.0.tar.gz
 *.p12
 commercial/ios/App/Resources/Catalog/
 
+
+commercial/release/config.local.json
+commercial/release/generated/
+commercial/ios/Config/Local.*.xcconfig
+commercial/ios/App/Assets.xcassets/

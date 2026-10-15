@@ -29,3 +29,8 @@ The backend and onboarding, meal/photo/reminder/post-workout and approval screen
 
 CI runs Swift access-policy tests and an unsigned simulator build. Physical-device/TestFlight QA must cover purchase cancellation/pending/unverified results, renewal/expiry/refund, restore across devices/accounts, locked-week deep links/writes, deletion, exports and safety holds.
 
+
+
+## Sem conta Apple ainda
+
+A preparação de release está em [../release/README.pt-BR.md](../release/README.pt-BR.md). Debug funciona sem assinatura; Sandbox e Production possuem configurações locais separadas. O script de archive só será usado quando houver conta/produtos/chaves e hospedagem configurados. Não envia automaticamente à Apple.

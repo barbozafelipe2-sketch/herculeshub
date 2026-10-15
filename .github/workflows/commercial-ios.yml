@@ -17,6 +17,8 @@ jobs:
         with:
           node-version: '24'
       - run: npm install --prefix commercial/backend --ignore-scripts --package-lock=false
+      - run: node --test commercial/release/prepare.test.mjs
+      - run: bash -n commercial/release/archive.sh
       - run: node --test commercial/backend/test/*.test.mjs
       - run: node -e "import('./commercial/backend/node_modules/@apple/app-store-server-library/dist/index.js').then(m => { if (!m.SignedDataVerifier || !m.AppStoreServerAPIClient) process.exit(1) })"
   engine:
@@ -40,5 +42,6 @@ jobs:
       - run: node commercial/engine/scripts/prepare-native-assets.mjs
       - run: brew install xcodegen
       - run: xcodegen generate --spec commercial/ios/project.yml
+      - run: node commercial/release/verify-xcode-config.mjs
       - run: xcodebuild -project commercial/ios/HerculesHub.xcodeproj -scheme HerculesHub -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
 

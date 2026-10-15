@@ -1,0 +1,3 @@
+#include "Defaults.xcconfig"
+#include? "Local.Sandbox.xcconfig"
+
