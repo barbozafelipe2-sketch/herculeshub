@@ -13,6 +13,7 @@ final class AccountStore: ObservableObject {
     @Published var error: String?
     let api: APIClient
     private var challenge: AppleChallenge?
+    private var reminderRevision = UUID()
     // Tokens are in memory only; progress exports never contain credentials or entitlements.
     init(api: APIClient) { self.api = api }
 
@@ -65,15 +66,20 @@ final class AccountStore: ObservableObject {
                 guard self.account?.accessToken == account.accessToken else { return }
                 self.month = month
                 needsOnboarding = false
+                if month.trainingHold { ReminderService.clear() }
+                try? await syncDailyReminders()
             } catch APIError.rejected(409) {
                 guard self.account?.accessToken == account.accessToken else { return }
                 month = nil
                 needsOnboarding = true
+                DailyReminderService.cancel()
             }
         } catch {
             guard self.account?.accessToken == account.accessToken else { return }
             // Failed verification cannot preserve a stale paid unlock.
             entitlement = nil
+            reminderRevision = UUID()
+            DailyReminderService.cancel()
             self.error = error.localizedDescription
         }
     }
@@ -102,6 +108,7 @@ final class AccountStore: ObservableObject {
         guard let account else { throw APIError.signInRequired }
         let response: Acknowledgement = try await api.request("account", method: "DELETE", token: account.accessToken)
         guard response.ok else { throw APIError.invalidResponse }
+        DailyReminderService.forget(account.accountID)
         signOut()
     }
 
@@ -112,12 +119,56 @@ final class AccountStore: ObservableObject {
         guard response.ok, self.account?.accessToken == account.accessToken else { throw APIError.invalidResponse }
         month = response.month
         needsOnboarding = false
+        try? await syncDailyReminders()
+    }
+
+    func configureDailyReminders(_ preferences: DailyReminderPreferences) async throws {
+        guard let identity = account else { throw APIError.signInRequired }
+        if preferences.enabled { try await DailyReminderService.authorize() }
+        guard account?.accountID == identity.accountID else { throw APIError.signInRequired }
+        try DailyReminderService.save(preferences, for: identity.accountID)
+        try await syncDailyReminders()
+    }
+
+    func syncDailyReminders() async throws {
+        reminderRevision = UUID()
+        let revision = reminderRevision
+        DailyReminderService.cancel()
+        guard let identity = account, let month else { return }
+        let preferences = DailyReminderService.preferences(for: identity.accountID)
+        guard preferences.enabled else { return }
+        var weeks: [ReminderWeek] = []
+        var start: Date?
+        for week in month.weeks where allows(.checkin, week: week.number) {
+            let content: WeekContent = try await api.request("account/weeks/\(week.number)", token: identity.accessToken)
+            guard revision == reminderRevision, account?.accessToken == identity.accessToken,
+                  self.month?.id == month.id else { return }
+            let formatter = ISO8601DateFormatter()
+            formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+            guard let date = formatter.date(from: content.startedAt) ?? ISO8601DateFormatter().date(from: content.startedAt),
+                  start == nil || start == date else { throw APIError.invalidResponse }
+            start = date
+            let until: Date
+            if !allows(.training, week: week.number) { until = .distantPast }
+            else if week.number == month.freeWeek { until = .distantFuture }
+            else { until = entitlement?.expiresAt ?? .distantPast }
+            let completed = Set(content.sessions.map(\.id).filter { content.completedSessions["w\(week.number):\($0)"] == true })
+            weeks.append(ReminderWeek(number: week.number, sessions: content.sessions.map(\.id), weekdays: content.sessionDays,
+                                      completed: completed, trainingAllowedUntil: until))
+        }
+        guard revision == reminderRevision, account?.accessToken == identity.accessToken,
+              self.month?.id == month.id, let start else { return }
+        let reminders = DailyReminderPlanner.make(preferences: preferences, startedAt: start, weeks: weeks,
+                                                  trainingHold: month.trainingHold)
+        try await DailyReminderService.replace(reminders, monthID: month.id, accountID: identity.accountID)
     }
 
     func signOut() {
         if let identity = account {
             Task { let _: Acknowledgement? = try? await api.request("account/logout", method: "POST", token: identity.accessToken) }
         }
+        reminderRevision = UUID()
+        DailyReminderService.cancel()
         account = nil; month = nil; entitlement = nil; challenge = nil; needsOnboarding = false
         ReminderService.clear()
     }

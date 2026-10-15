@@ -39,3 +39,11 @@ The implemented Node service uses encrypted SQLite and persistent transactional 
 
 
 Additional implemented routes: POST account/onboarding; POST account/sessions; POST account/milestones; POST account/meals (check/replace/photo); POST account/post-workout; POST account/logout; POST account/restore; POST account/next-month/propose; POST account/next-month/approve. GET account/weeks/:week also returns structured sessions/days and server completion state. POST apple/notifications handles verified V2 events. GET/POST admin/reviews routes require an allowlisted reviewer account and cannot clear clinical/allergy holds.
+
+### AI Coach
+
+- `GET /account/coach`: `{available, providers, consented, messages}`; sessão obrigatória.
+- `POST /account/coach/consent`: `{accepted: boolean}`; autoriza os provedores atuais ou revoga e apaga a conversa.
+- `POST /account/coach`: `{question: string(1...2000), requestID: UUID}`; contexto do cliente é rejeitado. Retorna `{message:{id,role,text,at}, provider, authoritativeState:true}`. Requer onboarding e consentimento; contexto é montado pelo servidor com as semanas autorizadas.
+- `DELETE /account/coach`: apaga conversa e resposta idempotente, preservando cotas e autorização.
+- Erros: `401` sessão; `403` consentimento; `409` conversa em andamento/contexto alterado; `429` cota; `503` IA indisponível. A conversa não altera prescrição, assinatura ou bloqueios.

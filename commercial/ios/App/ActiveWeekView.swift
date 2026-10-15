@@ -122,6 +122,7 @@ struct ActiveWeekView: View {
             try await write("account/sessions", SessionBody(week: week, session: session))
             postWorkout = session
             await load()
+            try await account.syncDailyReminders()
         } catch { account.error = error.localizedDescription }
     }
     private func remind(_ session: String) async {

@@ -1,3 +1,4 @@
+import {CoachService,CoachProvider} from './coach.mjs';
 import {randomUUID} from 'node:crypto';
 import {HTTPError,requireValue,iso} from './errors.mjs';
 import {validateProfile} from './profile.mjs';
@@ -58,7 +59,8 @@ function response(res,status,data){
   res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
   res.end(JSON.stringify(data));
 }
-export function createHandler({store,identity,purchases,config}){
+export function createHandler({store,identity,purchases,config,coachProvider=new CoachProvider(config.coach)}){
+  const coach=new CoachService(store,coachProvider);
   async function refreshPurchases(id){
     const known=store.purchases(id);
     if(known.length){for(const tx of await purchases.current(known,id))store.purchase(tx);}
@@ -118,6 +120,26 @@ export function createHandler({store,identity,purchases,config}){
           data.ownerReview=built.plan.reviewRouting.ownerReviewRequired?{pending:true,reasons:built.plan.reviewRouting.reasons,createdAt:iso()}:null;
         });
         return response(res,200,{ok:true,month:month(store.load(id))});
+      }
+      if(method==='GET'&&path==='/account/coach')return response(res,200,coach.status(id));
+      if(method==='POST'&&path==='/account/coach/consent'){
+        const input=await body(req,1000);requireValue(typeof input.accepted==='boolean',400,'coach_consent_invalid');
+        coach.consent(id,input.accepted);return response(res,200,{ok:true});
+      }
+      if(method==='DELETE'&&path==='/account/coach'){
+        coach.clear(id);return response(res,200,{ok:true});
+      }
+      if(method==='POST'&&path==='/account/coach'){
+        const input=await body(req,10000);
+        requireValue(Object.keys(input).every(k=>['question','requestID'].includes(k)),400,'coach_unknown_field');
+        await refreshPurchases(id);
+        const data=store.load(id);requireValue(data.plan&&data.state,409,'onboarding_required');
+        const allowedWeeks=[1,2,3,4].filter(w=>w===freeWeek(data)||grant(store,config,id)).map(w=>{
+          const details=content(data,w);
+          return {number:w,sessions:data.plan.trainingHold?[]:details.training,sessionDays:data.plan.summary.selectedDays,
+            meals:details.meals.map(day=>({day:day.day,rows:day.rows.map(({title,recipe})=>({title,recipe}))}))};
+        });
+        return response(res,200,await coach.ask(id,input,allowedWeeks));
       }
       if(method==='GET'&&path==='/account/month')return response(res,200,month(store.load(id)));
       if(path.startsWith('/admin/reviews')){

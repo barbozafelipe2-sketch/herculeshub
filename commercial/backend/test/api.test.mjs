@@ -57,7 +57,7 @@ const profile={name:'Teste',language:'pt-BR',primaryGoal:'general_fitness',level
  sleep:'7',stress:'2',currentPain:'no',redFlags:'no',professionalRestrictions:'no',activityType:'cycling',
  activityDays:['Tue'],proteinPreferences:[],grainPreferences:[],veggiePreferences:[],foodStyles:[],painAreas:[],
  accuracy:true,prototypeAck:true,openToOtherVeggies:true,weight:'80',targetWeight:'78'};
-async function setup(){
+async function setup(coachProvider){
  const folder=mkdtempSync(path.join(os.tmpdir(),'hercules-api-')),filename=path.join(folder,'state.db'),key='a'.repeat(64);
  const store=new Store(filename,key),config={productIDs:['monthly']};
  let revoked=false,appleDown=false,failRevoke=false;
@@ -66,7 +66,7 @@ async function setup(){
  const purchases={transaction:async(jws,id)=>{const data=JSON.parse(jws);if(data.appAccountToken!==id)throw new HTTPError(403,'purchase_account_mismatch');return data;},
    current:async known=>{if(appleDown)throw Error('Apple unavailable');return known.map(t=>({...t,revocationDate:revoked?Date.now():t.revocationDate,signedDate:Date.now()}));},
    notification:async jws=>JSON.parse(jws)};
- const handler=createHandler({store,identity,purchases,config});
+ const handler=createHandler({store,identity,purchases,config,coachProvider});
  async function request(route,{token,method='GET',body}={}){
    const req=Readable.from(body?[Buffer.from(JSON.stringify(body))]:[]);
    Object.assign(req,{method,url:route,socket:{remoteAddress:'127.0.0.1'},headers:token?{authorization:'Bearer '+token}:{}});
@@ -158,3 +158,28 @@ test('durable encrypted storage, quotas and purchase ownership survive restart',
  store.close();rmSync(folder,{recursive:true,force:true});
 });
 
+
+test('commercial Coach HTTP uses only authorized weeks, preserves safety holds, and never writes the plan',async()=>{
+ let prompt,called=0;
+ const coachProvider={names:()=>['gemini'],answer:async(system,input)=>{called++;prompt={system,data:JSON.parse(input)};return {text:'Seu plano está disponível no aplicativo.',provider:'gemini'};}};
+ const c=await setup(coachProvider);try{
+ const account=await c.login(),token=account.accessToken;
+ await c.request('/account/onboarding',{token,method:'POST',body:{profile}});
+ const request={question:'Qual o meu treino?',requestID:'11111111-1111-4111-8111-111111111111'};
+ assert.equal((await c.request('/account/coach',{token,method:'POST',body:request})).status,403);
+ await c.request('/account/coach/consent',{token,method:'POST',body:{accepted:true}});
+ const before=structuredClone(c.store.load(account.accountID).plan);
+ const answer=await c.request('/account/coach',{token,method:'POST',body:request});
+ assert.equal(answer.status,200);assert.equal(answer.data.authoritativeState,true);
+ assert.deepEqual(prompt.data.plan.allowedWeeks.map(w=>w.number),[1]);
+ assert.deepEqual(c.store.load(account.accountID).plan,before);
+ assert.equal((await c.request('/account/coach',{token,method:'POST',body:request})).status,200);assert.equal(called,1);
+ c.store.update(account.accountID,data=>{data.plan.trainingHold=true;});
+ const held=await c.request('/account/coach',{token,method:'POST',body:{...request,requestID:'22222222-2222-4222-8222-222222222222'}});
+ assert.equal(held.status,200);assert.equal(prompt.data.plan.trainingHold,true);
+ assert.deepEqual(prompt.data.plan.allowedWeeks[0].sessions,[]);
+ assert.equal(c.store.load(account.accountID).plan.trainingHold,true);
+ await c.request('/account/coach/consent',{token,method:'POST',body:{accepted:false}});
+ assert.equal((await c.request('/account/coach',{token})).data.messages.length,0);
+ }finally{await c.cleanup();}
+});

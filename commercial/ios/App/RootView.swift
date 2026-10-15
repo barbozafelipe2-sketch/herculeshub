@@ -9,21 +9,38 @@ struct RootView: View {
     @EnvironmentObject private var account: AccountStore
     @EnvironmentObject private var commerce: StoreKitStore
     @Environment(\.scenePhase) private var scenePhase
+    @ObservedObject private var reminderRouter = ReminderNotificationRouter.shared
+    @State private var reminderPath: [Int] = []
     @State private var deleteConfirmation = false
     @State private var reportURL: URL?
     @State private var importingReport = false
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $reminderPath) {
             Group {
                 if account.account == nil { signIn }
                 else if account.needsOnboarding { OnboardingView() }
                 else { month }
             }
             .navigationTitle("Hércules Hub")
+            .navigationDestination(for: Int.self) { week in
+                if account.allows(.checkin, week: week) { ActiveWeekView(week: week) }
+                else { Text("Abra o plano atual para conferir as semanas disponíveis.") }
+            }
+            .onReceive(reminderRouter.$destination) { destination in
+                guard let destination else { return }
+                reminderPath = []
+                if account.account?.accountID == destination.accountID,
+                   account.month?.id == destination.monthID,
+                   account.allows(.checkin, week: destination.week) {
+                    reminderPath = [destination.week]
+                }
+                reminderRouter.consume()
+            }
             .toolbar {
                 if account.account != nil {
                     Menu("Conta", systemImage: "person.crop.circle") {
+                        NavigationLink("Mensagens diárias") { DailyReminderSettingsView() }
                         Button("Restaurar compras") { Task { await commerce.restore() } }
                         Button("Gerenciar assinatura") { Task { await manageSubscription() } }
                         Button("Restaurar progresso do PDF") { importingReport = true }
@@ -116,6 +133,12 @@ struct RootView: View {
                     Text("Nenhum plano disponível.")
                     Button("Atualizar plano") { Task { await account.refresh() } }
                 }
+            }
+            Section("AI Coach") {
+                NavigationLink("Conversar com o Hércules") { CoachView() }
+            }
+            Section("Sua rotina") {
+                NavigationLink("Mensagens diárias") { DailyReminderSettingsView() }
             }
             Section("Evolução") {
                 NavigationLink("Revisar próximo mês") { NextMonthView() }

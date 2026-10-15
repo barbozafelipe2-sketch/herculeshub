@@ -1,3 +1,4 @@
+import {coachConfiguration} from './coach.mjs';
 import {readFileSync} from 'node:fs';
 import {requireValue} from './errors.mjs';
 export function configuration(env=process.env){
@@ -7,6 +8,7 @@ export function configuration(env=process.env){
   const appAppleID=Number(env.APPLE_APP_ID||0)||undefined;
   requireValue(environment!=='Production'||appAppleID,500,'apple_app_id_required');
   const config={
+    coach:coachConfiguration(env),
     bundleID:required('APPLE_BUNDLE_ID'),environment,appAppleID,
     productIDs:required('APPLE_PRODUCT_IDS').split(',').map(x=>x.trim()).filter(Boolean),
     teamID:required('APPLE_TEAM_ID'),signInKeyID:required('APPLE_SIGNIN_KEY_ID'),

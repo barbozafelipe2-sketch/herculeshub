@@ -52,3 +52,26 @@ node --test commercial/backend/test/*.test.mjs
 
 Tests execute the real HTTP handlers with Node streams and durable SQLite, plus local cryptographic JWT verification and an injected Apple Server API adapter. They cover protected writes, isolation, refunds, signed reports, deletion retries, database restart and atomic cycle consent. Apple network calls in workflow tests are simulated; real Apple sandbox/device verification remains required.
 
+
+## AI Coach comercial
+
+O Coach acompanha o comportamento de `hercules-hub/netlify/functions/coach.mts`, mas usa a sessão Apple e o estado comercial autoritativo. É conversacional e somente leitura: não altera o plano, não aprova ciclos, não muda assinatura nem libera restrições. Não usa Netlify Gateway; os adaptadores Node chamam os provedores no backend. Nenhuma chave vai para o app.
+
+Desativado por padrão. Para ativar na hospedagem, configure `HERCULES_COACH_ENABLED=true` e pelo menos um par chave/modelo **com modelo realmente disponível na sua conta**:
+
+| Provedor | Chave secreta | Modelo explícito |
+| --- | --- | --- |
+| Google Gemini | `GEMINI_API_KEY` | `GEMINI_MODEL` |
+| Anthropic Claude | `ANTHROPIC_API_KEY` | `ANTHROPIC_MODEL` |
+| OpenAI | `OPENAI_API_KEY` | `OPENAI_MODEL` |
+| OpenRouter | `OPENROUTER_API_KEY` | `OPENROUTER_MODEL` |
+
+`HERCULES_COACH_PROVIDERS` define a ordem; padrão `gemini,anthropic,openai,openrouter`. Somente pares configurados entram na cadeia. Não há nome de modelo presumido. Timeouts: 4s por tentativa, orçamento total de 12s; respostas limitadas a 128KB/12.000 caracteres. Configure também orçamento/alertas no provedor e políticas de retenção/região apropriadas. Custos de IA são separados da conta Apple.
+
+O usuário autoriza no app antes de qualquer pergunta. A autorização registra a lista dos provedores; mudar a lista exige nova autorização. Contexto: perfil sem o campo nome, plano/refeições das semanas liberadas, sete check-ins recentes e até dez mensagens anteriores. Não enviamos tokens, fotos, chaves nem dados de outra conta. Restrições/alergias são preservadas no contexto. O provedor gera texto, não ações. O motor determinístico continua responsável pelo planejamento.
+
+Histórico: últimas 20 mensagens, criptografadas junto dos dados da conta; apagar conversa remove também a resposta guardada para repetição segura. Revogar autorização apaga o histórico. Excluir conta remove os dados conforme o fluxo existente. Especifique na política pública os provedores utilizados e seu tratamento de dados; revogação local não promete apagar registros que o provedor já tenha retido.
+
+Limites por conta persistidos em SQLite: 30 perguntas/hora e 80/dia, uma resposta em andamento por conta nesta instância. As tentativas podem consumir cota/custo mesmo em falha. `requestID` evita cobrança duplicada na repetição da última pergunta concluída. Mudanças no estado/consentimento durante a resposta impedem a publicação de contexto antigo. Sem provedor ou em falha, retorna `503 coach_unavailable`; não há resposta determinística apresentada como IA.
+
+Teste real pendente: configurar um provedor na hospedagem, validar PT/EN/ES, latência/custo, autorização/revogação, erros, perguntas sobre semanas bloqueadas, alergias/restrições e privacidade. Os testes automatizados usam transporte de IA simulado e não comprovam disponibilidade do modelo ou segurança clínica das respostas.
