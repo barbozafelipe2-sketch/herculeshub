@@ -29,3 +29,19 @@ test('StoreKit adapter calls official verifier and current Apple API; enforces p
  }
 });
 
+
+test('Apple refresh validation distinguishes revoked authorization from a temporary outage',async()=>{
+ const {privateKey}=generateKeyPairSync('ec',{namedCurve:'prime256v1'});
+ const config={bundleID:'com.test',teamID:'TEAM',signInKeyID:'KEY',signInPrivateKey:privateKey};
+ let mode='ok';
+ const validator=new AppleIdentity(config,async(url,options)=>{
+  assert.equal(url,'https://appleid.apple.com/auth/token');assert.equal(options.redirect,'error');
+  assert.equal(options.body.get('grant_type'),'refresh_token');assert.equal(options.body.get('refresh_token'),'apple-secret');
+  if(mode==='revoked')return Response.json({error:'invalid_grant'},{status:400});
+  if(mode==='outage')return Response.json({error:'server_error'},{status:503});
+  return Response.json({access_token:'apple-access'});
+ });
+ await validator.validateRefresh('apple-secret');
+ mode='revoked';await assert.rejects(validator.validateRefresh('apple-secret'),e=>e.status===401&&e.code==='apple_authorization_revoked');
+ mode='outage';await assert.rejects(validator.validateRefresh('apple-secret'),e=>e.status===503);
+});

@@ -18,6 +18,7 @@ struct HerculesHubApp: App {
             RootView()
                 .environmentObject(account)
                 .environmentObject(commerce)
+                .task { await account.restoreSession() }
         }
     }
 }

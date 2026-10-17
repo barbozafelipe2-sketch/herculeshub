@@ -18,7 +18,8 @@ struct RootView: View {
     var body: some View {
         NavigationStack(path: $reminderPath) {
             Group {
-                if account.account == nil { signIn }
+                if account.restoringSession { ProgressView("Restaurando sua sessão…") }
+                else if account.account == nil { signIn }
                 else if account.needsOnboarding { OnboardingView() }
                 else { month }
             }
@@ -74,8 +75,11 @@ struct RootView: View {
                 do { try await commerce.reconcile() }
                 catch { commerce.message = error.localizedDescription }
             }
+            .onReceive(NotificationCenter.default.publisher(for: ASAuthorizationAppleIDProvider.credentialRevokedNotification)) { _ in
+                account.signOut()
+            }
             .onChange(of: scenePhase) { _, phase in
-                if phase == .active { Task { await account.refresh() } }
+                if phase == .active { Task { await account.validateAppleSession() } }
             }
         }
         .id(account.account?.accountID)
@@ -94,6 +98,10 @@ struct RootView: View {
                 .frame(height: 50)
             } else {
                 Button("Entrar com Apple") { Task { await account.prepareSignIn() } }
+                    .disabled(account.busy)
+            }
+            if account.canRestoreSession {
+                Button("Tentar restaurar sessão") { Task { await account.restoreSession(retry: true) } }
                     .disabled(account.busy)
             }
             if account.busy { ProgressView() }

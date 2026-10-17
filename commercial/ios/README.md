@@ -23,7 +23,7 @@ Generated project, entitlement file and catalog resources are ignored. Open the 
 
 Default identifiers are placeholders, not provisioned Apple products. Missing backend disables sign-in; incomplete purchase/legal settings prevent purchases. No provider/database secret belongs in build settings.
 
-Tokens remain in memory. Paid unlock requires an Apple-verified transaction and server validation. Deletion requires server confirmation and Apple credential revocation; subscription cancellation is separate and available through Apple's management UI.
+Apple-backed credentials persist in the device-only Keychain; access tokens renew automatically through the commercial backend. Paid unlock requires an Apple-verified transaction and server validation. Deletion requires server confirmation and Apple credential revocation; subscription cancellation is separate and available through Apple's management UI.
 
 The backend and onboarding, meal/photo/reminder/post-workout and approval screens are implemented; configure and deploy the commercial API described in ../backend/README.md. Add an approved 1024px App Store icon. Reconcile the initial privacy manifest with actual backend retention/collection and SDKs before submission.
 
@@ -50,3 +50,14 @@ QA em dispositivo: negar/revogar permissão; ativar somente um período; pausar;
 **AI Coach → Conversar com o Hércules** consulta o backend comercial. Mostra a disponibilidade real e os provedores configurados, pede autorização antes do envio de perfil/plano/registros à IA, apresenta a conversa e permite apagar/revogar. Sem IA configurada, informa indisponibilidade. Perguntas não mudam o plano. Repetir a última pergunta após falha de rede usa o mesmo requestID enquanto a tela permanece aberta.
 
 QA: autorização inicial; negar/revogar; exclusão; trocar conta; expiração da sessão; falha/timeout/cota do provedor; alteração do plano enquanto espera resposta; semanas bloqueadas; VoiceOver/Dynamic Type; perguntas em PT/EN/ES. A integração real depende da hospedagem e das chaves/modelos configurados no backend, separadamente da conta Apple.
+
+
+## Login Apple persistente
+
+O provedor continua sendo **Entrar com Apple**. No lançamento, o app restaura a sessão do Keychain e consulta o estado da autorização Apple. Ao voltar ao primeiro plano, verifica novamente. A notificação de revogação Apple encerra a sessão local. Falhas temporárias preservam as credenciais para tentar novamente; uma sessão rejeitada volta ao login.
+
+Tokens não ficam em UserDefaults, PDF ou backups de progresso. O Keychain usa `WhenUnlockedThisDeviceOnly`, sem sincronização iCloud, com separação por Bundle ID e URL do backend. Um indicador local sem credenciais impede restauração após logout mesmo se a remoção do Keychain falhar. Sair cancela restaurações/renovações em andamento, limpa plano/permissões/lembretes e tenta revogar a sessão remota; offline, a revogação remota é de melhor esforço.
+
+Acesso dura até uma hora; renovação rotativa dura no máximo 30 dias desde o login Apple, sem estender esse limite. Depois, é necessário confirmar com Apple novamente. Chamadas simultâneas compartilham uma renovação, e cada requisição pode repetir uma vez após um 401 de sessão. A confirmação recente para exclusão não é satisfeita por renovar o token. Não há desbloqueio de assinatura a partir do Keychain.
+
+Testes automatizados do SessionController cobrem restauração, concorrência, falha de rede, revogação, logout/troca de conta com resposta atrasada e falha de armazenamento. QA real ainda necessário: fechar/reabrir; relançar após expiração; negar/revogar autorização nos ajustes Apple; modo avião; Keychain com aparelho bloqueado; dois aparelhos; logout offline; exclusão com confirmação recente; separação Sandbox/Production. O CI não substitui esses testes com credenciais Apple reais.

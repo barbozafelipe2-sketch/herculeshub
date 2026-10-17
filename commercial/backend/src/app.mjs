@@ -80,6 +80,17 @@ export function createHandler({store,identity,purchases,config,coachProvider=new
         const verified=await identity.exchange(input.identityToken,input.authorizationCode,nonce);
         return response(res,200,store.login(verified.subject,verified.refresh));
       }
+      if(method==='POST'&&(path==='/auth/session/refresh'||path==='/auth/session/revoke')){
+        requireValue(store.quota(remote,'session-renewal',120,60000),429,'rate_limit');
+        const input=await body(req,1000);
+        if(path.endsWith('/revoke')){store.revokeRefresh(input.refreshToken);return response(res,200,{ok:true});}
+        requireValue(typeof input.refreshToken==='string'&&input.refreshToken.length===43,401,'refresh_invalid');
+        requireValue(store.quota(store.keyed(input.refreshToken),'refresh-token',10,60000),429,'rate_limit');
+        const credential=store.refreshAccount(input.refreshToken);
+        try{await identity.validateRefresh(credential.appleRefresh);}
+        catch(error){if(error instanceof HTTPError&&error.status===401)store.revokeAllSessions(credential.id);throw error;}
+        return response(res,200,store.renew(input.refreshToken));
+      }
       if(method==='POST'&&path==='/apple/notifications'){
         const input=await body(req,120000);requireValue(short(input.signedPayload,110000),400,'notification_invalid');
         const verified=await purchases.notification(input.signedPayload);
@@ -89,7 +100,7 @@ export function createHandler({store,identity,purchases,config,coachProvider=new
       const auth=store.authenticate(token,path==='/account'&&method==='DELETE'),id=auth.account_id;
       requireValue(store.quota(id,'account',120,60000),429,'rate_limit');
       if(method==='POST'&&path==='/account/logout'){
-        store.db.prepare('DELETE FROM sessions WHERE token_hash=?').run((await import('./store.mjs')).hash(token));
+        store.logout(token);
         return response(res,200,{ok:true});
       }
       if(method==='DELETE'&&path==='/account'){

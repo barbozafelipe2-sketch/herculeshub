@@ -10,12 +10,54 @@ final class AccountStore: ObservableObject {
     @Published private(set) var entitlement: Entitlement?
     @Published private(set) var busy = false
     @Published private(set) var needsOnboarding = false
+    @Published private(set) var restoringSession = true
+    @Published private(set) var canRestoreSession = false
     @Published var error: String?
     let api: APIClient
     private var challenge: AppleChallenge?
     private var reminderRevision = UUID()
-    // Tokens are in memory only; progress exports never contain credentials or entitlements.
-    init(api: APIClient) { self.api = api }
+    private var attemptedRestoration = false
+    private var identityRevision = UUID()
+    // Credentials live in the device-only Keychain; progress exports never contain them.
+    init(api: APIClient) {
+        self.api = api
+        api.onSessionInvalidated = { [weak self] in
+            self?.clearAccount()
+            self?.error = "Sua sessão terminou. Entre novamente com Apple para continuar."
+        }
+    }
+
+    func restoreSession(retry: Bool = false) async {
+        guard !attemptedRestoration || retry else { return }
+        let revision = identityRevision
+        attemptedRestoration = true; restoringSession = true
+        defer { restoringSession = false }
+        do {
+            guard let saved = try api.savedSession() else { canRestoreSession = false; return }
+            canRestoreSession = true
+            let state = try await ASAuthorizationAppleIDProvider().credentialState(forUserID: saved.appleUserID)
+            guard revision == identityRevision else { return }
+            guard state == .authorized else { api.endSession(); clearAccount(); return }
+            try api.activate(saved, persist: false)
+            account = saved.credentials
+            canRestoreSession = false
+            await refresh()
+        } catch SessionError.invalid {
+            api.endSession(); clearAccount()
+            error = "Entre novamente com Apple para continuar."
+        } catch { self.error = error.localizedDescription }
+    }
+
+    func validateAppleSession() async {
+        guard let identity = account else { return }
+        do {
+            guard let saved = try api.savedSession() else { signOut(); return }
+            let state = try await ASAuthorizationAppleIDProvider().credentialState(forUserID: saved.appleUserID)
+            guard account?.accessToken == identity.accessToken else { return }
+            if state != .authorized { signOut(); error = "Autorize novamente o login com Apple para continuar."; return }
+            await refresh()
+        } catch { self.error = "Não foi possível verificar a sessão Apple. Tente atualizar novamente." }
+    }
 
     func prepareSignIn() async {
         busy = true
@@ -36,6 +78,8 @@ final class AccountStore: ObservableObject {
     }
 
     func signIn(_ result: Result<ASAuthorization, Error>) async {
+        identityRevision = UUID()
+        let revision = identityRevision
         busy = true
         defer { busy = false; challenge = nil }
         do {
@@ -49,7 +93,11 @@ final class AccountStore: ObservableObject {
             let body = AppleSignInBody(challengeID: challenge.challengeID, identityToken: token, authorizationCode: code)
             let account: AccountSession = try await api.request("auth/apple/session", method: "POST",
                                                                body: JSONEncoder().encode(body))
-            guard !account.accessToken.isEmpty else { throw APIError.invalidResponse }
+            guard revision == identityRevision else { api.discard(account); return }
+            guard !credential.user.isEmpty else { throw APIError.invalidResponse }
+            do { try api.activate(StoredAppleSession(credentials: account, appleUserID: credential.user)) }
+            catch { api.discard(account); throw error }
+            canRestoreSession = false
             self.account = account
             await refresh()
         } catch { self.error = error.localizedDescription }
@@ -162,13 +210,15 @@ final class AccountStore: ObservableObject {
     }
 
     func signOut() {
-        if let identity = account {
-            Task { let _: Acknowledgement? = try? await api.request("account/logout", method: "POST", token: identity.accessToken) }
-        }
+        api.endSession()
+        clearAccount()
+    }
+    private func clearAccount() {
+        identityRevision = UUID()
+        canRestoreSession = false
         reminderRevision = UUID()
         DailyReminderService.cancel()
         account = nil; month = nil; entitlement = nil; challenge = nil; needsOnboarding = false
         ReminderService.clear()
     }
 }
-

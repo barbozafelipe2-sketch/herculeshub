@@ -2,12 +2,12 @@
 
 **Status: implemented in `backend/`; live deployment/Apple provisioning outstanding.** Use a separate commercial account/data namespace. Never point the native client at the Netlify beta.
 
-All endpoints use HTTPS, no cross-origin redirects, bounded requests and no-store responses. Protected endpoints require a verified, revocable `Authorization: Bearer <commercial-access-token>`. Resolve identity from the session, never a device ID/client-supplied account. Use distributed atomic quotas; storage failure cannot bypass cost caps. Dates are ISO-8601 UTC without fractional seconds; account IDs are UUIDs.
+All endpoints use HTTPS, no cross-origin redirects, bounded requests and no-store responses. Protected endpoints require a verified, revocable `Authorization: Bearer <commercial-access-token>`. Resolve identity from the session, never a device ID/client-supplied account. Use distributed atomic quotas; storage failure cannot bypass cost caps. Dates are ISO-8601 UTC, accepting fractional seconds; account IDs are UUIDs.
 
 | Method/path | Input | Output |
 | --- | --- | --- |
 | POST `auth/apple/challenge` | none | `{challengeID, nonceSHA256}` |
-| POST `auth/apple/session` | `{challengeID, identityToken, authorizationCode}` | `{accountID, accessToken}` |
+| POST `auth/apple/session` | `{challengeID, identityToken, authorizationCode}` | `{accountID, accessToken, refreshToken, accessExpiresAt, refreshExpiresAt}` |
 | GET `account/entitlement` | authenticated | `{entitlement: null or {accountID,productID,expiresAt,revoked}}` |
 | POST `account/storekit` | `{signedTransaction}` | same entitlement response |
 | GET `account/month` | authenticated | `{id,cycleNumber,freeWeek,trainingHold,weeks:[{number,title,summary}]}` |
@@ -47,3 +47,11 @@ Additional implemented routes: POST account/onboarding; POST account/sessions; P
 - `POST /account/coach`: `{question: string(1...2000), requestID: UUID}`; contexto do cliente é rejeitado. Retorna `{message:{id,role,text,at}, provider, authoritativeState:true}`. Requer onboarding e consentimento; contexto é montado pelo servidor com as semanas autorizadas.
 - `DELETE /account/coach`: apaga conversa e resposta idempotente, preservando cotas e autorização.
 - Erros: `401` sessão; `403` consentimento; `409` conversa em andamento/contexto alterado; `429` cota; `503` IA indisponível. A conversa não altera prescrição, assinatura ou bloqueios.
+
+
+### Renovação de sessão Apple
+
+- `POST /auth/session/refresh`: `{refreshToken}`; valida a autorização Apple e retorna o mesmo formato de credenciais do login, com rotação. 401 para token inválido/revogado/expirado; 503 para falha transitória Apple; 429 para cota.
+- `POST /auth/session/revoke`: `{refreshToken}`; revoga a família de forma idempotente e responde `{ok:true}`. Não exige token de acesso válido.
+- `POST /account/logout`: revoga acesso e renovação do dispositivo atual.
+- Acesso de até 1h; família de até 30 dias desde o login Apple. Renovação preserva `created_at` para operações que exigem confirmação recente. Não concede entitlements.

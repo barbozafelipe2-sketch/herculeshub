@@ -16,12 +16,17 @@ export class Store {
       PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; PRAGMA foreign_keys=ON;
       CREATE TABLE IF NOT EXISTS accounts(id TEXT PRIMARY KEY, subject_hash TEXT UNIQUE NOT NULL, status TEXT NOT NULL, data TEXT NOT NULL, refresh TEXT NOT NULL, revision INTEGER NOT NULL DEFAULT 0);
       CREATE TABLE IF NOT EXISTS sessions(token_hash TEXT PRIMARY KEY, account_id TEXT REFERENCES accounts(id) ON DELETE CASCADE, created_at INTEGER NOT NULL, expires_at INTEGER NOT NULL);
+      CREATE TABLE IF NOT EXISTS refresh_sessions(id TEXT PRIMARY KEY, account_id TEXT REFERENCES accounts(id) ON DELETE CASCADE, token_hash TEXT UNIQUE NOT NULL, previous_hash TEXT, previous_until INTEGER, replay TEXT, created_at INTEGER NOT NULL, expires_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS challenges(id TEXT PRIMARY KEY, nonce TEXT NOT NULL, expires_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS quotas(key TEXT PRIMARY KEY, count INTEGER NOT NULL, expires_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS purchase_owners(original_hash TEXT PRIMARY KEY, owner_hash TEXT NOT NULL);
       CREATE TABLE IF NOT EXISTS purchases(id_hash TEXT PRIMARY KEY, original_hash TEXT NOT NULL, owner_hash TEXT NOT NULL, data TEXT NOT NULL, signed_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS notifications(id_hash TEXT PRIMARY KEY, created_at INTEGER NOT NULL);
     `);
+    // Additive migration: existing access sessions retain their original one-hour expiry.
+    if(!this.db.prepare('PRAGMA table_info(sessions)').all().some(x=>x.name==='family_id')){
+      this.db.exec('ALTER TABLE sessions ADD COLUMN family_id TEXT');
+    }
   }
   close(){this.db.close();}
   seal(value,aad){
@@ -72,10 +77,69 @@ export class Store {
         .run(id,subjectHash,'active',this.seal({},id),this.seal(refresh,id+':refresh'));
       else this.db.prepare('UPDATE accounts SET refresh=? WHERE id=?').run(this.seal(refresh,id+':refresh'),id);
     });
-    const token=randomBytes(32).toString('base64url');
-    this.db.prepare('DELETE FROM sessions WHERE expires_at < ?').run(now);
-    this.db.prepare('INSERT INTO sessions VALUES(?,?,?,?)').run(hash(token),id,now,now+3600000);
-    return {accountID:id,accessToken:token};
+    return this.atomic(()=>{
+      this.db.prepare('DELETE FROM sessions WHERE expires_at < ?').run(now);
+      this.db.prepare('DELETE FROM refresh_sessions WHERE expires_at < ?').run(now);
+      const family=randomUUID(),refreshToken=randomBytes(32).toString('base64url'),expires=now+30*86400000;
+      this.db.prepare('INSERT INTO refresh_sessions(id,account_id,token_hash,created_at,expires_at) VALUES(?,?,?,?,?)')
+        .run(family,id,hash(refreshToken),now,expires);
+      return this.issueSession(id,family,refreshToken,now,expires,now);
+    });
+  }
+  issueSession(id,family,refreshToken,signedInAt,expires,now){
+    const accessToken=randomBytes(32).toString('base64url'),accessExpiry=Math.min(now+3600000,expires);
+    this.db.prepare('INSERT INTO sessions(token_hash,account_id,created_at,expires_at,family_id) VALUES(?,?,?,?,?)')
+      .run(hash(accessToken),id,signedInAt,accessExpiry,family);
+    return {accountID:id,accessToken,refreshToken,accessExpiresAt:new Date(accessExpiry).toISOString(),refreshExpiresAt:new Date(expires).toISOString()};
+  }
+  revokeFamily(family){
+    this.db.prepare('DELETE FROM sessions WHERE family_id=?').run(family);
+    this.db.prepare('DELETE FROM refresh_sessions WHERE id=?').run(family);
+  }
+  renew(refreshToken,now=Date.now()){
+    requireValue(typeof refreshToken==='string'&&/^[A-Za-z0-9_-]{43}$/.test(refreshToken),401,'refresh_invalid');
+    const digest=hash(refreshToken);
+    const result=this.atomic(()=>{
+      const family=this.db.prepare('SELECT r.*,a.status FROM refresh_sessions r JOIN accounts a ON a.id=r.account_id WHERE r.token_hash=? OR r.previous_hash=?').get(digest,digest);
+      if(!family)return null;
+      if(family.expires_at<=now||family.status!=='active'){this.revokeFamily(family.id);return null;}
+      if(family.previous_hash===digest){
+        // Recover a lost response briefly; stale reuse then revokes this device's family.
+        if(family.previous_until>now&&family.replay)return this.open(family.replay,family.id+':rotation');
+        this.revokeFamily(family.id);return null;
+      }
+      const next=randomBytes(32).toString('base64url');
+      this.db.prepare('DELETE FROM sessions WHERE family_id=?').run(family.id);
+      const issued=this.issueSession(family.account_id,family.id,next,family.created_at,family.expires_at,now);
+      this.db.prepare('UPDATE refresh_sessions SET token_hash=?,previous_hash=?,previous_until=?,replay=? WHERE id=?')
+        .run(hash(next),digest,now+60000,this.seal(issued,family.id+':rotation'),family.id);
+      return issued;
+    });
+    requireValue(result,401,'refresh_invalid');return result;
+  }
+  refreshAccount(refreshToken,now=Date.now()){
+    requireValue(typeof refreshToken==='string'&&/^[A-Za-z0-9_-]{43}$/.test(refreshToken),401,'refresh_invalid');
+    const row=this.db.prepare('SELECT r.account_id,r.expires_at,a.refresh,a.status FROM refresh_sessions r JOIN accounts a ON a.id=r.account_id WHERE r.token_hash=? OR r.previous_hash=?').get(hash(refreshToken),hash(refreshToken));
+    requireValue(row&&row.expires_at>now&&row.status==='active',401,'refresh_invalid');
+    return {id:row.account_id,appleRefresh:this.open(row.refresh,row.account_id+':refresh')};
+  }
+  revokeAllSessions(id){
+    this.atomic(()=>{
+      this.db.prepare('DELETE FROM sessions WHERE account_id=?').run(id);
+      this.db.prepare('DELETE FROM refresh_sessions WHERE account_id=?').run(id);
+    });
+  }
+  revokeRefresh(refreshToken){
+    if(typeof refreshToken!=='string'||!/^[A-Za-z0-9_-]{43}$/.test(refreshToken))return;
+    this.atomic(()=>{
+      const family=this.db.prepare('SELECT id FROM refresh_sessions WHERE token_hash=? OR previous_hash=?').get(hash(refreshToken),hash(refreshToken));
+      if(family)this.revokeFamily(family.id);
+    });
+  }
+  logout(accessToken){
+    const row=this.db.prepare('SELECT family_id FROM sessions WHERE token_hash=?').get(hash(accessToken));
+    if(row?.family_id)this.atomic(()=>this.revokeFamily(row.family_id));
+    else this.db.prepare('DELETE FROM sessions WHERE token_hash=?').run(hash(accessToken));
   }
   authenticate(token,allowDeleting=false,now=Date.now()){
     requireValue(typeof token==='string'&&/^[A-Za-z0-9_-]{43}$/.test(token),401,'session_required');

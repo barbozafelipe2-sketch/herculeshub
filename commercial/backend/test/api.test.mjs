@@ -60,8 +60,8 @@ const profile={name:'Teste',language:'pt-BR',primaryGoal:'general_fitness',level
 async function setup(coachProvider){
  const folder=mkdtempSync(path.join(os.tmpdir(),'hercules-api-')),filename=path.join(folder,'state.db'),key='a'.repeat(64);
  const store=new Store(filename,key),config={productIDs:['monthly']};
- let revoked=false,appleDown=false,failRevoke=false;
- const identity={exchange:async token=>({subject:token,refresh:'secret-refresh-'+token}),revoke:async()=>{if(failRevoke)throw Error('Apple down');}};
+ let revoked=false,appleDown=false,failRevoke=false,identityRevoked=false;
+ const identity={validateRefresh:async()=>{if(identityRevoked)throw new HTTPError(401,"apple_authorization_revoked");if(appleDown)throw Error("Apple unavailable");},exchange:async token=>({subject:token,refresh:'secret-refresh-'+token}),revoke:async()=>{if(failRevoke)throw Error('Apple down');}};
  const tx=(accountID,transactionId='tx-1')=>({appAccountToken:accountID,productId:'monthly',transactionId,originalTransactionId:transactionId,expiresDate:Date.now()+3600000,signedDate:Date.now(),revocationDate:revoked?Date.now():undefined});
  const purchases={transaction:async(jws,id)=>{const data=JSON.parse(jws);if(data.appAccountToken!==id)throw new HTTPError(403,'purchase_account_mismatch');return data;},
    current:async known=>{if(appleDown)throw Error('Apple unavailable');return known.map(t=>({...t,revocationDate:revoked?Date.now():t.revocationDate,signedDate:Date.now()}));},
@@ -81,7 +81,7 @@ async function setup(coachProvider){
    assert.equal(result.status,200);return result.data;
  }
  const cleanup=async()=>{store.close();rmSync(folder,{recursive:true,force:true});};
- return {store,request,login,tx,cleanup,folder,filename,key,setRevoked:v=>revoked=v,setAppleDown:v=>appleDown=v,setFailRevoke:v=>failRevoke=v};
+ return {store,request,login,tx,cleanup,folder,filename,key,setIdentityRevoked:v=>identityRevoked=v,setRevoked:v=>revoked=v,setAppleDown:v=>appleDown=v,setFailRevoke:v=>failRevoke=v};
 }
 test('onboarding, locked weeks, account-bound purchase, check-in, refund and PDF report',async()=>{
  const c=await setup();try{
@@ -181,5 +181,37 @@ test('commercial Coach HTTP uses only authorized weeks, preserves safety holds, 
  assert.equal(c.store.load(account.accountID).plan.trainingHold,true);
  await c.request('/account/coach/consent',{token,method:'POST',body:{accepted:false}});
  assert.equal((await c.request('/account/coach',{token})).data.messages.length,0);
+ }finally{await c.cleanup();}
+});
+
+test('Apple login renews transparently at HTTP level; logout revokes refresh and never unlocks paid weeks',async()=>{
+ const c=await setup();try{
+ const first=await c.login();
+ await c.request('/account/onboarding',{token:first.accessToken,method:'POST',body:{profile}});
+ assert.ok(first.refreshToken);assert.ok(first.accessExpiresAt);assert.ok(first.refreshExpiresAt);
+ const refreshed=await c.request('/auth/session/refresh',{method:'POST',body:{refreshToken:first.refreshToken}});
+ assert.equal(refreshed.status,200);assert.equal(refreshed.data.accountID,first.accountID);
+ assert.equal((await c.request('/account/month',{token:first.accessToken})).status,401);
+ const token=refreshed.data.accessToken;
+ assert.equal((await c.request('/account/month',{token})).status,200);
+ assert.equal((await c.request('/account/weeks/2',{token})).status,403);
+ c.store.db.prepare('UPDATE sessions SET created_at=? WHERE token_hash=?').run(Date.now()-700000,(await import('../src/store.mjs')).hash(token));
+ assert.equal((await c.request('/account',{token,method:'DELETE'})).status,401);
+ assert.equal((await c.request('/account/logout',{token,method:'POST'})).status,200);
+ assert.equal((await c.request('/auth/session/refresh',{method:'POST',body:{refreshToken:refreshed.data.refreshToken}})).status,401);
+ assert.equal((await c.request('/auth/session/revoke',{method:'POST',body:{refreshToken:refreshed.data.refreshToken}})).status,200);
+ }finally{await c.cleanup();}
+});
+
+test('Apple outage preserves renewable login, but revoked Apple authorization closes every device session',async()=>{
+ const c=await setup();try{
+ const a=await c.login(),b=await c.login();
+ c.setAppleDown(true);
+ assert.equal((await c.request('/auth/session/refresh',{method:'POST',body:{refreshToken:a.refreshToken}})).status,503);
+ assert.equal((await c.request('/account/entitlement',{token:a.accessToken})).status,200);
+ c.setAppleDown(false);c.setIdentityRevoked(true);
+ assert.equal((await c.request('/auth/session/refresh',{method:'POST',body:{refreshToken:a.refreshToken}})).status,401);
+ assert.equal((await c.request('/account/entitlement',{token:a.accessToken})).status,401);
+ assert.equal((await c.request('/account/entitlement',{token:b.accessToken})).status,401);
  }finally{await c.cleanup();}
 });

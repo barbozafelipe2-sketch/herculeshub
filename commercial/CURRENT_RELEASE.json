@@ -15,7 +15,9 @@
   "identity": {
     "provider": "Sign in with Apple",
     "device_id_auth": false,
-    "backend_status": "implemented-commercial-node-api-not-deployed"
+    "backend_status": "implemented-commercial-node-api-not-deployed",
+    "session_storage": "device-only Keychain, isolated by bundle ID and backend URL",
+    "renewal": "rotating commercial refresh, 1h access and absolute 30-day family; Apple authorization revalidated on refresh"
   },
   "access": {
     "month_visible": true,
@@ -43,8 +45,9 @@
     "asset_bundle": "SHA-256 verified and reconstructed",
     "native": "Swift tests and unsigned iOS simulator build passed in GitHub Actions for 86715431b5b4bd051b939f86508e1be976dda654",
     "historical_reports_apply_to_native": false,
-    "backend": "9 scenario tests including real SQLite and cryptographic identity verification; Apple network responses simulated",
-    "ci_url": "https://github.com/barbozafelipe2-sketch/herculeshub/actions/runs/38680731437"
+    "backend": "23 scenario tests; SQLite and cryptographic verification exercised; Apple/provider network simulated",
+    "ci_url": "https://github.com/barbozafelipe2-sketch/herculeshub/actions/runs/38680731437",
+    "session_controller": "6 scenarios covering persistence, rotation, concurrency, failure and stale responses"
   },
   "release_blockers": [
     "Apple Developer/App Store Connect credentials, registered products, signing and real Apple sandbox validation.",
@@ -70,5 +73,23 @@
     ],
     "archive_script": "commercial/release/archive.sh",
     "automatic_upload": false
+  },
+  "ai_coach": {
+    "status": "implemented-awaiting-provider-configuration-and-live-validation",
+    "providers": [
+      "gemini",
+      "anthropic",
+      "openai",
+      "openrouter"
+    ],
+    "plan_authority": "read-only",
+    "consent": "required before provider data sharing",
+    "history": "last 20 messages, encrypted in commercial account data"
+  },
+  "daily_notifications": {
+    "status": "implemented-awaiting-device-validation",
+    "mechanism": "opt-in local morning/evening scheduling",
+    "horizon_days": 14,
+    "renewal": "on app refresh; bounded by current cycle"
   }
 }

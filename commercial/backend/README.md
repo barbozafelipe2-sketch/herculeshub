@@ -75,3 +75,16 @@ Histórico: últimas 20 mensagens, criptografadas junto dos dados da conta; apag
 Limites por conta persistidos em SQLite: 30 perguntas/hora e 80/dia, uma resposta em andamento por conta nesta instância. As tentativas podem consumir cota/custo mesmo em falha. `requestID` evita cobrança duplicada na repetição da última pergunta concluída. Mudanças no estado/consentimento durante a resposta impedem a publicação de contexto antigo. Sem provedor ou em falha, retorna `503 coach_unavailable`; não há resposta determinística apresentada como IA.
 
 Teste real pendente: configurar um provedor na hospedagem, validar PT/EN/ES, latência/custo, autorização/revogação, erros, perguntas sobre semanas bloqueadas, alergias/restrições e privacidade. Os testes automatizados usam transporte de IA simulado e não comprovam disponibilidade do modelo ou segurança clínica das respostas.
+
+
+## Sessões Apple renováveis
+
+Publique este backend antes do cliente novo: `POST /auth/apple/session` agora inclui `refreshToken`, `accessExpiresAt` e `refreshExpiresAt`. Clientes antigos podem ignorar os campos extras. SQLite recebe uma migração aditiva (`refresh_sessions` e `sessions.family_id`); sessões antigas continuam com a validade original de uma hora. Faça backup do volume antes de atualizar.
+
+O refresh comercial é aleatório, por dispositivo, com hash no banco e validade absoluta de 30 dias; não é o refresh token da Apple. A cada renovação, o backend valida a autorização com o token Apple guardado cifrado e só então emite o novo par comercial. `invalid_grant` da Apple revoga todas as sessões da conta; indisponibilidade temporária retorna 503 sem apagar as credenciais. Tokens de acesso já emitidos podem durar até uma hora, salvo revogação da família, exclusão ou notificação de revogação tratada pelo app.
+
+Rotação atômica substitui o acesso anterior. Uma repetição do token imediatamente anterior recebe a mesma resposta por 60 segundos para recuperar resposta perdida; a resposta fica cifrada no banco. Reuso desse token após a janela revoga a família. Tokens mais antigos que a geração anterior são rejeitados sem atribuição de família. Não há extensão dos 30 dias. Renovação conserva a data do login Apple original: não satisfaz o requisito de confirmação recente para exclusão.
+
+`POST /auth/session/revoke` aceita o refresh como prova e é idempotente, mesmo com acesso expirado. `POST /account/logout` revoga toda a família do acesso atual. Outra sessão legítima em outro aparelho continua ativa. Exclusão de conta remove todas as famílias. Não registre corpos de requisição, cabeçalhos Authorization ou tokens em logs do proxy/servidor.
+
+Os testes verificam rotação, reinício do SQLite, migração, repetição, expiração, revogação, exclusão e bloqueio das semanas pagas. Rede Apple é simulada; validar em Sandbox/dispositivo real após configurar conta e hospedagem.

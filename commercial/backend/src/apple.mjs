@@ -43,6 +43,14 @@ export class AppleIdentity {
     requireValue(exchanged.sub===identity.sub&&typeof response.refresh_token==='string'&&response.refresh_token.length>0,401,'apple_exchange_invalid');
     return {subject:identity.sub,refresh:response.refresh_token};
   }
+  async validateRefresh(token){
+    const response=await this.fetch('https://appleid.apple.com/auth/token',{method:'POST',signal:AbortSignal.timeout(12000),redirect:'error',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:this.config.bundleID,
+        client_secret:this.clientSecret(),refresh_token:token,grant_type:'refresh_token'})});
+    const payload=await response.json().catch(()=>({}));
+    if(response.status===400&&payload.error==='invalid_grant')throw new HTTPError(401,'apple_authorization_revoked');
+    requireValue(response.ok&&typeof payload.access_token==='string'&&payload.access_token.length>0,503,'apple_unavailable');
+  }
   async revoke(token){
     await this.jsonRevoke(token);
   }
